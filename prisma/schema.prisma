@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+//USER-> COMPANY -> PRODUCT -> MANAGER -> WORKER
+
+model User {
+  id String @id @default(uuid())
+  email String @unique
+  password String
+  name String
+  fieldOfWork FieldOfWork @default(RIGHT)
+
+  //realtion fields
+  company Company[]  @relation("CompanyCreator")
+}
+
+model Company {
+  id String @id @default(uuid())
+  name String
+  createdAt DateTime @default(now())
+
+  //realtion fields
+  createdBy String
+  creator User @relation("CompanyCreator",fields: [createdBy], references: [id] , onDelete: Cascade)
+  products Product[]
+}
+model Product {
+  id            String @id @default(uuid())
+  name          String
+  description   String?
+  deadline      String?
+  status        Status @default(ACTIVE)
+  createdAt     DateTime @default(now())
+  colors        String[]
+
+  //salary fields
+  amount        Int
+  rightTailor   Int
+  MidTailor     Int
+  toptTailor    Int
+  workerSalary  Int
+  managerSalary Int
+  //realtion fields
+  companyId     String
+  company       Company @relation(fields: [companyId], references: [id] , onDelete: Cascade)
+}
+enum Role {
+  MANAGER
+  WORKER
+}
+enum FieldOfWork {
+  RIGHT
+  TOP
+  MID
+}
+enum Status {
+  ACTIVE
+  INACTIVE
+  SPECIAL
+}

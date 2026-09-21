@@ -1,0 +1,39 @@
+{
+  "name": "-previewer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node src/server/server.js"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "bcryptjs": "^3.0.3",
+    "bcrypto": "^5.5.2",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.1",
+    "eslint": "^10.11.0",
+    "express": "^5.2.1",
+    "lucide-vue-next": "^1.0.0",
+    "pg": "^8.23.0",
+    "pinia": "^4.0.2",
+    "prettier": "^3.9.8",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "prisma": "^7.10.0",
+    "sass": "^1.104.1",
+    "tsx": "^4.23.15",
+    "vite": "^8.2.2",
+    "vite-plugin-vue-devtools": "^8.2.1"
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.12.0"
+  }
+}
