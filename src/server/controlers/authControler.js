@@ -6,7 +6,14 @@ async function hasher(val) {
     return hash;
 }
 const signup = async (req,res) => {
-    const {name,email , password , field} = req.body
+    const {name,email , password , role} = req.body
+    console.log("DEBUG - Data object to be created:", {
+    name,
+    email,
+    password,
+    role
+});
+    
 
     const userExists = await prisma.user.findUnique({
         where : {email : email}
@@ -16,13 +23,13 @@ const signup = async (req,res) => {
     }
 
     //hashing
-    const hashedPassword =await hasher(password)
+    const hashedPassword = await hasher(password)
     const user = await prisma.user.create({
         data:{
             name,
             email,
             password : hashedPassword,
-            fieldOfWork : field
+            role,
         }
     })
     res.status(201).json({
@@ -32,7 +39,7 @@ const signup = async (req,res) => {
             name:user.name,
             email:user.email,
             password:user.password,
-            fieldOfWork : user.fieldOfWork,
+            role : user.role,
             createdAt : user.createdAt,
         }
     })

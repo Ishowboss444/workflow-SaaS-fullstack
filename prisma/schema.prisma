@@ -17,7 +17,7 @@ model User {
   email String @unique
   password String
   name String
-  fieldOfWork FieldOfWork @default(RIGHT)
+  role String?
 
   //realtion fields
   company Company[]  @relation("CompanyCreator")
