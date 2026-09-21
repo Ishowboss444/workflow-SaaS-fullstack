@@ -5,16 +5,37 @@ async function hasher(val) {
     const hash = await bcrypt.hashSync(val, salt);
     return hash;
 }
+const login = async (req,res)=>{
+    const  {email , password} = req.body
+    
+    //getting db
+    const userExist = await prisma.user.findUnique({
+        where : {email : email}
+    })
+    if(!userExist) {
+        res.status(404).json({message: "you need to sign up first"})
+    }
+
+    //hashing
+    const hashedPassword = await hasher(password)
+
+    //validation
+    if(hashedPassword === userExist.password){
+        res.status(201).json({
+            status : "success",
+            data:{
+                name:userExist.name,
+                email:userExist.email,
+                role:userExist.role,
+                id:userExist.id,
+            }
+        })
+    }else{
+        res.status(400).json({message:"password is wrong"})
+    }
+}
 const signup = async (req,res) => {
     const {name,email , password , role} = req.body
-    console.log("DEBUG - Data object to be created:", {
-    name,
-    email,
-    password,
-    role
-});
-    
-
     const userExists = await prisma.user.findUnique({
         where : {email : email}
     })

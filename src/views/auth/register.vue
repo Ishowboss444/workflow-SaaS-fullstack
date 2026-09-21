@@ -57,7 +57,7 @@ const newUser = async() => {
         console.log(isValidUser.value.password1 , isValidUser.value.password2);
         let res;
         try{
-            const response =await fetch("http://localhost:3000/auth/register",{
+            const response = await fetch("http://localhost:3000/auth/register",{
                 method:"POST",
                 headers:{
                     'Content-Type': "application/json"
