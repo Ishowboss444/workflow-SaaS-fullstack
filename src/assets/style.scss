@@ -29,38 +29,38 @@
   --progress-bg-primary: #feebd8;
   --progress-text: #ed6634;
 }
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Vazirmatn', sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Vazirmatn', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
-body{
-    background-color: var(--bg-primary);
+body {
+  background-color: var(--bg-primary);
 }
-form{
-    .form-layer{
-        display: flex;
-        flex-direction: column;
-        input{
-            height: 50px;
-            border-radius: 10px;
-            outline: none;
-            border: 1px solid var(--border-primary);
-        }
+form {
+  .form-layer {
+    display: flex;
+    flex-direction: column;
+    input {
+      height: 50px;
+      border-radius: 10px;
+      outline: none;
+      border: 1px solid var(--border-primary);
     }
+  }
 }
-.button{
-    button{
-        width: 100%;
-        height: 50px;
-        border-radius: 10px;
-        background-color: #e35e89;
-        p{
-            color: white;
-        }
+.button {
+  button {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #e35e89;
+    p {
+      color: white;
     }
+  }
 }

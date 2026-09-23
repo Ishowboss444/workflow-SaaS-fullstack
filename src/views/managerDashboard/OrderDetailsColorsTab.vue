@@ -19,7 +19,7 @@
 -->
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
 
 const props = defineProps({
   order: {
@@ -33,22 +33,39 @@ const props = defineProps({
       doneQty: 7800,
       daysLeft: 2,
       colors: [
-        { id: 1, name: 'مشکی', hex: '#26262b', qty: 7000, done: 85, allocated: 85 },
-        { id: 2, name: 'صورتی', hex: '#f8a4b9', qty: 3000, done: 52, allocated: 80 },
+        {
+          id: 1,
+          name: 'مشکی',
+          hex: '#26262b',
+          qty: 7000,
+          done: 85,
+          allocated: 85,
+        },
+        {
+          id: 2,
+          name: 'صورتی',
+          hex: '#f8a4b9',
+          qty: 3000,
+          done: 52,
+          allocated: 80,
+        },
       ],
     }),
   },
   // نوار وضعیت گوشی (۹:۴۱ و آیکون‌ها) که توی طرح هست. روی گوشی واقعی / PWA خاموشش کن
   showStatusBar: { type: Boolean, default: true },
-})
+});
 
-const emit = defineEmits(['back', 'menu', 'edit', 'tab-change'])
+const emit = defineEmits(['back', 'menu', 'edit', 'tab-change']);
 
 /* ───────── ابزارهای فرمت ───────── */
-const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹'
+const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
 // 7000 → ۷,۰۰۰
-const fa = (n) => Number(n).toLocaleString('en-US').replace(/\d/g, (d) => FA_DIGITS[d])
-const clamp = (n) => Math.max(0, Math.min(100, Math.round(Number(n) || 0)))
+const fa = (n) =>
+  Number(n)
+    .toLocaleString('en-US')
+    .replace(/\d/g, (d) => FA_DIGITS[d]);
+const clamp = (n) => Math.max(0, Math.min(100, Math.round(Number(n) || 0)));
 
 /* ───────── وضعیت سفارش (بج کنار کد سفارش) ───────── */
 const STATUS = {
@@ -56,27 +73,31 @@ const STATUS = {
   'in-progress': { label: 'در حال انجام', tone: 'orange' },
   new: { label: 'جدید', tone: 'amber' },
   done: { label: 'تکمیل شده', tone: 'gray' },
-}
+};
 const status = computed(
-  () => STATUS[props.order.status] ?? (props.order.status ? { label: props.order.status, tone: 'gray' } : null),
-)
+  () =>
+    STATUS[props.order.status] ??
+    (props.order.status ? { label: props.order.status, tone: 'gray' } : null)
+);
 
 /* ───────── مهلت تحویل ───────── */
-const urgent = computed(() => props.order.daysLeft <= 3)
+const urgent = computed(() => props.order.daysLeft <= 3);
 const dueText = computed(() => {
-  const d = props.order.daysLeft
-  if (d > 0) return `${fa(d)} روز تا تحویل`
-  if (d === 0) return 'امروز موعد تحویل است'
-  return `${fa(Math.abs(d))} روز تأخیر`
-})
+  const d = props.order.daysLeft;
+  if (d > 0) return `${fa(d)} روز تا تحویل`;
+  if (d === 0) return 'امروز موعد تحویل است';
+  return `${fa(Math.abs(d))} روز تأخیر`;
+});
 
 /* ───────── پیشرفت کلی ───────── */
 const overallPct = computed(() =>
-  props.order.totalQty > 0 ? clamp((props.order.doneQty / props.order.totalQty) * 100) : 0,
-)
+  props.order.totalQty > 0
+    ? clamp((props.order.doneQty / props.order.totalQty) * 100)
+    : 0
+);
 
 /* ───────── رنگ‌ها ───────── */
-const colors = computed(() => props.order.colors ?? [])
+const colors = computed(() => props.order.colors ?? []);
 
 /* ───────── تب‌ها ───────── */
 const TABS = [
@@ -84,24 +105,24 @@ const TABS = [
   { id: 'workers', label: 'کارگرها' },
   { id: 'finance', label: 'مالی' },
   { id: 'history', label: 'تاریخچه' },
-]
-const activeTab = ref('colors')
+];
+const activeTab = ref('colors');
 
 function selectTab(id) {
-  if (id === activeTab.value) return
-  activeTab.value = id
-  emit('tab-change', id)
+  if (id === activeTab.value) return;
+  activeTab.value = id;
+  emit('tab-change', id);
 }
 
 // ناوبری با کیبورد؛ چون صفحه RTL هست، فلش چپ = تب بعدی
 function onTabsKeydown(e) {
-  const step = e.key === 'ArrowLeft' ? 1 : e.key === 'ArrowRight' ? -1 : 0
-  if (!step) return
-  e.preventDefault()
-  const i = TABS.findIndex((t) => t.id === activeTab.value)
-  const next = TABS[(i + step + TABS.length) % TABS.length]
-  selectTab(next.id)
-  e.currentTarget.querySelector(`#tab-${next.id}`)?.focus()
+  const step = e.key === 'ArrowLeft' ? 1 : e.key === 'ArrowRight' ? -1 : 0;
+  if (!step) return;
+  e.preventDefault();
+  const i = TABS.findIndex((t) => t.id === activeTab.value);
+  const next = TABS[(i + step + TABS.length) % TABS.length];
+  selectTab(next.id);
+  e.currentTarget.querySelector(`#tab-${next.id}`)?.focus();
 }
 </script>
 
@@ -118,23 +139,55 @@ function onTabsKeydown(e) {
             <rect x="10" y="3" width="3" height="9" rx="1" />
             <rect x="15" y="0" width="3" height="12" rx="1" />
           </svg>
-          <svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <svg
+            width="17"
+            height="12"
+            viewBox="0 0 17 12"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+          >
             <path d="M1.4 4.3a10 10 0 0 1 14.2 0" />
             <path d="M4 7a6.3 6.3 0 0 1 9 0" />
             <path d="M6.6 9.6a2.6 2.6 0 0 1 3.8 0" />
           </svg>
           <svg width="27" height="13" viewBox="0 0 27 13" fill="currentColor">
-            <rect x=".5" y=".5" width="22" height="12" rx="3.6" fill="none" stroke="currentColor" opacity=".4" />
+            <rect
+              x=".5"
+              y=".5"
+              width="22"
+              height="12"
+              rx="3.6"
+              fill="none"
+              stroke="currentColor"
+              opacity=".4"
+            />
             <rect x="2" y="2" width="19" height="9" rx="2.2" />
-            <path d="M24.4 4.6v3.8c.8-.3 1.5-1.1 1.5-1.9s-.7-1.6-1.5-1.9z" opacity=".45" />
+            <path
+              d="M24.4 4.6v3.8c.8-.3 1.5-1.1 1.5-1.9s-.7-1.6-1.5-1.9z"
+              opacity=".45"
+            />
           </svg>
         </span>
       </div>
 
       <!-- هدر: بازگشت · کد سفارش · وضعیت ········· منو -->
       <header class="topbar">
-        <button type="button" class="icon-btn topbar__back" aria-label="بازگشت" @click="emit('back')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button
+          type="button"
+          class="icon-btn topbar__back"
+          aria-label="بازگشت"
+          @click="emit('back')"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <path d="M15 5l-7 7 7 7" />
           </svg>
         </button>
@@ -142,13 +195,27 @@ function onTabsKeydown(e) {
         <h1 class="topbar__title">#{{ order.code }}</h1>
 
         <span v-if="status" class="status" :class="`status--${status.tone}`">
-          <svg v-if="status.plus" class="status__plus" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <svg
+            v-if="status.plus"
+            class="status__plus"
+            viewBox="0 0 12 12"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
             <path d="M6 2.4v7.2M2.4 6h7.2" />
           </svg>
           {{ status.label }}
         </span>
 
-        <button type="button" class="icon-btn topbar__menu" aria-label="گزینه‌های بیشتر" @click="emit('menu')">
+        <button
+          type="button"
+          class="icon-btn topbar__menu"
+          aria-label="گزینه‌های بیشتر"
+          @click="emit('menu')"
+        >
           <svg viewBox="0 0 24 24" fill="currentColor">
             <circle cx="12" cy="5" r="1.9" />
             <circle cx="12" cy="12" r="1.9" />
@@ -162,9 +229,24 @@ function onTabsKeydown(e) {
         <div class="summary__info">
           <h2 class="summary__title">{{ order.title }}</h2>
           <p class="summary__qty">{{ fa(order.totalQty) }} قطعه</p>
-          <p v-if="order.daysLeft != null" class="summary__due" :class="{ 'is-urgent': urgent }">
-            <svg v-if="urgent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10.3 4.1 2.8 17.2a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 4.1a2 2 0 0 0-3.4 0Z" />
+          <p
+            v-if="order.daysLeft != null"
+            class="summary__due"
+            :class="{ 'is-urgent': urgent }"
+          >
+            <svg
+              v-if="urgent"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M10.3 4.1 2.8 17.2a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 4.1a2 2 0 0 0-3.4 0Z"
+              />
               <path d="M12 9.6v4" />
               <path d="M12 17h.01" />
             </svg>
@@ -175,7 +257,12 @@ function onTabsKeydown(e) {
         <div class="summary__thumb">
           <img v-if="order.image" :src="order.image" :alt="order.title" />
           <!-- تصویر پیش‌فرض تی‌شرت -->
-          <svg v-else viewBox="0 0 104 104" role="img" :aria-label="order.title">
+          <svg
+            v-else
+            viewBox="0 0 104 104"
+            role="img"
+            :aria-label="order.title"
+          >
             <defs>
               <linearGradient id="tee-bg" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stop-color="#fdecf1" />
@@ -185,12 +272,26 @@ function onTabsKeydown(e) {
                 <stop offset="0" stop-color="#f791a9" />
                 <stop offset="1" stop-color="#ec6789" />
               </linearGradient>
-              <filter id="tee-blur" x="-30%" y="-100%" width="160%" height="300%">
+              <filter
+                id="tee-blur"
+                x="-30%"
+                y="-100%"
+                width="160%"
+                height="300%"
+              >
                 <feGaussianBlur stdDeviation="2.4" />
               </filter>
             </defs>
             <rect width="104" height="104" fill="url(#tee-bg)" />
-            <ellipse cx="52" cy="93" rx="28" ry="3.6" fill="#c73d6b" opacity=".25" filter="url(#tee-blur)" />
+            <ellipse
+              cx="52"
+              cy="93"
+              rx="28"
+              ry="3.6"
+              fill="#c73d6b"
+              opacity=".25"
+              filter="url(#tee-blur)"
+            />
             <!-- بدنه و آستین‌ها -->
             <path
               d="M39 17 14 28 7 46l15 6 5-8v45q0 2 2 2h46q2 0 2-2V44l5 8 15-6-7-18-25-11q-5 11-13 11t-13-11Z"
@@ -200,11 +301,30 @@ function onTabsKeydown(e) {
             <path d="M40 30q-5 28-3 60h-8V46Z" fill="#fff" opacity=".14" />
             <path d="M66 32q5 28 3 58h8V46Z" fill="#a8234f" opacity=".08" />
             <!-- درز آستین و سردوز -->
-            <path d="M27 44q2-16 12-26M77 44q-2-16-12-26" fill="none" stroke="#b02a58" stroke-opacity=".3" stroke-width="1.2" />
-            <path d="M8.8 44.2 22.6 49.7M95.2 44.2 81.4 49.7M29 86.6h46" fill="none" stroke="#b02a58" stroke-opacity=".24" stroke-width="1.2" />
+            <path
+              d="M27 44q2-16 12-26M77 44q-2-16-12-26"
+              fill="none"
+              stroke="#b02a58"
+              stroke-opacity=".3"
+              stroke-width="1.2"
+            />
+            <path
+              d="M8.8 44.2 22.6 49.7M95.2 44.2 81.4 49.7M29 86.6h46"
+              fill="none"
+              stroke="#b02a58"
+              stroke-opacity=".24"
+              stroke-width="1.2"
+            />
             <!-- یقه -->
             <path d="M39 17q5 12 13 12t13-12q-5 6-13 6t-13-6Z" fill="#c43e68" />
-            <path d="M39.6 18.6q5 12.4 12.4 12.4t12.4-12.4" fill="none" stroke="#b02a58" stroke-opacity=".38" stroke-width="1.4" stroke-linecap="round" />
+            <path
+              d="M39.6 18.6q5 12.4 12.4 12.4t12.4-12.4"
+              fill="none"
+              stroke="#b02a58"
+              stroke-opacity=".38"
+              stroke-width="1.4"
+              stroke-linecap="round"
+            />
           </svg>
         </div>
       </section>
@@ -225,11 +345,18 @@ function onTabsKeydown(e) {
             <i class="bar__fill" :style="{ '--w': overallPct + '%' }" />
           </div>
         </div>
-        <p class="overall__count">{{ fa(order.doneQty) }} / {{ fa(order.totalQty) }}</p>
+        <p class="overall__count">
+          {{ fa(order.doneQty) }} / {{ fa(order.totalQty) }}
+        </p>
       </section>
 
       <!-- تب‌ها -->
-      <div class="tabs" role="tablist" aria-label="بخش‌های جزئیات سفارش" @keydown="onTabsKeydown">
+      <div
+        class="tabs"
+        role="tablist"
+        aria-label="بخش‌های جزئیات سفارش"
+        @keydown="onTabsKeydown"
+      >
         <button
           v-for="t in TABS"
           :id="`tab-${t.id}`"
@@ -262,7 +389,11 @@ function onTabsKeydown(e) {
 
             <!-- درصد انجام‌شده کنار نمونهٔ رنگ -->
             <span class="color__pct">{{ clamp(c.done) }}%</span>
-            <span class="color__swatch" :style="{ '--swatch': c.hex }" aria-hidden="true" />
+            <span
+              class="color__swatch"
+              :style="{ '--swatch': c.hex }"
+              aria-hidden="true"
+            />
 
             <div
               class="bar color__bar"
@@ -275,14 +406,23 @@ function onTabsKeydown(e) {
               <i class="bar__fill" :style="{ '--w': clamp(c.done) + '%' }" />
             </div>
             <!-- درصد تخصیص‌داده‌شده به کارگرها، انتهای نوار -->
-            <span class="color__pct color__pct--end">{{ clamp(c.allocated) }}%</span>
+            <span class="color__pct color__pct--end"
+              >{{ clamp(c.allocated) }}%</span
+            >
           </li>
         </ul>
-        <p v-else class="colors__empty">هنوز رنگی برای این سفارش ثبت نشده است</p>
+        <p v-else class="colors__empty">
+          هنوز رنگی برای این سفارش ثبت نشده است
+        </p>
       </section>
 
       <!-- تب‌های دیگه: از بیرون با اسلات (#workers, #finance, #history) پر می‌شن -->
-      <section v-else :id="`panel-${activeTab}`" role="tabpanel" :aria-labelledby="`tab-${activeTab}`">
+      <section
+        v-else
+        :id="`panel-${activeTab}`"
+        role="tabpanel"
+        :aria-labelledby="`tab-${activeTab}`"
+      >
         <slot :name="activeTab">
           <p class="placeholder">محتوای این تب هنوز ساخته نشده است</p>
         </slot>
@@ -292,7 +432,15 @@ function onTabsKeydown(e) {
       <div class="fab-dock">
         <button type="button" class="fab" @click="emit('edit')">
           ویرایش
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
             <path d="M4 20h4.2L19.4 8.8a2.4 2.4 0 0 0-3.4-3.4L4.8 16.6 4 20Z" />
             <path d="m14.6 7 3.4 3.4" />
           </svg>
@@ -314,12 +462,15 @@ function onTabsKeydown(e) {
   --line: rgba(232, 140, 170, 0.22);
   --card: rgba(255, 255, 255, 0.78);
   --card-edge: rgba(255, 255, 255, 0.95);
-  --shadow: 0 10px 26px -12px rgba(226, 90, 130, 0.32), 0 1px 3px rgba(226, 90, 130, 0.1);
+  --shadow:
+    0 10px 26px -12px rgba(226, 90, 130, 0.32),
+    0 1px 3px rgba(226, 90, 130, 0.1);
 
   min-height: 100vh;
   min-height: 100dvh;
   color: var(--ink);
-  font-family: 'Vazirmatn', 'Vazir', 'IRANSansX', 'IRANSans', Tahoma, system-ui, sans-serif;
+  font-family:
+    'Vazirmatn', 'Vazir', 'IRANSansX', 'IRANSans', Tahoma, system-ui, sans-serif;
   background:
     radial-gradient(90% 45% at 100% 0%, #ffeaf0 0%, rgba(255, 234, 240, 0) 70%),
     linear-gradient(180deg, #fdeff3 0%, #fbe3eb 100%);
@@ -373,7 +524,8 @@ button {
   align-items: center;
   justify-content: space-between;
   direction: ltr;
-  font-family: -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, system-ui, sans-serif;
+  font-family:
+    -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, system-ui, sans-serif;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.2px;

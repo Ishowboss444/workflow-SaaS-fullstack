@@ -11,7 +11,7 @@ const persianColors = [
   { englisg: 'gray', persian: 'خاکستری' },
   { englisg: 'black', persian: 'مشکی' },
   { englisg: 'white', persian: 'سفید' },
-]
+];
 // function getPersianColor<T>(nal:<T>){
 //     let color ;
 //     persianColors.forEach(element => {
