@@ -13,57 +13,94 @@ datasource db {
 //USER-> COMPANY -> PRODUCT -> MANAGER -> WORKER
 
 model User {
-  id String @id @default(uuid())
-  email String @unique
-  password String
+  id Int @id @default(autoincrement())
   name String
-  role String?
+  username String @unique
+  passwordHash String
+  role Role?
+  field Field?
 
-  //realtion fields
-  company Company[]  @relation("CompanyCreator")
+  workplaceId Int?
+  workplace Workplace? @relation("workplaceMembers" , fields: [workplaceId] , references: [id])
+
+  myWorkplace Workplace? @relation("workplaceOwner")
+
+  assignments Assignment[]
+
+  sentInvites Invite[] @relation("sentInvites")
+  receivedInvites Invite[] @relation("receivedInvites")
+
+  createdAt DateTime @default(now())
 }
 
-model Company {
-  id String @id @default(uuid())
+model Workplace {
+  id Int @id @default(autoincrement())
   name String
-  createdAt DateTime @default(now())
 
-  //realtion fields
-  createdBy String
-  creator User @relation("CompanyCreator",fields: [createdBy], references: [id] , onDelete: Cascade)
+  ownerId Int @unique
+  owner User @relation("workplaceOwner" , fields: [ownerId] , references: [id],onDelete: Cascade )
+
+  members User[] @relation("workplaceMembers")
   products Product[]
+
+  invites Invite[]
+
+  createdAt DateTime @default(now())
 }
 model Product {
-  id            String @id @default(uuid())
-  name          String
-  description   String?
-  deadline      String?
-  status        Status @default(ACTIVE)
-  createdAt     DateTime @default(now())
-  colors        String[]
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  colors Json
+  amount Int
 
-  //salary fields
-  amount        Int
-  rightTailor   Int
-  MidTailor     Int
-  toptTailor    Int
-  workerSalary  Int
-  managerSalary Int
-  //realtion fields
-  companyId     String
-  company       Company @relation(fields: [companyId], references: [id] , onDelete: Cascade)
+  workplaceId Int
+  workplace Workplace @relation(fields: [workplaceId], references: [id] ,onDelete: Cascade)
+
+  assignments Assignment[]
+
+  createdAt DateTime @default(now())
+}
+model Assignment {
+  id Int @id @default(autoincrement())
+  quantity Int
+
+  productId Int
+  product Product @relation(fields: [productId], references: [id] )
+
+  workerId Int
+  worker User @relation(fields: [workerId], references: [id],onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+}
+model Invite {
+  id Int @id @default(autoincrement())
+
+  workplaceId Int 
+  workplace Workplace @relation(fields: [workplaceId], references: [id])
+
+  senderId Int
+  sender User @relation("sentInvites" , fields: [senderId] , references: [id])
+
+  receiverId Int
+  receiver User @relation("receivedInvites" , fields: [receiverId] , references: [id])
+
+  status Invitation @default(PENDING)
+
+  createdAt DateTime @default(now())
+}
+enum Invitation {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+enum Field {
+  rightTailor
+  topTailor
+  midTailor
 }
 enum Role {
   MANAGER
   WORKER
-}
-enum FieldOfWork {
-  RIGHT
-  TOP
-  MID
-}
-enum Status {
-  ACTIVE
-  INACTIVE
-  SPECIAL
 }

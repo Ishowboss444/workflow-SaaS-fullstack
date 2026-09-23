@@ -1,68 +1,107 @@
 import { prisma } from "../config/db.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
+
 async function hasher(val) {
-    const salt = await bcrypt.genSaltSync(10);
-    const hash = await bcrypt.hashSync(val, salt);
-    return hash;
+    return await bcrypt.hash(val , 10);
 }
-const login = async (req,res)=>{
-    const  {email , password} = req.body
-    
-    //getting db
-    const userExist = await prisma.user.findUnique({
-        where : {email : email}
-    })
-    if(!userExist) {
-        res.status(404).json({message: "you need to sign up first"})
+class Auth {
+    constructor(req , res){
+        this.res = res
+        this.name = req.body.name
+        this.username = req.body.username
+        this.password = req.body.password
     }
+    async login(){
+        try{
+            const userExist = await prisma.user.findUnique({
+                where : {username : this.username}
+            })
 
-    //hashing
-    const hashedPassword = await hasher(password)
-
-    //validation
-    if(hashedPassword === userExist.password){
-        res.status(201).json({
-            status : "success",
-            data:{
-                name:userExist.name,
-                email:userExist.email,
-                role:userExist.role,
-                id:userExist.id,
+            if(!userExist){
+                console.log("there is no account exist");
+                
+                return this.res.status(404).json({message:"there is no account exist"})
             }
-        })
-    }else{
-        res.status(400).json({message:"password is wrong"})
-    }
-}
-const signup = async (req,res) => {
-    const {name,email , password , role} = req.body
-    const userExists = await prisma.user.findUnique({
-        where : {email : email}
-    })
-    if(userExists){
-        return res.status(400).send('you/re already registered')
+
+            const isMatch = await bcrypt.compare(this.password , userExist.passwordHash)
+
+            if(!isMatch){
+                return this.res.status(401).json({message:"wrong password"})
+            }else{
+                const accessToken = jwt.sign({
+                id:userExist.id , username:userExist.username,name: userExist.name
+                }, process.env.ACCESS_TOKEN_SECRET)
+
+                this.res.cookie("accessToken" , accessToken , {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    maxAge: 24 * 60 * 60 * 1000,
+                })
+
+                return this.res.status(200).json({
+                    status:"success",
+                    data : {
+                        id: userExist.id,
+                        name: userExist.name,
+                        username: userExist.username,
+                        token : accessToken,
+                    }
+                })
+            }
+        }
+        catch(err){
+            return this.res.status(500).json({message:"something went wrong"})
+        }
     }
 
-    //hashing
-    const hashedPassword = await hasher(password)
-    const user = await prisma.user.create({
-        data:{
-            name,
-            email,
-            password : hashedPassword,
-            role,
+    async signup(){
+        try{
+            const isExist = await prisma.user.findUnique({
+                where : {username : this.username}
+            })
+            //if username is exist don't go further
+            if(isExist){
+                return this.res.status(400).json({
+                    status : "this username is already exist",
+                    data: {
+                        id:isExist.id,
+                        name:isExist.name,
+                        createdAt :isExist.createdAt,
+                    }
+                })
+            }
+            //password hassing
+            const hashedPassword = await hasher(this.password)
+            //creating new user
+            const newUser = await prisma.user.create({
+                data : {
+                    name: this.name,
+                    username: this.username,
+                    passwordHash:hashedPassword,
+                }
+            })
+            if(!newUser) return this.res.status(500).json({message: "mission faild"})
+            return this.res.status(200).json({
+                status:"success",
+                data : {
+                    name:newUser.name,
+                    username:newUser.username,
+                    id:newUser.id,
+                }
+            })
         }
-    })
-    res.status(201).json({
-        satus : "success",
-        data : {
-            id:user.id,
-            name:user.name,
-            email:user.email,
-            password:user.password,
-            role : user.role,
-            createdAt : user.createdAt,
+
+        catch(err){
+            console.log(err);
+            return this.res.status(500).json({
+                status:"failed",
+                message : "something went wrong"
+            })
         }
-    })
+    }
 }
-export {signup};
+
+
+export {Auth};

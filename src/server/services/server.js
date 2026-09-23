@@ -1,27 +1,25 @@
 import express from 'express';
 import cors from 'cors'
+import cookieParser from 'cookie-parser';
 
 import {config } from 'dotenv';
-import {connectDB , disconnectDB} from './config/db.js';
+import {connectDB , disconnectDB} from '../config/db.js';
 //import routes 
-import todosRouter from './routes/todosRoute.js';
-import authRouter from './routes/authRoutes.js';
+import authRoutes from '../routes/authRoutes.js';
+import workplaceRoutes from '../routes/workplaceRoutes.js'
+import jobResearchRoutes from "../routes/jobResearchRoutes.js"
 config()
 connectDB()
 
 const app = express();
 app.use(cors())
+app.use(cookieParser())
 app.use(express.json());  
 app.use(express.urlencoded({ extended: true }));
-
-app.use("/auth", authRouter);
-app.use("/todos", todosRouter);
-
+app.use("/auth", authRoutes);
+app.use("/workplace", workplaceRoutes );
+app.use("/jobs", jobResearchRoutes)
 // Middleware to parse JSON requests
-
-app.get("/auth/signup",(req , res)=>{
-  res.json({message : "hello world"})
-})
 // Start the server
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');

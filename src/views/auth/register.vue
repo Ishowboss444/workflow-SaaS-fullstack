@@ -38,8 +38,8 @@
     </form>
 </template>
 <script setup>
-import { ref, onMounted , computed} from 'vue';
-import { toast, Toaster } from 'vue-sonner';
+import { ref} from 'vue';
+import { toast } from 'vue-sonner';
 const isValidUser = ref({
     name:'',
     lastname :'',
@@ -57,10 +57,10 @@ const newUser = async() => {
         console.log(isValidUser.value.password1 , isValidUser.value.password2);
         let res;
         try{
-            const response = await fetch("http://localhost:3000/auth/register",{
+            const response = await fetch("http://localhost:3000/auth/signup",{
                 method:"POST",
                 headers:{
-                    'Content-Type': "application/json"
+                    'Content-Type': "application/json",
                 },
                 body : JSON.stringify(
                 {
