@@ -20,16 +20,11 @@
     </div>
 
     <div class="form-layer">
-      <label>رول</label>
-      <input type="test" v-model="isValidUser.role" placeholder="رول " />
-    </div>
-
-    <div class="form-layer">
-      <label>ایمیل</label>
+      <label>یوزرنیم</label>
       <input
-        type="email"
-        v-model="isValidUser.email"
-        placeholder="ایمیل"
+        type="text"
+        v-model="isValidUser.username"
+        placeholder="یوزرنیم"
         required
       />
     </div>
@@ -62,41 +57,32 @@
   </form>
 </template>
 <script setup>
+import { useAuthStore } from '@/stores/useAuthStore';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
+const auth = useAuthStore();
+
 const isValidUser = ref({
   name: '',
   lastname: '',
-  email: '',
+  username: '',
   password1: '',
   password2: '',
-  role: 'TOP',
 });
 const newUser = async () => {
   if (isValidUser.value.password1 !== isValidUser.value.password2) {
     toast.error('fill it precustently');
   } else {
-    console.log(isValidUser.value.password1, isValidUser.value.password2);
-    let res;
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: `${isValidUser.value.name.trim()} ${isValidUser.value.lastname.trim()}`,
-          email: isValidUser.value.email,
-          password: isValidUser.value.password1,
-          fieldOfWork: isValidUser.value.role,
-        }),
+      const data = await auth.Signup({
+        name: `${isValidUser.value.name.trim()} ${isValidUser.value.lastname.trim()}`,
+        username: isValidUser.value.username,
+        password: isValidUser.value.password1,
       });
-      const data = await response.json();
       console.log(data);
-      res = data;
-    } finally {
-      console.log('done');
-      console.log(res);
+      return data;
+    } catch (err) {
+      console.log('here is an error :', err);
     }
   }
 };

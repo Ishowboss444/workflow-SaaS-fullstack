@@ -12,12 +12,3 @@ const persianColors = [
   { englisg: 'black', persian: 'مشکی' },
   { englisg: 'white', persian: 'سفید' },
 ];
-// function getPersianColor<T>(nal:<T>){
-//     let color ;
-//     persianColors.forEach(element => {
-//         if(element.englisg === nal){
-//             color = element.persian
-//         }
-//     });
-//     return color as T
-// }

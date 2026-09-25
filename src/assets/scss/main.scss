@@ -1,0 +1,77 @@
+@use './variables' as *;
+@use './mixins' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Vazirmatn:wght@100..900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: $color-text-primary;
+}
+
+body {
+  font-family: $font-family-base;
+  color: $color-text-primary;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+// Mobile-first app shell: content never grows past a phone width,
+// even on a wide desktop browser window.
+.app-shell {
+  max-width: $app-max-width;
+  min-width: $app-min-width;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: $color-bg-app;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.page {
+  flex: 1;
+  padding-bottom: 90px; // room for bottom nav
+}
+
+.page--no-nav {
+  padding-bottom: $space-6;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::selection {
+  background: $color-primary-light;
+}
+
+// Utility
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

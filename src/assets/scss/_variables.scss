@@ -1,0 +1,72 @@
+// ==========================================================================
+// Design tokens — کارگاه من (Kargah Man)
+// ==========================================================================
+
+// Brand
+$color-primary: #e83e8c;
+$color-primary-dark: #c22d72;
+$color-primary-light: #f7d3e3;
+
+// Backgrounds
+$color-bg-app: #fdf1f6;
+$color-bg-card: #ffffff;
+$color-bg-soft: #fbe4ee;
+
+// Text
+$color-text-primary: #2b2130;
+$color-text-secondary: #8a7a86;
+$color-text-muted: #b9a9b4;
+$color-text-on-primary: #ffffff;
+
+// Status (used for badges — کارگاه من uses tinted pink family only)
+$color-status-active-bg: #fbe4ee;
+$color-status-active-text: #c22d72;
+$color-status-new-bg: #ffe9d6;
+$color-status-new-text: #c97a2b;
+$color-status-progress-bg: #fff1cf;
+$color-status-progress-text: #b8860b;
+$color-status-done-bg: #dff3e6;
+$color-status-done-text: #2f9e5c;
+
+// Borders
+$color-border: #f2dbe6;
+$color-border-soft: #f7e8ef;
+
+// Radii
+$radius-sm: 10px;
+$radius-md: 16px;
+$radius-lg: 22px;
+$radius-pill: 999px;
+
+// Spacing scale
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 20px;
+$space-6: 24px;
+$space-7: 32px;
+$space-8: 40px;
+
+// Typography
+$font-family-base: 'Vazirmatn', 'Noto Sans Arabic', 'Rubik', sans-serif;
+
+$font-size-xs: 11px;
+$font-size-sm: 13px;
+$font-size-base: 14px;
+$font-size-md: 15px;
+$font-size-lg: 17px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+
+// Mobile-only shell
+$app-max-width: 430px;
+$app-min-width: 320px;
+
+// Shadow
+$shadow-card: 0 4px 18px rgba(232, 62, 140, 0.08);
+$shadow-button: 0 6px 16px rgba(232, 62, 140, 0.28);
+
+// z-index
+$z-bottom-nav: 50;
+$z-header: 40;
