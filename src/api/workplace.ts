@@ -1,3 +1,1 @@
-export async function getWorkplaces (){
-    
-}
+export async function getWorkplaces() {}

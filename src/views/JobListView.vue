@@ -3,11 +3,13 @@ import { Bell, Search, Plus, Scissors } from 'lucide-vue-next';
 import BottomNav from '../components/common/BottomNav.vue';
 import StatusBadge from '../components/common/StatusBadge.vue';
 import ProgressBar from '../components/common/ProgressBar.vue';
-import { ref } from 'vue';
+import { ref ,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
+import { useProductStore } from '@/stores/useProductStore.js';
 
+const products = useProductStore()
 const activeFilter = ref('active'); // all | active | done
-const router = useRouter()
+const router = useRouter();
 const jobs = [
   {
     id: 1000,
@@ -17,7 +19,7 @@ const jobs = [
     qtyDone: 7800,
     qtyTotal: 10000,
     daysLeft: 'تا ۷ روز',
-    percent: 78,
+    percent: (7800/10000) * 100 ,
     color: '#f7d3e3',
   },
   {
@@ -42,7 +44,33 @@ const jobs = [
     percent: 0,
     color: '#d8d3ff',
   },
+  {
+    id: 1002,
+    title: 'شلوار',
+    status: 'new',
+    statusLabel: 'جدید',
+    qtyDone: 0,
+    qtyTotal: 3000,
+    daysLeft: 'تا ۱۰ روز',
+    percent: 0,
+    color: '#d8d3ff',
+  },
+  {
+    id: 1002,
+    title: 'شلوار',
+    status: 'new',
+    statusLabel: 'جدید',
+    qtyDone: 0,
+    qtyTotal: 3000,
+    daysLeft: 'تا ۱۰ روز',
+    percent: 0,
+    color: '#d8d3ff',
+  },
 ];
+onMounted(async ()=>{
+  const data = await products._getProduct()
+  
+})
 
 const filters = [
   { key: 'all', label: 'همه' },
@@ -52,7 +80,7 @@ const filters = [
 </script>
 
 <template>
-  <div class="page">
+  <div class="page" v-if="!products.loading">
     <header class="job-list-header">
       <button class="icon-btn" aria-label="اعلان‌ها">
         <Bell :size="20" />
@@ -78,9 +106,7 @@ const filters = [
       </button>
     </div>
 
-    <button class="add-job-btn"
-    @click="router.push({name : 'add-job-1'})"
-    >
+    <button class="add-job-btn" @click="router.push({ name: 'add-job-1' })">
       <Plus :size="18" />
       افزودن کار جدید
     </button>
@@ -113,6 +139,8 @@ const filters = [
     </div>
   </div>
 
+
+  <h1 v-else> loading...</h1>
   <BottomNav active="jobs" />
 </template>
 

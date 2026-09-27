@@ -58,7 +58,7 @@ model Product {
   workplace Workplace @relation(fields: [workplaceId], references: [id] ,onDelete: Cascade)
 
   assignments Assignment[]
-
+  
   createdAt DateTime @default(now())
 }
 model Assignment {

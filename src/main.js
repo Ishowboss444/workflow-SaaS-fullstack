@@ -3,7 +3,6 @@ import '@/assets/scss/main.scss';
 import '@/assets/scss/_variables.scss';
 import '@/assets/scss/_mixins.scss';
 
-
 import '../node_modules/vue-sonner/lib/index.css';
 import { createApp } from 'vue';
 import App from './App.vue';

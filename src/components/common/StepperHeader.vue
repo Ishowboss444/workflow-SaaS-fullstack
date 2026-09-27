@@ -1,6 +1,8 @@
 <script setup>
-import { Check, X } from 'lucide-vue-next';
+import { Check, ChevronLeft, X } from 'lucide-vue-next';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const props = defineProps({
   currentStep: { type: Number, required: true }, // 1-based
   title: { type: String, default: 'افزودن کار جدید' },
@@ -18,8 +20,12 @@ const steps = [
   <header class="stepper-header">
     <div class="stepper-header__top">
       <h1 class="stepper-header__title">{{ title }}</h1>
-      <button class="stepper-header__close" aria-label="بستن">
-        <X :size="20" />
+      <button class="stepper-header__close"
+      aria-label="بستن"
+      @click="router.back()"
+      >
+        <X :size="20" v-if="currentStep === 1"/>
+        <ChevronLeft v-else/>
       </button>
     </div>
 

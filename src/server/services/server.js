@@ -8,6 +8,7 @@ import { connectDB, disconnectDB } from '../config/db.js';
 import authRoutes from '../routes/authRoutes.js';
 import workplaceRoutes from '../routes/workplaceRoutes.js';
 import jobResearchRoutes from '../routes/jobResearchRoutes.js';
+import productsRoutes from '../routes/productsRoutes.js';
 config();
 connectDB();
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', authRoutes);
 app.use('/workplace', workplaceRoutes);
 app.use('/jobs', jobResearchRoutes);
+app.use('/product', productsRoutes);
 // Middleware to parse JSON requests
 // Start the server
 app.listen(3000, () => {

@@ -1,5 +1,4 @@
 import { login, LoginInfo, signup, SignupInfo } from '@/api/auth';
-import { json } from 'express';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 

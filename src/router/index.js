@@ -31,8 +31,7 @@ const routes = createRouter({
     {
       path: '/test',
       name: 'test',
-      component: () =>
-        import('../views/myTest.vue'),
+      component: () => import('../views/myTest.vue'),
       meta: {
         requiresAuth: true,
       },

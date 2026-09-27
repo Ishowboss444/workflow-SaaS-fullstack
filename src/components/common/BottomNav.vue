@@ -32,7 +32,7 @@ const tabs = [
 @use '../../assets/scss/mixins' as *;
 
 .bottom-nav {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;

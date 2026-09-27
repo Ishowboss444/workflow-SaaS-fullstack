@@ -3,7 +3,9 @@ import { ArrowRight, MoreVertical } from 'lucide-vue-next';
 import ProgressBar from './ProgressBar.vue';
 import StatusBadge from './StatusBadge.vue';
 import TabBar from './TabBar.vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const props = defineProps({
   activeTab: { type: String, required: true },
 });
@@ -31,8 +33,12 @@ const tabs = [
 <template>
   <header class="job-header">
     <div class="job-header__top">
-      <button class="icon-btn" aria-label="بازگشت">
-        <ArrowRight :size="20" />
+      <button 
+      class="icon-btn" 
+      aria-label="بازگشت"
+      @click="router.back()"
+      >
+        <ArrowRight :size="20"/>
       </button>
       <div class="job-header__title-wrap">
         <span class="job-header__order">#1000</span>
