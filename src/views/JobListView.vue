@@ -4,9 +4,10 @@ import BottomNav from '../components/common/BottomNav.vue';
 import StatusBadge from '../components/common/StatusBadge.vue';
 import ProgressBar from '../components/common/ProgressBar.vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const activeFilter = ref('active'); // all | active | done
-
+const router = useRouter()
 const jobs = [
   {
     id: 1000,
@@ -77,7 +78,9 @@ const filters = [
       </button>
     </div>
 
-    <button class="add-job-btn">
+    <button class="add-job-btn"
+    @click="router.push({name : 'add-job-1'})"
+    >
       <Plus :size="18" />
       افزودن کار جدید
     </button>

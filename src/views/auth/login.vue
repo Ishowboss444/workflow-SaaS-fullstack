@@ -30,21 +30,25 @@
 <script setup>
 import { useAuthStore } from '@/stores/useAuthStore';
 import { ref } from 'vue';
-const auth = useAuthStore();
+import { useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
 
+const auth = useAuthStore();
+const router = useRouter()
 const isValidUser = ref({
   username: '',
   password: '',
 });
 const user = async () => {
-  console.log(isValidUser.value);
   try {
     const data = await auth.Login({
       username: isValidUser.value.username,
       password: isValidUser.value.password,
     });
-    console.log(data);
+    
+    router.push({name:'job-list'})
   } catch (err) {
+    toast.error('login was unseccussful')
     console.log('here is an error :', err);
   }
 };

@@ -2,7 +2,6 @@ import express from 'express';
 import authonticated from '../middlewae/authMiddleware.js';
 import Workplace from '../controlers/workplaceControler.js';
 import authorization from '../middlewae/authorizationMiddleware.js';
-import Invitation from '../controlers/invitationControler.js';
 
 const router = express.Router();
 

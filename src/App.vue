@@ -5,7 +5,7 @@ import { Toaster } from 'vue-sonner';
 </script>
 
 <template>
-  <div class="container">
+  <div class="container app-shell">
     <router-view></router-view>
   </div>
   <toaster position="bottom-left" />

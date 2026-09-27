@@ -28,7 +28,15 @@ const routes = createRouter({
         requiresAuth: true,
       },
     },
-
+    {
+      path: '/test',
+      name: 'test',
+      component: () =>
+        import('../views/myTest.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
     {
       path: '/jobs',
       name: 'job-list',
