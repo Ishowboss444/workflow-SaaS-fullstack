@@ -3,6 +3,7 @@ import { Plus } from 'lucide-vue-next';
 import StepperHeader from '../components/common/StepperHeader.vue';
 import WorkerAssignRow from '../components/common/WorkerAssignRow.vue';
 import AppButton from '../components/common/AppButton.vue';
+import ProgressBar from '@/components/common/ProgressBar.vue';
 
 const workers = [
   { name: 'مریم', color: '#f7d3e3', qty: 2000, price: 50000 },
@@ -14,7 +15,6 @@ const workers = [
 <template>
   <div class="page page--no-nav">
     <StepperHeader :current-step="4" />
-
     <div class="form-body">
       <h2 class="section-title">تقسیم کار</h2>
 

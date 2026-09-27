@@ -53,6 +53,7 @@ model Product {
   description String?
   colors Json
   amount Int
+  salary Json
 
   workplaceId Int
   workplace Workplace @relation(fields: [workplaceId], references: [id] ,onDelete: Cascade)

@@ -6,13 +6,14 @@ defineProps({
   suffix: { type: String, default: '' }, // e.g. "تومان"
   type: { type: String, default: 'text' },
 });
+const model = defineModel()
 </script>
 
 <template>
   <label class="form-field">
     <span class="form-field__label">{{ label }}</span>
     <div class="form-field__control">
-      <input :type="type" :value="modelValue" :placeholder="placeholder" />
+      <input :type="type" :value="modelValue" :placeholder="placeholder" v-model="model"/>
       <span v-if="suffix" class="form-field__suffix">{{ suffix }}</span>
     </div>
   </label>

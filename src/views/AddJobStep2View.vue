@@ -2,25 +2,36 @@
 import { Plus, CircleCheck } from 'lucide-vue-next';
 import StepperHeader from '../components/common/StepperHeader.vue';
 import AppButton from '../components/common/AppButton.vue';
-
-const colors = [
-  { name: 'مشکی', qty: 7000, hex: '#2b2130' },
-  { name: 'صورتی', qty: 3000, hex: '#e83e8c' },
-];
+import { useProductStore } from '@/stores/useProductStore.js';
+import EditColor from '@/components/common/EditColor.vue';
+import { ref } from 'vue';
+const product = useProductStore()
+const colors = ref([
+  { name: 'مشکی', qty: 7000, hex: '#2b2130',edit:false },
+  { name: 'صورتی', qty: 3000, hex: '#e83e8c' ,edit:false},
+])
 </script>
 
 <template>
-  <div class="page page--no-nav">
+  <div class="page page--no-nav" :style="{opacity : edit ? '0.5' : '1'}">
     <StepperHeader :current-step="2" />
 
     <div class="form-body">
       <h2 class="section-title">رنگ‌ها و تنوع</h2>
 
       <div class="color-list">
-        <div v-for="c in colors" :key="c.name" class="color-row">
-          <span class="color-row__qty">{{ c.qty.toLocaleString() }} عدد</span>
+        <div v-for="c in colors" :key="c.name" class="color-row" >
+          <span class="color-row__qty" @click.prevent="c.edit = !c.edit">{{ c.qty.toLocaleString() }} عدد</span>
           <span class="color-row__name">{{ c.name }}</span>
           <span class="color-row__swatch" :style="{ background: c.hex }" />
+          <EditColor 
+            v-if="c.edit" 
+            class="fixed"
+            v-model:name="c.name"
+            v-model:color="c.hex"
+            v-model:amount="c.qty"
+          />
+
         </div>
       </div>
 
@@ -52,7 +63,19 @@ const colors = [
 <style scoped lang="scss">
 @use '../assets/scss/variables' as *;
 @use '../assets/scss/mixins' as *;
-
+.fixed{
+  position: fixed;
+  top: 10%;
+  transform: translateY(-50%);
+  right: 50%;
+  transform: translateX(50%);
+  box-shadow: 0.3px 0.2px 4px black;
+  width: 90%;
+  border-radius: 15px;
+  padding: 2rem;
+  height: 70vh;
+  background-color: $color-bg-soft;
+}
 .form-body {
   @include page-padding;
   padding-top: $space-5;

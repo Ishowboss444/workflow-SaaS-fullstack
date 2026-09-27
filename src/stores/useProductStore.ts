@@ -1,11 +1,29 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { addProduct, getProducts, ProductAdd } from '@/api/product';
+interface NewProduct{
+  title : string,
+  description : string,
+  amount : number ,
+  color : object[],
+  lines : number,
+  salary : object,
+  workplaceId : number,
+}
 export const useProductStore = defineStore('products', () => {
   const products = ref<object[]>([]);
   const loading = ref(false);
   const error = ref<any>(null);
-
+  const newProduct = ref({
+    title : '',
+    description : '',
+    amount : 1 ,
+    color : [],
+    lines : 0,
+    salary : [],
+    workplaceId : 0,
+  })
+  
   async function _addProduct(info: ProductAdd) {
     loading.value = true;
     try {
@@ -49,5 +67,6 @@ export const useProductStore = defineStore('products', () => {
     loading,
     error,
     products,
+    newProduct
   };
 });
