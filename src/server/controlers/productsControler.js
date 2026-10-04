@@ -22,7 +22,7 @@ export class Products {
         },
         include :{
           products : true,
-        }
+        },
       })
 
       if (!products)
@@ -34,6 +34,39 @@ export class Products {
       this.res.status(201).json({
         status: 'success',
         data: products.products,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async getSpecificProducts(id){
+    try {
+      const userExist = await prisma.user.findUnique({
+        where: {
+          id: this.user.id,
+        },
+      });
+      const workplace = await prisma.workplace.findUnique({
+        where : {
+          id : userExist.workplaceId,
+        },
+      })
+    if(userExist.id !== workplace.ownerId )
+      return this.res(409).json({
+          status: 'failed',
+          message: 'you are not premitted',
+        });
+      
+      const product = await prisma.product.findUnique({
+        where : {
+          id : id,
+        },
+      })
+
+      this.res.status(201).json({
+        status: 'success',
+        data: product,
       });
     } catch (err) {
       console.log(err);

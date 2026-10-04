@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { addProduct, getProducts, ProductAdd } from '@/api/product';
 
 export const useProductStore = defineStore('products', () => {
-  const products = ref<object[]>([]);
+  const products = ref([]);
   const loading = ref(false);
   const error = ref<any>(null);
   const newProduct = ref<ProductAdd>({
@@ -50,8 +50,7 @@ export const useProductStore = defineStore('products', () => {
     loading.value = true;
     try {
       const data = await getProducts();
-      console.log(data);
-      products.value.push(data)
+      products.value = data.data
       return data;
     } catch (err) {
       console.log(`here is the error : ${err}`);

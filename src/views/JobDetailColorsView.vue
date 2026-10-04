@@ -3,11 +3,23 @@ import { Pencil } from 'lucide-vue-next';
 import JobDetailHeader from '../components/common/JobDetailHeader.vue';
 import ProgressBar from '../components/common/ProgressBar.vue';
 import AppButton from '../components/common/AppButton.vue';
+import { useProductStore } from '@/stores/useProductStore.js';
+import { onMounted , ref} from 'vue';
+import { useRoute } from 'vue-router';
 
-const colors = [
-  { name: 'مشکی', qty: 7000, done: 88, hex: '#2b2130' },
-  { name: 'صورتی', qty: 3000, done: 52, hex: '#e83e8c' },
-];
+const route = useRoute()
+const product = useProductStore()
+let colors = ref([])
+onMounted(async()=>{
+  console.log(route.params.id);
+  console.log('hello world');
+  
+  const data = await product._getProduct(11)
+  colors.value = data.data[0].colors
+  console.log(colors);
+  
+})
+
 </script>
 
 <template>
@@ -29,7 +41,7 @@ const colors = [
         <ProgressBar :percent="c.done" />
       </div>
 
-      <AppButton variant="outline">
+      <AppButton variant="outline" v-if="colors.length !== 0">
         <span class="edit-btn"><Pencil :size="16" /> ویرایش</span>
       </AppButton>
     </div>

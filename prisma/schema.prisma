@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -11,105 +6,89 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-//USER-> COMPANY -> PRODUCT -> MANAGER -> WORKER
 
 model User {
-  id Int @id @default(autoincrement())
-  name String
-  username String @unique
-  passwordHash String
-  role Role?
-  field Field?
-
-  workplaceId Int?
-  workplace Workplace? @relation("workplaceMembers" , fields: [workplaceId] , references: [id])
-
-  myWorkplace Workplace? @relation("workplaceOwner")
-
-  assignments Assignment[]
-
-  sentInvites Invite[] @relation("sentInvites")
-  receivedInvites Invite[] @relation("receivedInvites")
-
-  createdAt DateTime @default(now())
+  createdAt       DateTime     @default(now())
+  passwordHash    String
+  username        String       @unique
+  workplaceId     Int?
+  id              Int          @id @default(autoincrement())
+  name            String
+  field           Field?
+  role            Role?
+  assignments     Assignment[]
+  receivedInvites Invite[]     @relation("receivedInvites")
+  sentInvites     Invite[]     @relation("sentInvites")
+  workplace       Workplace?   @relation("workplaceMembers", fields: [workplaceId], references: [id])
+  myWorkplace     Workplace?   @relation("workplaceOwner")
 }
 
 model Workplace {
-  id Int @id @default(autoincrement())
-  name String
-
-  ownerId Int @unique
-  owner User @relation("workplaceOwner" , fields: [ownerId] , references: [id],onDelete: Cascade )
-
-  members User[] @relation("workplaceMembers")
-  products Product[]
-
-  invites Invite[]
-
-  createdAt DateTime @default(now())
+  id        Int       @id @default(autoincrement())
+  name      String
+  ownerId   Int       @unique
+  createdAt DateTime  @default(now())
+  invites   Invite[]
+  products  Product[]
+  members   User[]    @relation("workplaceMembers")
+  owner     User      @relation("workplaceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
 }
+
 model Product {
-  id Int @id @default(autoincrement())
-  name String
-  description String?
-  colors Json
-  amount Int
-  salary Json
-
-  //lines <--
-  lines Int
-  right_tailor Int
-  mid_tailor Int
-  top_tailor Int
-
-  //-->
-
-  workplaceId Int
-  workplace Workplace @relation(fields: [workplaceId], references: [id] ,onDelete: Cascade)
-
-  assignments Assignment[]
+  name         String
+  createdAt    DateTime     @default(now())
+  amount       Int
+  description  String?
+  workplaceId  Int
+  id           Int          @id @default(autoincrement())
   
-  createdAt DateTime @default(now())
+  colors       Json
+  salary       Json
+  mid_tailor   Int
+  right_tailor Int
+  top_tailor   Int
+  lines        Int
+  done         Int          @default(0)
+
+
+  assignments  Assignment[]
+  workplace    Workplace    @relation(fields: [workplaceId], references: [id], onDelete: Cascade)
 }
+
 model Assignment {
-  id Int @id @default(autoincrement())
-  quantity Int
-
+  id        Int      @id @default(autoincrement())
+  quantity  Int
   productId Int
-  product Product @relation(fields: [productId], references: [id] )
-
-  workerId Int
-  worker User @relation(fields: [workerId], references: [id],onDelete: Cascade)
-
+  workerId  Int
   createdAt DateTime @default(now())
-
+  product   Product  @relation(fields: [productId], references: [id])
+  worker    User     @relation(fields: [workerId], references: [id], onDelete: Cascade)
 }
+
 model Invite {
-  id Int @id @default(autoincrement())
-
-  workplaceId Int 
-  workplace Workplace @relation(fields: [workplaceId], references: [id])
-
-  senderId Int
-  sender User @relation("sentInvites" , fields: [senderId] , references: [id])
-
-  receiverId Int
-  receiver User @relation("receivedInvites" , fields: [receiverId] , references: [id])
-
-  status Invitation @default(PENDING)
-
-  createdAt DateTime @default(now())
+  id          Int        @id @default(autoincrement())
+  workplaceId Int
+  senderId    Int
+  receiverId  Int
+  status      Invitation @default(PENDING)
+  createdAt   DateTime   @default(now())
+  receiver    User       @relation("receivedInvites", fields: [receiverId], references: [id])
+  sender      User       @relation("sentInvites", fields: [senderId], references: [id])
+  workplace   Workplace  @relation(fields: [workplaceId], references: [id])
 }
+
 enum Invitation {
   PENDING
   ACCEPTED
   REJECTED
 }
+
 enum Field {
   rightTailor
   topTailor
   midTailor
 }
+
 enum Role {
   MANAGER
   WORKER

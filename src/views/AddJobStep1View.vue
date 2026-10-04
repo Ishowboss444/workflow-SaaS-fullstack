@@ -32,7 +32,6 @@ function nextRoute(){
         label="تعداد خط ها" 
         placeholder="مثلاً 1000" 
       />
-      <!-- <FormField label="نوع کار" placeholder="تی‌شرت" /> -->
 
       <SelectField 
         type="text" 

@@ -10,68 +10,11 @@ import { useProductStore } from '@/stores/useProductStore.js';
 const products = useProductStore()
 const activeFilter = ref('active'); // all | active | done
 const router = useRouter();
-const jobs = [
-  {
-    id: 1000,
-    title: 'تی‌شرت',
-    status: 'active',
-    statusLabel: 'فعال',
-    qtyDone: 7800,
-    qtyTotal: 10000,
-    daysLeft: 'تا ۷ روز',
-    percent: (7800/10000) * 100 ,
-    color: '#f7d3e3',
-  },
-  {
-    id: 1001,
-    title: 'مانتو',
-    status: 'progress',
-    statusLabel: 'در حال انجام',
-    qtyDone: 2000,
-    qtyTotal: 5000,
-    daysLeft: 'تا ۵ روز',
-    percent: 40,
-    color: '#ffe0c2',
-  },
-  {
-    id: 1002,
-    title: 'شلوار',
-    status: 'new',
-    statusLabel: 'جدید',
-    qtyDone: 0,
-    qtyTotal: 3000,
-    daysLeft: 'تا ۱۰ روز',
-    percent: 0,
-    color: '#d8d3ff',
-  },
-  {
-    id: 1002,
-    title: 'شلوار',
-    status: 'new',
-    statusLabel: 'جدید',
-    qtyDone: 0,
-    qtyTotal: 3000,
-    daysLeft: 'تا ۱۰ روز',
-    percent: 0,
-    color: '#d8d3ff',
-  },
-  {
-    id: 1002,
-    title: 'شلوار',
-    status: 'new',
-    statusLabel: 'جدید',
-    qtyDone: 0,
-    qtyTotal: 3000,
-    daysLeft: 'تا ۱۰ روز',
-    percent: 0,
-    color: '#d8d3ff',
-  },
-];
-let jobs1 ; 
+
 
 onMounted(async ()=>{
-  jobs1 = await products._getProduct()
-  console.log(jobs1);
+  const data = await products._getProduct()
+  console.log(data);
 })
 
 const filters = [
@@ -116,26 +59,26 @@ const filters = [
     <!-- job lists loop -->
     <div class="job-list">
       <router-link
-        v-for="job in jobs"
+        v-for="job in products.products"
         :key="job.id"
         :to="{ name: 'job-detail-colors', params: { id: job.id } }"
         class="job-card"
       >
-        <div class="job-card__thumb" :style="{ background: job.color }" />
+        <div class="job-card__thumb" :style="{ background: '#f7d3e3' }" />
         <div class="job-card__body">
           <div class="job-card__top">
             <span class="job-card__order">#{{ job.id }}</span>
-            <StatusBadge :status="job.status" :label="job.statusLabel" />
+            <StatusBadge :status="'progress'" :label="'progress'" />
           </div>
-          <h3 class="job-card__title">{{ job.title }}</h3>
+          <h3 class="job-card__title">{{ job.name }}</h3>
           <p class="job-card__meta">
-            {{ job.qtyDone.toLocaleString() }} قطعه
-            {{ job.qtyTotal.toLocaleString() }} انجام شده
+            {{ job.amount.toLocaleString() }} قطعه
+            {{ job.done.toLocaleString() }} انجام شده
           </p>
-          <ProgressBar :percent="job.percent" />
+          <ProgressBar :percent="(job.done / job.amount) * 100" />
           <div class="job-card__bottom">
-            <span>{{ job.daysLeft }} تحویل</span>
-            <span class="job-card__percent">{{ job.percent }}%</span>
+            <span>{{ job.lines }} خط</span>
+            <span class="job-card__percent">{{ (job.done / job.amount) * 100 }}%</span>
           </div>
         </div>
       </router-link>

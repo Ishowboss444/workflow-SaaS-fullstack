@@ -46,24 +46,32 @@ export async function addProduct(info: ProductAdd) {
   }
 }
 
-export async function getProducts() {
+export async function getProducts(id : number | null = null) {
   console.log(token);
+
+  const url =
+    id !== null
+      ? `http://localhost:3000/product/${id}/get`
+      : `http://localhost:3000/product/get`;
+
   try {
-    const response = await fetch('http://localhost:3000/product/get', {
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     });
+
     if (!response.ok) {
       console.log(response);
-      throw Error;
+      throw new Error(`Request failed: ${response.status}`);
     }
+
     const data = await response.json();
     return data;
-    
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    throw err;
   }
 }
