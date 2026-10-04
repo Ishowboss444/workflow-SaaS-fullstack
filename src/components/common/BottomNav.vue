@@ -34,8 +34,11 @@ const tabs = [
 .bottom-nav {
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: $app-max-width;
+  min-width: $app-min-width;
   display: flex;
   background: $color-bg-card;
   border-top: 1px solid $color-border-soft;

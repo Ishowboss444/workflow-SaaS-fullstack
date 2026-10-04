@@ -56,6 +56,14 @@ model Product {
   amount Int
   salary Json
 
+  //lines <--
+  lines Int
+  right_tailor Int
+  mid_tailor Int
+  top_tailor Int
+
+  //-->
+
   workplaceId Int
   workplace Workplace @relation(fields: [workplaceId], references: [id] ,onDelete: Cascade)
 

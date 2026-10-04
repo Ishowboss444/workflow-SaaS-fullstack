@@ -1,4 +1,3 @@
-import { AwardIcon } from 'lucide-vue-next';
 import { prisma } from '../config/db.js';
 
 export class Products {
@@ -42,7 +41,7 @@ export class Products {
   }
 
   async addProduct() {
-    const body = this.req.body;
+    console.log(this.user);
     try {
       const userValid = await prisma.user.findUnique({
         where: {
@@ -54,8 +53,9 @@ export class Products {
       });
 
       if (
-        userValid.workplaceId !== this.body.workplaceId &&
-        userValid.id == !this.user.id
+        userValid.workplaceId !== userValid.workplace.id &&
+        userValid.id !== this.user.id &&
+        userValid.id !== userValid.workplace.ownerId
       )
         return this.res.status(409).json({
           status: 'failed',
@@ -68,8 +68,14 @@ export class Products {
           description: this.body.name,
           colors: this.body.colors,
           amount: this.body.amount,
-          workplaceId: this.body.workplaceId,
+          salary : this.body.salary,
+          lines : this.body.lines,
+          right_tailor : this.body.right_tailor,
+          mid_tailor : this.body.mid_tailor,
+          top_tailor : this.body.top_tailor,
+          workplaceId: userValid.workplaceId,
         },
+
       });
       this.res.status(201).json({
         status: 'success',

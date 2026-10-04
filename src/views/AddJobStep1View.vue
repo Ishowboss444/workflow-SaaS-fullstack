@@ -13,7 +13,7 @@ const router = useRouter()
 
 function nextRoute(){
   const p = product.newProduct
-  if(p.amount > 1 && p.title.trim() && p.lines > 1 ){
+  if(p.amount > 1 && p.name.trim() && p.lines > 1 ){
     router.push({name : 'add-job-2'})
   }else{
     toast.warning("لطفا با دقت کادر هارا پر کنید")
@@ -39,7 +39,7 @@ function nextRoute(){
         label="نوع کار" 
         placeholder="تی‌شرت"
         :icon="Shirt" 
-        v-model="product.newProduct.title"
+        v-model="product.newProduct.name"
       />
 
       <FormField

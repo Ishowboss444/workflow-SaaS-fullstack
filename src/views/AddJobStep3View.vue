@@ -5,13 +5,11 @@ import SummaryRow from '../components/common/SummaryRow.vue';
 import AppButton from '../components/common/AppButton.vue';
 import { useProductStore } from '@/stores/useProductStore.js';
 import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
+import { useRouter } from 'vue-router';
 
 const product = useProductStore()
-const lines = ref({
-  rightTailor : 0,
-  midTailor:0,
-  topTailor:0,
-})
+const router = useRouter()
 const salary = ref({
   worker : 0,
   manager : 0,
@@ -30,6 +28,22 @@ function setSalary (){
   product.newProduct.salary = salary.value
   console.log(product.newProduct.salary);
 }
+
+async function createProduction(){
+  setSalary()
+  const p = product.newProduct
+  const plus = p.mid_tailor + p.top_tailor + p.right_tailor 
+  if(p.amount === 0 ){
+    alert('you need fill it again ')
+    return router.push({name : 'add-job-1'})
+  }
+  if(plus !== p.lines){
+    toast.error('the combinding of lines is not equal with what it is ! ')
+    return alert('the combinding of lines is not equal with what it is ! ')
+  }
+  const data = await product._addProduct(p)
+  console.log(data);
+}
 </script>
 
 <template>
@@ -42,19 +56,19 @@ function setSalary (){
         type="number"
         label="تعداد خط راسته دوز"
         suffix="خط"
-        v-model="lines.rightTailor"
+        v-model="product.newProduct.right_tailor"
       />
       <FormField
         type="number"
         label="تعداد خط میان دوز"
         suffix="خط"
-        v-model="lines.midTailor"
+        v-model="product.newProduct.mid_tailor"
       />
       <FormField
         type="number"
         label="تعداد خط سر دوز"
         suffix="خط"
-        v-model="lines.topTailor"
+        v-model="product.newProduct.top_tailor"
       />
     </div>
     <div class="form-body">
@@ -83,13 +97,13 @@ function setSalary (){
       </div>
     </div>
 
-    <div class="form-footer" @click="setSalary">
+    <div class="form-footer">
       <router-link :to="{ name: 'add-job-2' }" class="footer-btn">
         <AppButton variant="outline">بازگشت</AppButton>
       </router-link>
-      <router-link :to="{ name: 'add-job-4' }" class="footer-btn">
-        <AppButton>ادامه</AppButton>
-      </router-link>
+      <div class="footer-btn">
+        <AppButton @click="createProduction">ادامه</AppButton>
+      </div>
     </div>
   </div>
 </template>

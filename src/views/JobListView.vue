@@ -67,9 +67,11 @@ const jobs = [
     color: '#d8d3ff',
   },
 ];
+let jobs1 ; 
+
 onMounted(async ()=>{
-  const data = await products._getProduct()
-  
+  jobs1 = await products._getProduct()
+  console.log(jobs1);
 })
 
 const filters = [
@@ -111,6 +113,7 @@ const filters = [
       افزودن کار جدید
     </button>
 
+    <!-- job lists loop -->
     <div class="job-list">
       <router-link
         v-for="job in jobs"

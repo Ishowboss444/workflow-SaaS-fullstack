@@ -5,11 +5,31 @@ import AppButton from '../components/common/AppButton.vue';
 import { useProductStore } from '@/stores/useProductStore.js';
 import EditColor from '@/components/common/EditColor.vue';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const product = useProductStore()
 const colors = ref([
-  { name: 'مشکی', qty: 7000, hex: '#2b2130',edit:false },
-  { name: 'صورتی', qty: 3000, hex: '#e83e8c' ,edit:false},
+  { name: 'مشکی', qty: 500, hex: '#2b2130',edit:false },
+  { name: 'صورتی', qty: 500, hex: '#e83e8c' ,edit:false},
 ])
+
+function nextStep (){
+  let amount = 0
+  colors.value.forEach((color)=>{
+    amount += color.qty
+  })
+  if(amount === product.newProduct.amount){
+    product.newProduct.colors = colors.value
+    router.push({name : 'add-job-3'})
+    
+    toast.success('well done!')
+  }else{
+    toast.success('bad done!')
+    console.log(amount);
+
+  }
+}
 </script>
 
 <template>
@@ -44,7 +64,7 @@ const colors = ref([
         <span class="total-field__label">جمع کل</span>
         <div class="total-field__control">
           <CircleCheck :size="18" class="total-field__check" />
-          <span>10000 / 10000</span>
+          <span>{{ product.newProduct.amount }} / 10000 </span>
         </div>
       </div>
     </div>
@@ -53,9 +73,9 @@ const colors = ref([
       <router-link :to="{ name: 'add-job-1' }" class="footer-btn">
         <AppButton variant="outline">بازگشت</AppButton>
       </router-link>
-      <router-link :to="{ name: 'add-job-3' }" class="footer-btn">
-        <AppButton>ادامه</AppButton>
-      </router-link>
+      <div class="footer-btn">
+        <AppButton @click="nextStep">ادامه</AppButton>
+      </div>
     </div>
   </div>
 </template>
