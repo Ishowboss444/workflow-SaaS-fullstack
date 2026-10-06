@@ -1,4 +1,8 @@
 <script setup>
+import Loading from '@/components/common/Loading.vue'
+import { useInvitationsStore } from '@/stores/useInvitationsStore'
+import { useUsersStore } from '@/stores/useUsersStore'
+import { from } from 'bcrypto/lib/native/bn'
 import {
   Search,
   UserPlus,
@@ -10,84 +14,28 @@ import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
 const search = ref('')
+const people = ref([])
+const user = useUsersStore()
+const invite = useInvitationsStore()
+async function sendInvitation(person) {
+  if (person.workplaceId) return toast.warning('این یوزر درحال حاضر در یک کارگاه هست')
 
-const people = ref([
-  {
-    id: 1,
-    name: 'علی رضایی',
-    role: 'مدیر تولید',
-    company: 'کارگاه پوشاک رضایی',
-    initials: 'ع',
-    status: 'available',
-    invited: false,
-  },
-  {
-    id: 2,
-    name: 'سارا محمدی',
-    role: 'مسئول کارگاه',
-    company: 'تولیدی سپید',
-    initials: 'س',
-    status: 'available',
-    invited: false,
-  },
-  {
-    id: 3,
-    name: 'محمد احمدی',
-    role: 'مدیر پروژه',
-    company: 'پوشاک آریا',
-    initials: 'م',
-    status: 'busy',
-    invited: false,
-  },
-  {
-    id: 4,
-    name: 'رضا کریمی',
-    role: 'سرپرست تولید',
-    company: 'کارخانه کریمی',
-    initials: 'ر',
-    status: 'available',
-    invited: false,
-  },
-  {
-    id: 5,
-    name: 'نگار حسینی',
-    role: 'مدیر کارگاه',
-    company: 'پوشاک نوین',
-    initials: 'ن',
-    status: 'available',
-    invited: false,
-  },
-  {
-    id: 6,
-    name: 'امیر مرادی',
-    role: 'مدیر تولید',
-    company: 'تولیدی پارس',
-    initials: 'ا',
-    status: 'busy',
-    invited: false,
-  },
-])
-
-const filteredPeople = computed(() => {
-  const query = search.value.trim().toLowerCase()
-
-  if (!query) {
-    return people.value
-  }
-
-  return people.value.filter((person) =>
-    `${person.name} ${person.role} ${person.company}`
-      .toLowerCase()
-      .includes(query)
-  )
-})
-
-function sendInvitation(person) {
-  if (person.invited) return
-
-  person.invited = true
-
+  console.log(person.id);
+  const data = await invite.sendInvitations(Number(person.id))
+  console.log(data);
+  if(!data) return console.error(data)
+  
   toast.success(`دعوت‌نامه برای ${person.name} ارسال شد`)
+}
+
+
+async function searchUser(username){
+  if(!username.trim()) return toast.error('لطفا با دقت جستوجو کنید')
+
+  const data = await user.searchForUser(username)
+  people.value.push(data.data)
+  console.log(data);
+  console.log(people.value);
 }
 </script>
 
@@ -109,38 +57,38 @@ function sendInvitation(person) {
     </header>
 
     <!-- SEARCH -->
-    <div class="search-box">
+    <form @submit.prevent="searchUser(search)" class="search-box">
       <Search :size="18" />
 
       <input
         v-model="search"
-        type="search"
-        placeholder="جستجوی نام، نقش یا کارگاه..."
+        type="text"
+        placeholder="جستجوی نام کاربری @ ..."
       />
-    </div>
+    </form>
 
     <!-- RESULTS HEADER -->
-    <div class="results-header">
+    <div class="results-header" v-if="!user.loading">
       <span>
         افراد
       </span>
 
       <small>
-        {{ filteredPeople.length }} نفر
+        {{ people.length }} نفر
       </small>
     </div>
 
     <!-- PEOPLE -->
-    <main class="people-list">
+    <main class="people-list" v-if="!user.loading">
       <article
-        v-for="person in filteredPeople"
+        v-for="person in people"
         :key="person.id"
         class="person-card"
       >
         <div class="person-main">
           <!-- AVATAR -->
           <div class="avatar">
-            {{ person.initials }}
+            {{ person.name[0] }}
 
             <span
               class="online-dot"
@@ -160,13 +108,10 @@ function sendInvitation(person) {
               <BriefcaseBusiness :size="13" />
 
               <span>
-                {{ person.role }}
+                {{ person.role || 'انتخاب نشده'}}
               </span>
             </div>
 
-            <span class="company">
-              {{ person.company }}
-            </span>
           </div>
         </div>
 
@@ -196,7 +141,7 @@ function sendInvitation(person) {
 
       <!-- EMPTY -->
       <div
-        v-if="filteredPeople.length === 0"
+        v-if="people.length === 0"
         class="empty-state"
       >
         <div class="empty-icon">
@@ -212,6 +157,7 @@ function sendInvitation(person) {
         </p>
       </div>
     </main>
+    <Loading v-else/>
   </div>
 </template>
 
