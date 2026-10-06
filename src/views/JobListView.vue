@@ -28,7 +28,7 @@ const filters = [
 <template>
   <div class="page" v-if="!products.loading">
     <header class="job-list-header">
-      <button class="icon-btn" aria-label="اعلان‌ها">
+      <button class="icon-btn" aria-label="اعلان‌ها" @click="router.push({name: 'myInvitations'})">
         <Bell :size="20" />
       </button>
       <h1>کارها</h1>
@@ -118,6 +118,7 @@ const filters = [
   border: none;
   background: $color-bg-card;
   color: $color-text-primary;
+  cursor: pointer;
 }
 
 .job-list-search {
