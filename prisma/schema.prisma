@@ -41,7 +41,6 @@ model Product {
   description  String?
   workplaceId  Int
   id           Int          @id @default(autoincrement())
-  
   colors       Json
   salary       Json
   mid_tailor   Int
@@ -49,8 +48,6 @@ model Product {
   top_tailor   Int
   lines        Int
   done         Int          @default(0)
-
-
   assignments  Assignment[]
   workplace    Workplace    @relation(fields: [workplaceId], references: [id], onDelete: Cascade)
 }

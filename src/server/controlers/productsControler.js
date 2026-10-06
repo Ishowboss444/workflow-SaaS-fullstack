@@ -30,7 +30,8 @@ export class Products {
           status: 'failed',
           message: 'went wrong',
         });
-
+        console.log('in shouldnt be');
+        
       this.res.status(201).json({
         status: 'success',
         data: products.products,
@@ -63,7 +64,8 @@ export class Products {
           id : id,
         },
       })
-
+      console.log(product);
+      
       this.res.status(201).json({
         status: 'success',
         data: product,

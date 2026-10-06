@@ -18,8 +18,9 @@ router.get('/get', authonticated, (req, res) => {
     products.getProducts()
 });
 router.get('/:id/get', authonticated , authorization('MANAGER'), (req, res) => {
+    const id = Number(req.params.id)
     const products = new Products(req,res)
-    products.getProducts()
+    products.getSpecificProducts(id)
 });
 
 export default router;

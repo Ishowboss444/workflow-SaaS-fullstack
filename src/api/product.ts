@@ -1,5 +1,3 @@
-import lines from "bcrypto/lib/encoding/lines";
-
 const token = localStorage.getItem('accessToken');
 export interface ProductAdd {
   name: string;
@@ -47,7 +45,6 @@ export async function addProduct(info: ProductAdd) {
 }
 
 export async function getProducts(id : number | null = null) {
-  console.log(token);
 
   const url =
     id !== null

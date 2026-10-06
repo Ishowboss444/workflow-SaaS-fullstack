@@ -46,10 +46,10 @@ export const useProductStore = defineStore('products', () => {
     }
   }
 
-  async function _getProduct() {
+  async function _getProduct(id : number) {
     loading.value = true;
     try {
-      const data = await getProducts();
+      const data = await getProducts(id);
       products.value = data.data
       return data;
     } catch (err) {
