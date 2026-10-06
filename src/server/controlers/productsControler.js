@@ -15,7 +15,10 @@ export class Products {
           id: this.user.id,
         },
       });
-
+      if(!userExist.workplaceId) return this.res.status(500).json({
+        status : 'success',
+        message : "you don't have any workplace"
+      })
       const products = await prisma.workplace.findUnique({
         where : {
           id : userExist.workplaceId,
