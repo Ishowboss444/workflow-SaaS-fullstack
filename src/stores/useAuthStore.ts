@@ -1,6 +1,8 @@
 import { login, LoginInfo, signup, SignupInfo } from '@/api/auth';
+import { Str } from 'bcrypto/lib/encoding/asn1';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 export const useAuthStore = defineStore('auth', () => {
   const loading = ref(false);
@@ -27,9 +29,17 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const result = await login(info);
       localStorage.setItem('accessToken', result.data.token);
+      console.log(result.status);
+      
       return result;
     } catch (err) {
-      console.log(`here is the error : ${err}`);
+      const isError = String(err)
+      if(isError.includes('401')){
+        toast.error("فری با این مشخصات وجود ندارد یا پسوورد اشتباه است") 
+      }else{
+        toast.error('ارور سرور') 
+      }
+      console.log(err);
       error.value = err instanceof Error ? err.message : 'signup failed';
       throw err;
     } finally {

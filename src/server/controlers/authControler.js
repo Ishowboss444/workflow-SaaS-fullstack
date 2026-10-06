@@ -22,7 +22,7 @@ class Auth {
         console.log('there is no account exist');
 
         return this.res
-          .status(404)
+          .status(401)
           .json({ message: 'there is no account exist' });
       }
 

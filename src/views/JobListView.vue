@@ -7,6 +7,7 @@ import { ref ,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
 import { useProductStore } from '@/stores/useProductStore.js';
 import Loading from '@/components/common/Loading.vue';
+import FullfilledLoading from '@/components/common/FullfilledLoading.vue';
 
 const products = useProductStore()
 const activeFilter = ref('active'); // all | active | done
@@ -85,7 +86,8 @@ const filters = [
       </router-link>
     </div>
   </div>
-  <Loading v-else/>
+  <FullfilledLoading v-else/>
+  <!-- <Loading /> -->
   <BottomNav active="jobs" />
 </template>
 

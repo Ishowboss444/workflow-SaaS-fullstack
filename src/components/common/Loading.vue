@@ -4,26 +4,24 @@
 </script>
 
 <template>
-  <div class="center">
     <div class="response-loader">
         <span class="response-loader__dot" />
         <span class="response-loader__dot" />
         <span class="response-loader__dot" />
     </div>
-  </div>
 </template>
 
 <style scoped lang="scss">
 @use '../../assets/scss/variables' as *;
 @use '../../assets/scss/mixins' as *;
-.center{
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 .response-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  right: 47.5%;
+  top: 40%;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   gap: 5px;
