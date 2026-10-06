@@ -15,6 +15,7 @@ import { toast } from 'vue-sonner'
 const router = useRouter()
 const invite = useInvitationsStore()
 const myInvites = ref([])
+
 onMounted(async()=>{
   const data = await invite.myInvitations()
   console.log(data);

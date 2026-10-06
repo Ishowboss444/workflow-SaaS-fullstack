@@ -14,8 +14,25 @@ class Invitation {
         where: {
           id: this.id,
         },
+        
       });
-
+      const contact = await prisma.user.findUnique({
+        where : {
+          id : userId
+        },
+        include: {
+          receivedInvites : true,
+        }
+      })
+      const isSpamed = contact.receivedInvites.find((c)=>{
+        return Number(c.workplaceId) === Number(isOwner.workplaceId)
+      })
+      console.log("is this ?",isSpamed);
+      if(isSpamed) return this.res.status(401).json({
+        status : 'failed',
+        message : 'you have invited this person'
+      })
+      
       const invitation = await prisma.invite.create({
         data: {
           workplaceId: isOwner.workplaceId,
@@ -48,10 +65,11 @@ class Invitation {
           status: 'failed',
           message: "you're already in a workplace",
         });
-
+        console.log(isEmployed.id , isEmployed.name);
+        
       const myInvites = await prisma.invite.findMany({
         where: {
-          receiverId: this.id,
+          receiverId: isEmployed.id,
           status: 'PENDING',
         },
         include: {
@@ -59,6 +77,8 @@ class Invitation {
           sender: true,
         },
       });
+      console.log(myInvites.length);
+      
       return this.res.status(200).json({
         status: 'success',
         myInvites,
