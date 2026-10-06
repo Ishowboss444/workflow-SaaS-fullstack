@@ -97,5 +97,39 @@ class Workplace {
       deletor: this.id,
     });
   }
+  async getMembers(id){
+    try{
+      const user = await prisma.user.findUnique({
+        where : {
+          id : this.id,
+        }
+      })
+      if(user.workplaceId !== id) return this.res.status(401).json({
+        status : 'failed',
+        message : 'you are not in this workplace'
+      }) 
+  
+      const workplace = await prisma.workplace.findUnique({
+        where : {
+          id: id
+        },
+        include : {
+          members : true,
+        }
+      })
+
+      return this.res.status(200).json({
+        status : 'success',
+        data : workplace
+      })
+    }
+    catch(err){
+      return this.res.status(500).json({
+        status : 'failed',
+        message: 'something went wrong'
+      })
+    }
+
+  }
 }
 export default Workplace;

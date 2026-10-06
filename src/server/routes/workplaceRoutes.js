@@ -19,4 +19,10 @@ router.delete(
   }
 );
 
+router.get('/:id/members',authonticated , (req,res)=>{
+  const id = req.params.id
+  const workplace = new Workplace(req, res);
+  workplace.getMembers(id)
+})
+
 export default router;

@@ -1,6 +1,6 @@
 <template>
   <div class="signup-page" dir="rtl">
-    <main class="signup-card">
+    <main class="signup-card" :class="{'isDisabled' : auth.loading}">
       <!-- Header -->
       <header class="signup-header">
         <div class="logo">
@@ -113,10 +113,12 @@
         </RouterLink>
       </div>
     </main>
+    <Loading v-if="auth.loading"/>
   </div>
 </template>
 
 <script setup>
+import Loading from '@/components/common/Loading.vue'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
@@ -176,7 +178,10 @@ const handleSubmit = async () => {
 <style lang="scss" scoped>
 @use '../../assets/scss/variables' as *;
 @use '../../assets/scss/mixins' as *;
-
+.isDisabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
 .signup-page {
   min-height: 100dvh;
   background: $color-bg-app;
