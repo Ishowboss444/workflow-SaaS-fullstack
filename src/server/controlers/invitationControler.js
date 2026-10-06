@@ -126,7 +126,7 @@ class Invitation {
         });
       }
 
-      const acception = await prisma.$transaction(async (tx) => {
+      const rejection = await prisma.$transaction(async (tx) => {
         await tx.user.update({
           where: {
             id: this.id,
@@ -157,7 +157,64 @@ class Invitation {
       return this.res.status(200).json({
         workplace,
         invite,
-        acception,
+        rejection,
+      });
+    } catch (err) {
+      return this.res.status(409).json({
+        status: 'failed',
+        message: 'something went wrong',
+      });
+    }
+  }
+  async reject(){
+    try {
+      const isEmployed = await prisma.user.findUnique({
+        where: {
+          id: this.id,
+        },
+      });
+      if (isEmployed.workplaceId)
+        return this.res.status(404).json({
+          status: 'failed',
+          message: "you're already in a workplace",
+        });
+      const invite = await prisma.invite.findUnique({
+        where: {
+          id: Number(this.req.params.inviteId),
+        },
+      });
+      if (!invite)
+        return this.res.status(409).json({
+          status: 'failed',
+          message: 'it seems there is no invitation with this id',
+        });
+      if (invite.receiverId !== this.id) {
+        return this.res.status(403).json({
+          status: 'failed',
+          message: 'This invitation is not yours',
+        });
+      }
+
+      if (invite.status !== 'PENDING') {
+        return this.res.status(409).json({
+          status: 'failed',
+          message: 'This invitation is no longer pending',
+        });
+      }
+
+      const rejection = await prisma.$transaction(async (tx) => {
+        await tx.invite.update({
+          where: {
+            id: invite.id,
+          },
+          data: {
+            status: 'REJECTED',
+          },
+        });
+      });
+      return this.res.status(200).json({
+        invite,
+        rejection,
       });
     } catch (err) {
       return this.res.status(409).json({

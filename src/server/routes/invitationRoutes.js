@@ -8,7 +8,11 @@ router.get('/get', authonticated, (req, res) => {
   const invite = new Invitation(req, res);
   invite.get();
 });
-router.get('/invites/:inviteId/accept', authonticated, (req, res) => {
+router.patch('/:inviteId/accept', authonticated, (req, res) => {
+  const invite = new Invitation(req, res);
+  invite.accept();
+});
+router.patch('/:inviteId/reject', authonticated, (req, res) => {
   const invite = new Invitation(req, res);
   invite.accept();
 });

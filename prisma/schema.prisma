@@ -69,9 +69,9 @@ model Invite {
   receiverId  Int
   status      Invitation @default(PENDING)
   createdAt   DateTime   @default(now())
-  receiver    User       @relation("receivedInvites", fields: [receiverId], references: [id])
-  sender      User       @relation("sentInvites", fields: [senderId], references: [id])
-  workplace   Workplace  @relation(fields: [workplaceId], references: [id])
+  receiver    User       @relation("receivedInvites", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender      User       @relation("sentInvites", fields: [senderId], references: [id], onDelete: Cascade)
+  workplace   Workplace  @relation(fields: [workplaceId], references: [id], onDelete: Cascade)
 }
 
 enum Invitation {
