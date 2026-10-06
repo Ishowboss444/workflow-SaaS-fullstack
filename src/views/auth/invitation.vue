@@ -1,29 +1,31 @@
 ```vue
 <script setup>
+import FullfilledLoading from '@/components/common/FullfilledLoading.vue'
+import { useInvitationsStore } from '@/stores/useInvitationsStore'
 import {
   Mail,
   Check,
   X,
-  Clock3,
   ChevronLeft,
-  BriefcaseBusiness,
 } from 'lucide-vue-next'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue-sonner'
 
 const router = useRouter()
+const invite = useInvitationsStore()
+const myInvites = ref([])
+onMounted(async()=>{
+  const data = await invite.myInvitations()
+  console.log(data);
+})
 const invitations = ref([
   {
     id: 1,
     sender: {
       name: 'علی رضایی',
-      role: 'مدیر تولید',
-      initials: 'ع',
     },
-    title: 'دعوت به همکاری در سفارش جدید',
-    project: 'تولید تیشرت تابستانی',
-    quantity: '۲٬۵۰۰ عدد',
+
     sentAt: 'امروز، ۱۰:۲۴',
     status: 'pending',
   },
@@ -31,12 +33,7 @@ const invitations = ref([
     id: 2,
     sender: {
       name: 'سارا محمدی',
-      role: 'مسئول کارگاه',
-      initials: 'س',
     },
-    title: 'دعوت به کارگاه',
-    project: 'سفارش لباس ورزشی',
-    quantity: '۱٬۲۰۰ عدد',
     sentAt: 'دیروز، ۱۶:۴۰',
     status: 'pending',
   },
@@ -44,28 +41,10 @@ const invitations = ref([
     id: 3,
     sender: {
       name: 'محمد احمدی',
-      role: 'مدیر پروژه',
-      initials: 'م',
     },
-    title: 'دعوت برای انجام سفارش',
-    project: 'تولید هودی',
-    quantity: '۸۰۰ عدد',
     sentAt: '۲ روز پیش',
     status: 'accepted',
-  },
-  {
-    id: 4,
-    sender: {
-      name: 'رضا کریمی',
-      role: 'مدیر تولید',
-      initials: 'ر',
-    },
-    title: 'دعوت به همکاری',
-    project: 'تولید لباس کار',
-    quantity: '۳٬۰۰۰ عدد',
-    sentAt: '۴ روز پیش',
-    status: 'declined',
-  },
+  }
 ])
 
 const activeFilter = ref('all')
@@ -101,7 +80,7 @@ function declineInvitation(invitation) {
 </script>
 
 <template>
-  <div class="page invitations-page">
+  <div class="page invitations-page" v-if="!invite.loading">
     <!-- HEADER -->
     <header class="invitations-header">
       <div>
@@ -276,6 +255,7 @@ function declineInvitation(invitation) {
       </div>
     </main>
   </div>
+  <FullfilledLoading v-else/>
 </template>
 
 <style scoped lang="scss">
