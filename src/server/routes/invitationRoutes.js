@@ -4,7 +4,7 @@ import Invitation from '../controlers/invitationControler.js';
 import authorization from '../middlewae/authorizationMiddleware.js';
 const router = express.Router();
 
-router.get('/invites', authonticated, (req, res) => {
+router.get('/get', authonticated, (req, res) => {
   const invite = new Invitation(req, res);
   invite.get();
 });
@@ -13,7 +13,7 @@ router.get('/invites/:inviteId/accept', authonticated, (req, res) => {
   invite.accept();
 });
 router.post(
-  '/send/invites/:to',
+  '/send/:to',
   authonticated,
   authorization('MANAGER'),
   (req, res) => {

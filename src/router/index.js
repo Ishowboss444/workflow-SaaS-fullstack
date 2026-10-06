@@ -29,9 +29,17 @@ const routes = createRouter({
       },
     },
     {
+      path: '/myInvitations',
+      name: 'myInvitations',
+      component: () => import('@/views/auth/invitation.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/test',
       name: 'test',
-      component: () => import('@/components/common/Loading.vue'),
+      component: () => import('@/views/auth/hiration.vue'),
       meta: {
         requiresAuth: true,
       },

@@ -16,13 +16,15 @@ const salary = ref({
   manager : 0,
 })
 const calculation = computed(()=>{
+
   const amount = product.newProduct.amount
-  console.log(amount);
+
   const result = {
     all : amount * salary.value.manager,
     worker : amount * salary.value.worker,
     pure : (amount  * salary.value.manager) - (amount * salary.value.worker)
   }
+
   return result
 })
 function setSalary (){
@@ -39,9 +41,9 @@ async function createProduction(){
     return router.push({name : 'add-job-1'})
   }
   if(plus !== p.lines){
-    toast.error('the combinding of lines is not equal with what it is ! ')
-    return alert('the combinding of lines is not equal with what it is ! ')
+    return toast.error('جمع خط ها با کل خط ها مطابقت ندارد ')
   }
+  
   const data = await product._addProduct(p)
   if(data){
     toast.success('successfully added')
