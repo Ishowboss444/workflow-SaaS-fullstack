@@ -8,24 +8,25 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 const props = defineProps({
   activeTab: { type: String, required: true },
+  data : { type : Object , required : true}
 });
 
 const tabs = [
   {
     key: 'colors',
     label: 'رنگ‌ها',
-    to: { name: 'job-detail-colors', params: { id: 1000 } },
+    to: { name: 'job-detail-colors', params: { id: props.data.id } },
   },
   {
     key: 'workers',
     label: 'کارگرها',
-    to: { name: 'job-detail-workers', params: { id: 1000 } },
+    to: { name: 'job-detail-workers', params: { id: props.data.id } },
   },
   { key: 'history', label: 'تاریخچه' }, // no dedicated screen yet — visual only
   {
     key: 'finance',
     label: 'مالی',
-    to: { name: 'job-detail-finance', params: { id: 1000 } },
+    to: { name: 'job-detail-finance', params: { id: props.data.id } },
   },
 ];
 </script>
@@ -41,8 +42,11 @@ const tabs = [
         <ArrowRight :size="20"/>
       </button>
       <div class="job-header__title-wrap">
-        <span class="job-header__order">#1000</span>
-        <StatusBadge status="active" label="فعال" />
+        <span class="job-header__order">#{{ data.id }}</span>
+        <StatusBadge 
+          :status="data.amount === data.done ? 'done' : 'active'"
+          :label="data.amount === data.done ? 'تمام' : 'فعال'" 
+        />
       </div>
       <button class="icon-btn" aria-label="گزینه‌ها">
         <MoreVertical :size="20" />
@@ -61,10 +65,10 @@ const tabs = [
     <div class="job-header__progress">
       <div class="job-header__progress-top">
         <span>پیشرفت کلی</span>
-        <strong>78%</strong>
+        <strong>{{(data.done / data.amount) * 100 }}%</strong>
       </div>
-      <ProgressBar :percent="78" :height="8" />
-      <span class="job-header__progress-count">7,800 / 10,000</span>
+      <ProgressBar :percent="(data.done / data.amount) * 100" :height="8" />
+      <span class="job-header__progress-count">{{ data.done }} / {{ data.amount }}</span>
     </div>
   </header>
 

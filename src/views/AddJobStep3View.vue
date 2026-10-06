@@ -7,6 +7,7 @@ import { useProductStore } from '@/stores/useProductStore.js';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import { useRouter } from 'vue-router';
+import Loading from '@/components/common/Loading.vue';
 
 const product = useProductStore()
 const router = useRouter()
@@ -42,12 +43,15 @@ async function createProduction(){
     return alert('the combinding of lines is not equal with what it is ! ')
   }
   const data = await product._addProduct(p)
+  if(data){
+    toast.success('successfully added')
+  }
   console.log(data);
 }
 </script>
 
 <template>
-  <div class="page page--no-nav">
+  <div class="page page--no-nav" v-if="!product.loading">
     <StepperHeader :current-step="3" />
     <div class="form-body form-body-lines">
       <h2 class="section-title">خط گذاری</h2>
@@ -106,6 +110,7 @@ async function createProduction(){
       </div>
     </div>
   </div>
+  <Loading v-else/>
 </template>
 
 <style scoped lang="scss">

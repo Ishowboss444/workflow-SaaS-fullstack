@@ -6,60 +6,62 @@ import AppButton from '../components/common/AppButton.vue';
 import { useProductStore } from '@/stores/useProductStore.js';
 import { onMounted , ref} from 'vue';
 import { useRoute } from 'vue-router';
+import Loading from '@/components/common/Loading.vue';
 
 const route = useRoute()
 const product = useProductStore()
-let colors = ref([])
+const data = ref([])
 onMounted(async()=>{
-  console.log(route.params.id);
-  console.log('hello world');
-  
-  const data = await product._getProduct(11)
-  colors.value = data.data[0].colors
-  console.log(colors);
+  const id = route.params.id
+  const response = await product._getProduct(id)
+  data.value = response.data
+  console.log(data.value.colors);
   
 })
 
 </script>
 
 <template>
-  <div class="page">
-    <JobDetailHeader active-tab="colors" />
+  <div class="page" v-if="!product.loading">
+    <JobDetailHeader active-tab="colors" :data="data"/>
 
-    <div class="tab-body">
-      <div v-for="c in colors" :key="c.name" class="color-card">
-        <div class="color-card__top">
-          <span class="color-card__swatch" :style="{ background: c.hex }" />
-          <div class="color-card__info">
-            <span class="color-card__name">{{ c.name }}</span>
-            <span class="color-card__qty"
-              >{{ c.qty.toLocaleString() }} قطعه</span
-            >
+    <div >
+      <div class="tab-body-inner">
+        <div v-for="c in data.colors" :key="c.name" class="color-card">
+          <div class="color-card__top">
+            <span class="color-card__swatch" :style="{ background: c.hex }" />
+            <div class="color-card__info">
+              <span class="color-card__name">{{ c.name }}</span>
+              <span class="color-card__qty"
+                >{{ c.qty.toLocaleString() }} قطعه</span
+              >
+            </div>
+            <span class="color-card__percent">{{ c.done }}%</span>
           </div>
-          <span class="color-card__percent">{{ c.done }}%</span>
+          <ProgressBar :percent="c.done" />
         </div>
-        <ProgressBar :percent="c.done" />
+  
+        <AppButton variant="outline">
+          <span class="edit-btn"><Pencil :size="16" /> ویرایش</span>
+        </AppButton>
       </div>
-
-      <AppButton variant="outline" v-if="colors.length !== 0">
-        <span class="edit-btn"><Pencil :size="16" /> ویرایش</span>
-      </AppButton>
     </div>
   </div>
+
+  <Loading v-else/>
 </template>
 
 <style scoped lang="scss">
 @use '../assets/scss/variables' as *;
 @use '../assets/scss/mixins' as *;
 
-.tab-body {
+.tab-body-inner {
   @include page-padding;
   padding-top: $space-4;
   display: flex;
   flex-direction: column;
   gap: $space-3;
 }
-
 .color-card {
   @include card;
 

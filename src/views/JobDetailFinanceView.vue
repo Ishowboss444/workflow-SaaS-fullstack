@@ -1,11 +1,26 @@
 <script setup>
 import JobDetailHeader from '../components/common/JobDetailHeader.vue';
 import SummaryRow from '../components/common/SummaryRow.vue';
+import { useRoute } from 'vue-router';
+import { useProductStore } from '@/stores/useProductStore.js';
+import {ref, onMounted} from 'vue'
+import Loading from '@/components/common/Loading.vue';
+
+const route = useRoute()
+const product = useProductStore()
+const data = ref([])
+
+onMounted(async()=>{
+  const id = route.params.id
+  const response = await product._getProduct(id)
+  data.value = response.data
+  console.log(data.value.colors);
+})
 </script>
 
 <template>
-  <div class="page">
-    <JobDetailHeader active-tab="finance" />
+  <div class="page" v-if="!product.loading">
+    <JobDetailHeader active-tab="finance" :data="data"/>
 
     <div class="tab-body">
       <div class="finance-card">
@@ -24,6 +39,8 @@ import SummaryRow from '../components/common/SummaryRow.vue';
       </div>
     </div>
   </div>
+
+  <Loading v-else/>
 </template>
 
 <style scoped lang="scss">

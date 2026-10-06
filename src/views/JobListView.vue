@@ -6,6 +6,7 @@ import ProgressBar from '../components/common/ProgressBar.vue';
 import { ref ,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
 import { useProductStore } from '@/stores/useProductStore.js';
+import Loading from '@/components/common/Loading.vue';
 
 const products = useProductStore()
 const activeFilter = ref('active'); // all | active | done
@@ -84,9 +85,7 @@ const filters = [
       </router-link>
     </div>
   </div>
-
-
-  <h1 v-else> loading...</h1>
+  <Loading v-else/>
   <BottomNav active="jobs" />
 </template>
 
