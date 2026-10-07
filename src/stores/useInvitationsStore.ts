@@ -8,41 +8,36 @@ export const useInvitationsStore = defineStore('invitations', () => {
   const error = ref(false);
 
   async function myInvitations() {
-    loading.value = true
-    try{
-        const data = await getInvites()
-        console.log(data);
-        return data
-    }
-    catch(err){
-        console.log(err);
-    }
-    finally{
-        loading.value = false
+    loading.value = true;
+    try {
+      const data = await getInvites();
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      loading.value = false;
     }
   }
 
-  async function sendInvitations(id : number) {
-    loading.value = true
-    try{
-        const data = await sendInvites(Number(id))
-        console.log(data);
-        return data
-    }
-    catch(err){
-        console.log(err);
-    }
-    finally{
-        loading.value = false
+  async function sendInvitations(id: number) {
+    loading.value = true;
+    try {
+      const data = await sendInvites(Number(id));
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      loading.value = false;
     }
   }
 
-
-    return {
-        users,
-        loading,
-        error,
-        myInvitations,
-        sendInvitations
-    }
+  return {
+    users,
+    loading,
+    error,
+    myInvitations,
+    sendInvitations,
+  };
 });

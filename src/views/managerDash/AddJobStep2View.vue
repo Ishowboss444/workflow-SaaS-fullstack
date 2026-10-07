@@ -1,173 +1,175 @@
 <script setup>
-import { Plus, CircleCheck, X, Trash2 } from 'lucide-vue-next'
-import StepperHeader from '../components/common/StepperHeader.vue'
-import AppButton from '../components/common/AppButton.vue'
-import { useProductStore } from '@/stores/useProductStore.js'
-import { computed, ref } from 'vue'
-import { toast } from 'vue-sonner'
-import { useRouter } from 'vue-router'
+import { Plus, CircleCheck, X, Trash2 } from 'lucide-vue-next';
+import StepperHeader from '../components/common/StepperHeader.vue';
+import AppButton from '../components/common/AppButton.vue';
+import { useProductStore } from '@/stores/useProductStore.js';
+import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
+import { useRouter } from 'vue-router';
 // toast.success('herre')
-const router = useRouter()
-const product = useProductStore()
+const router = useRouter();
+const product = useProductStore();
 
 const colors = ref([
   {
-    id: 1 ,
+    id: 1,
     name: 'مشکی',
     qty: 500,
     hex: '#2b2130',
     edit: false,
   },
   {
-    id: 2 ,
+    id: 2,
     name: 'صورتی',
     qty: 500,
     hex: '#e83e8c',
     edit: false,
   },
-])
+]);
 
-const addingColor = ref(false)
+const addingColor = ref(false);
 
 const newColor = ref({
   name: '',
   qty: 0,
   hex: '#e83e8c',
-})
+});
 
 const totalAmount = computed(() => {
   return colors.value.reduce((amount, color) => {
-    return amount + Number(color.qty || 0)
-  }, 0)
-})
+    return amount + Number(color.qty || 0);
+  }, 0);
+});
 
 const productAmount = computed(() => {
-  return Number(product.newProduct.amount || 0)
-})
+  return Number(product.newProduct.amount || 0);
+});
 
 const remainingAmount = computed(() => {
-  return productAmount.value - totalAmount.value
-})
+  return productAmount.value - totalAmount.value;
+});
 
 const isComplete = computed(() => {
-  return totalAmount.value === productAmount.value
-})
+  return totalAmount.value === productAmount.value;
+});
 
 function closeEditors() {
   colors.value.forEach((color) => {
-    color.edit = false
-  })
+    color.edit = false;
+  });
 
-  addingColor.value = false
+  addingColor.value = false;
 }
 
 function toggleEdit(color) {
   colors.value.forEach((item) => {
     if (item !== color) {
-      item.edit = false
+      item.edit = false;
     }
-  })
+  });
 
-  addingColor.value = false
+  addingColor.value = false;
 
-  color.edit = !color.edit
+  color.edit = !color.edit;
 }
 
 function openAddColor() {
-  closeEditors()
+  closeEditors();
 
   if (remainingAmount.value <= 0) {
-    toast.error('تعداد کل تکمیل شده است')
-    return
+    toast.error('تعداد کل تکمیل شده است');
+    return;
   }
 
   newColor.value = {
     name: '',
     qty: remainingAmount.value,
     hex: '#e83e8c',
-  }
+  };
 
-  addingColor.value = true
+  addingColor.value = true;
 }
 
 function cancelAddColor() {
-  addingColor.value = false
+  addingColor.value = false;
 }
 
 function addColor() {
-  const name = newColor.value.name.trim()
-  const qty = Number(newColor.value.qty)
-  const id = colors.value.length + 1
+  const name = newColor.value.name.trim();
+  const qty = Number(newColor.value.qty);
+  const id = colors.value.length + 1;
   if (!name) {
-    toast.error('نام رنگ را وارد کنید')
-    return
+    toast.error('نام رنگ را وارد کنید');
+    return;
   }
 
   if (!qty || qty <= 0) {
-    toast.error('تعداد رنگ را وارد کنید')
-    return
+    toast.error('تعداد رنگ را وارد کنید');
+    return;
   }
 
   if (totalAmount.value + qty > productAmount.value) {
     toast.error(
       `تعداد بیشتر از مقدار باقی‌مانده است (${remainingAmount.value.toLocaleString()} عدد)`
-    )
-    return
+    );
+    return;
   }
 
   colors.value.push({
-    id ,
+    id,
     name,
     qty,
     hex: newColor.value.hex,
     edit: false,
-  })
+  });
 
-  addingColor.value = false
+  addingColor.value = false;
 
-  toast.success('رنگ اضافه شد')
+  toast.success('رنگ اضافه شد');
 }
 
 function removeColor(color) {
-  const index = colors.value.indexOf(color)
+  const index = colors.value.indexOf(color);
 
-  if (index === -1) return
+  if (index === -1) return;
 
-  colors.value.splice(index, 1)
+  colors.value.splice(index, 1);
 
-  toast.success('رنگ حذف شد')
+  toast.success('رنگ حذف شد');
 }
 
 function nextStep() {
   console.log('next');
-  
+
   if (totalAmount.value !== productAmount.value) {
     if (remainingAmount.value > 0) {
-      toast.error('dfdf')
-      console.error(`${remainingAmount.value.toLocaleString()} عدد هنوز باقی مانده است`);
+      toast.error('dfdf');
+      console.error(
+        `${remainingAmount.value.toLocaleString()} عدد هنوز باقی مانده است`
+      );
       toast.error(
         `${remainingAmount.value.toLocaleString()} عدد هنوز باقی مانده است`
-      )
+      );
     } else {
       console.error('تعداد رنگ‌ها بیشتر از تعداد سفارش است');
-      
-      toast.error('تعداد رنگ‌ها بیشتر از تعداد سفارش است')
+
+      toast.error('تعداد رنگ‌ها بیشتر از تعداد سفارش است');
     }
 
-    return
+    return;
   }
 
   product.newProduct.colors = colors.value.map((color) => ({
     name: color.name,
     qty: Number(color.qty),
     hex: color.hex,
-  }))
-  
+  }));
+
   router.push({
     name: 'add-job-3',
-  })
+  });
 
-  toast.success('رنگ‌ها با موفقیت ثبت شدند')
+  toast.success('رنگ‌ها با موفقیت ثبت شدند');
 }
 </script>
 
@@ -179,22 +181,13 @@ function nextStep() {
       <!-- Header -->
       <div class="section-heading">
         <div>
-          <h2 class="section-title">
-            رنگ‌ها و تنوع
-          </h2>
+          <h2 class="section-title">رنگ‌ها و تنوع</h2>
 
-          <p class="section-description">
-            رنگ و تعداد هر تنوع را مشخص کنید.
-          </p>
+          <p class="section-description">رنگ و تعداد هر تنوع را مشخص کنید.</p>
         </div>
 
-        <span
-          class="remaining-badge"
-          :class="{ complete: isComplete }"
-        >
-          <template v-if="isComplete">
-            تکمیل شد
-          </template>
+        <span class="remaining-badge" :class="{ complete: isComplete }">
+          <template v-if="isComplete"> تکمیل شد </template>
 
           <template v-else>
             {{ Math.max(remainingAmount, 0).toLocaleString() }}
@@ -205,27 +198,15 @@ function nextStep() {
 
       <!-- Colors -->
       <div class="color-list">
-        <div
-          v-for="c in colors"
-          :key="c.id"
-          class="color-row"
-        >
+        <div v-for="c in colors" :key="c.id" class="color-row">
           <!-- Quantity -->
-          <button
-            type="button"
-            class="color-row__qty"
-            @click="toggleEdit(c)"
-          >
+          <button type="button" class="color-row__qty" @click="toggleEdit(c)">
             {{ Number(c.qty).toLocaleString() }}
             عدد
           </button>
 
           <!-- Name -->
-          <button
-            type="button"
-            class="color-row__name"
-            @click="toggleEdit(c)"
-          >
+          <button type="button" class="color-row__name" @click="toggleEdit(c)">
             {{ c.name }}
           </button>
 
@@ -239,19 +220,12 @@ function nextStep() {
           />
 
           <!-- INLINE COLOR EDITOR -->
-          <div
-            v-if="c.edit"
-            class="color-editor"
-          >
+          <div v-if="c.edit" class="color-editor">
             <div class="editor-header">
               <div>
-                <h3>
-                  ویرایش رنگ
-                </h3>
+                <h3>ویرایش رنگ</h3>
 
-                <p>
-                  اطلاعات این رنگ را تغییر دهید.
-                </p>
+                <p>اطلاعات این رنگ را تغییر دهید.</p>
               </div>
 
               <button
@@ -265,9 +239,7 @@ function nextStep() {
 
             <!-- Color picker -->
             <div class="editor-field">
-              <label>
-                رنگ
-              </label>
+              <label> رنگ </label>
 
               <div class="color-picker-row">
                 <input
@@ -289,22 +261,14 @@ function nextStep() {
 
             <!-- Name -->
             <div class="editor-field">
-              <label>
-                نام رنگ
-              </label>
+              <label> نام رنگ </label>
 
-              <input
-                v-model="c.name"
-                type="text"
-                placeholder="مثلاً سفید"
-              />
+              <input v-model="c.name" type="text" placeholder="مثلاً سفید" />
             </div>
 
             <!-- Quantity -->
             <div class="editor-field">
-              <label>
-                تعداد
-              </label>
+              <label> تعداد </label>
 
               <input
                 v-model.number="c.qty"
@@ -328,10 +292,7 @@ function nextStep() {
         </div>
 
         <!-- Empty -->
-        <div
-          v-if="colors.length === 0"
-          class="empty-state"
-        >
+        <div v-if="colors.length === 0" class="empty-state">
           هنوز رنگی اضافه نشده است.
         </div>
       </div>
@@ -348,15 +309,10 @@ function nextStep() {
       </button>
 
       <!-- ADD COLOR PANEL -->
-      <div
-        v-if="addingColor"
-        class="add-color-panel"
-      >
+      <div v-if="addingColor" class="add-color-panel">
         <div class="add-color-header">
           <div>
-            <h3>
-              افزودن رنگ جدید
-            </h3>
+            <h3>افزودن رنگ جدید</h3>
 
             <p>
               {{ Math.max(remainingAmount, 0).toLocaleString() }}
@@ -364,20 +320,14 @@ function nextStep() {
             </p>
           </div>
 
-          <button
-            type="button"
-            class="close-editor"
-            @click="cancelAddColor"
-          >
+          <button type="button" class="close-editor" @click="cancelAddColor">
             <X :size="18" />
           </button>
         </div>
 
         <!-- Color -->
         <div class="editor-field">
-          <label>
-            رنگ
-          </label>
+          <label> رنگ </label>
 
           <div class="color-picker-row">
             <input
@@ -399,22 +349,14 @@ function nextStep() {
 
         <!-- Name -->
         <div class="editor-field">
-          <label>
-            نام رنگ
-          </label>
+          <label> نام رنگ </label>
 
-          <input
-            v-model="newColor.name"
-            type="text"
-            placeholder="مثلاً سفید"
-          />
+          <input v-model="newColor.name" type="text" placeholder="مثلاً سفید" />
         </div>
 
         <!-- Quantity -->
         <div class="editor-field">
-          <label>
-            تعداد
-          </label>
+          <label> تعداد </label>
 
           <input
             v-model.number="newColor.qty"
@@ -427,19 +369,11 @@ function nextStep() {
 
         <!-- Actions -->
         <div class="editor-actions">
-          <button
-            type="button"
-            class="cancel-btn"
-            @click="cancelAddColor"
-          >
+          <button type="button" class="cancel-btn" @click="cancelAddColor">
             لغو
           </button>
 
-          <button
-            type="button"
-            class="save-color-btn"
-            @click="addColor"
-          >
+          <button type="button" class="save-color-btn" @click="addColor">
             افزودن رنگ
           </button>
         </div>
@@ -447,14 +381,9 @@ function nextStep() {
 
       <!-- Total -->
       <div class="total-field">
-        <span class="total-field__label">
-          جمع کل
-        </span>
+        <span class="total-field__label"> جمع کل </span>
 
-        <div
-          class="total-field__control"
-          :class="{ incomplete: !isComplete }"
-        >
+        <div class="total-field__control" :class="{ incomplete: !isComplete }">
           <CircleCheck
             v-if="isComplete"
             :size="18"
@@ -472,21 +401,12 @@ function nextStep() {
 
     <!-- Footer -->
     <div class="form-footer">
-      <router-link
-        :to="{ name: 'add-job-1' }"
-        class="footer-btn"
-      >
-        <AppButton variant="outline">
-          بازگشت
-        </AppButton>
+      <router-link :to="{ name: 'add-job-1' }" class="footer-btn">
+        <AppButton variant="outline"> بازگشت </AppButton>
       </router-link>
 
       <div class="footer-btn">
-        <AppButton
-          @click="nextStep"
-        >
-          ادامه
-        </AppButton>
+        <AppButton @click="nextStep"> ادامه </AppButton>
       </div>
     </div>
   </div>

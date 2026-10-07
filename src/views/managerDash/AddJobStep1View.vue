@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { Shirt, Calendar } from 'lucide-vue-next';
-import StepperHeader from '../components/common/StepperHeader.vue';
-import FormField from '../components/common/FormField.vue';
-import SelectField from '../components/common/SelectField.vue';
-import AppButton from '../components/common/AppButton.vue';
+import StepperHeader from '@/components/common/StepperHeader.vue';
+import FormField from '@/components/common/FormField.vue';
+import SelectField from '@/components/common/SelectField.vue';
+import AppButton from '@/components/common/AppButton.vue';
 import { useProductStore } from '@/stores/useProductStore.js';
 import { toast } from 'vue-sonner';
 import { useRouter } from 'vue-router';
 
-const product = useProductStore()
-const router = useRouter()
+const product = useProductStore();
+const router = useRouter();
 
-function nextRoute(){
-  const p = product.newProduct
-  if(p.amount > 1 && p.name.trim() && p.lines > 1 ){
-    router.push({name : 'add-job-2'})
-  }else{
-    toast.warning("لطفا با دقت کادر هارا پر کنید")
+function nextRoute() {
+  const p = product.newProduct;
+  if (p.amount > 1 && p.name.trim() && p.lines > 1) {
+    router.push({ name: 'add-job-2' });
+  } else {
+    toast.warning('لطفا با دقت کادر هارا پر کنید');
   }
 }
 </script>
@@ -26,18 +26,18 @@ function nextRoute(){
     <StepperHeader :current-step="1" />
 
     <div class="form-body">
-      <FormField 
-        v-model="product.newProduct.lines" 
-        type="number" 
-        label="تعداد خط ها" 
-        placeholder="مثلاً 1000" 
+      <FormField
+        v-model="product.newProduct.lines"
+        type="number"
+        label="تعداد خط ها"
+        placeholder="مثلاً 1000"
       />
 
-      <SelectField 
-        type="text" 
-        label="نوع کار" 
+      <SelectField
+        type="text"
+        label="نوع کار"
         placeholder="تی‌شرت"
-        :icon="Shirt" 
+        :icon="Shirt"
         v-model="product.newProduct.name"
       />
 

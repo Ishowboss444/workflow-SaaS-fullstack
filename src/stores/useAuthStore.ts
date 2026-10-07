@@ -29,15 +29,17 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const result = await login(info);
       localStorage.setItem('accessToken', result.data.token);
-      console.log(result.status);
+      console.log(result);
       
+      console.log(result.status);
+
       return result;
     } catch (err) {
-      const isError = String(err)
-      if(isError.includes('401')){
-        toast.error("فری با این مشخصات وجود ندارد یا پسوورد اشتباه است") 
-      }else{
-        toast.error('ارور سرور') 
+      const isError = String(err);
+      if (isError.includes('401')) {
+        toast.error('فردی با این مشخصات وجود ندارد یا پسوورد اشتباه است');
+      } else {
+        toast.error('ارور سرور');
       }
       console.log(err);
       error.value = err instanceof Error ? err.message : 'signup failed';

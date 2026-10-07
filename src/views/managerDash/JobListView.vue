@@ -1,23 +1,21 @@
 <script setup>
 import { Bell, Search, Plus, Scissors } from 'lucide-vue-next';
-import BottomNav from '../components/common/BottomNav.vue';
-import StatusBadge from '../components/common/StatusBadge.vue';
-import ProgressBar from '../components/common/ProgressBar.vue';
-import { ref ,onMounted} from 'vue';
+import BottomNav from '@/components/common/BottomNav.vue';
+import StatusBadge from '@/components/common/StatusBadge.vue';
+import ProgressBar from '@/components/common/ProgressBar.vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProductStore } from '@/stores/useProductStore.js';
-import Loading from '@/components/common/Loading.vue';
 import FullfilledLoading from '@/components/common/FullfilledLoading.vue';
 
-const products = useProductStore()
+const products = useProductStore();
 const activeFilter = ref('active'); // all | active | done
 const router = useRouter();
 
-
-onMounted(async ()=>{
-  const data = await products._getProduct()
+onMounted(async () => {
+  const data = await products._getProduct();
   console.log(data);
-})
+});
 
 const filters = [
   { key: 'all', label: 'همه' },
@@ -29,7 +27,11 @@ const filters = [
 <template>
   <div class="page" v-if="!products.loading">
     <header class="job-list-header">
-      <button class="icon-btn" aria-label="اعلان‌ها" @click="router.push({name: 'myInvitations'})">
+      <button
+        class="icon-btn"
+        aria-label="اعلان‌ها"
+        @click="router.push({ name: 'myInvitations' })"
+      >
         <Bell :size="20" />
       </button>
       <h1>کارها</h1>
@@ -80,20 +82,22 @@ const filters = [
           <ProgressBar :percent="(job.done / job.amount) * 100" />
           <div class="job-card__bottom">
             <span>{{ job.lines }} خط</span>
-            <span class="job-card__percent">{{ (job.done / job.amount) * 100 }}%</span>
+            <span class="job-card__percent"
+              >{{ (job.done / job.amount) * 100 }}%</span
+            >
           </div>
         </div>
       </router-link>
     </div>
   </div>
-  <FullfilledLoading v-else/>
+  <FullfilledLoading v-else />
   <!-- <Loading /> -->
   <BottomNav active="jobs" />
 </template>
 
 <style scoped lang="scss">
-@use '../assets/scss/variables' as *;
-@use '../assets/scss/mixins' as *;
+@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/mixins' as *;
 
 .job-list-header {
   @include page-padding;

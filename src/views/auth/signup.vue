@@ -1,6 +1,6 @@
 <template>
   <div class="signup-page" dir="rtl">
-    <main class="signup-card" :class="{'isDisabled' : auth.loading}">
+    <main class="signup-card" :class="{ isDisabled: auth.loading }">
       <!-- Header -->
       <header class="signup-header">
         <div class="logo">
@@ -51,9 +51,7 @@
             />
           </div>
 
-          <small>
-            نام کاربری باید حداقل ۳ کاراکتر باشد.
-          </small>
+          <small> نام کاربری باید حداقل ۳ کاراکتر باشد. </small>
         </div>
 
         <!-- Password -->
@@ -86,20 +84,13 @@
             :class="{ invalid: passwordMismatch }"
           />
 
-          <small
-            v-if="passwordMismatch"
-            class="error"
-          >
+          <small v-if="passwordMismatch" class="error">
             رمزهای عبور یکسان نیستند.
           </small>
         </div>
 
         <!-- Submit -->
-        <button
-          class="submit-button"
-          type="submit"
-          :disabled="!canSubmit"
-        >
+        <button class="submit-button" type="submit" :disabled="!canSubmit">
           ساخت حساب
         </button>
       </form>
@@ -108,38 +99,35 @@
       <div class="login-link">
         <span>قبلاً حساب داری؟</span>
 
-        <RouterLink :to="{name : 'login'}">
-          وارد شو
-        </RouterLink>
+        <RouterLink :to="{ name: 'login' }"> وارد شو </RouterLink>
       </div>
     </main>
-    <Loading v-if="auth.loading"/>
+    <Loading v-if="auth.loading" />
   </div>
 </template>
 
 <script setup>
-import Loading from '@/components/common/Loading.vue'
-import { useAuthStore } from '@/stores/useAuthStore'
-import { computed, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import { toast } from 'vue-sonner'
+import Loading from '@/components/common/Loading.vue';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { computed, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
 
-const router = useRouter()
-const auth = useAuthStore()
+const router = useRouter();
+const auth = useAuthStore();
 
 const form = reactive({
   name: '',
   username: '',
   password: '',
   passwordConfirm: '',
-})
+});
 
 const passwordMismatch = computed(() => {
   return (
-    form.passwordConfirm.length > 0 &&
-    form.password !== form.passwordConfirm
-  )
-})
+    form.passwordConfirm.length > 0 && form.password !== form.passwordConfirm
+  );
+});
 
 const canSubmit = computed(() => {
   return (
@@ -148,31 +136,29 @@ const canSubmit = computed(() => {
     form.username.trim().startsWith('@') &&
     form.password.length >= 8 &&
     form.password === form.passwordConfirm
-  )
-})
+  );
+});
 
 const handleSubmit = async () => {
-  if (!canSubmit.value) return toast.error('با دقت فرم را پر کنید')
+  if (!canSubmit.value) return toast.error('با دقت فرم را پر کنید');
 
-  try{
+  try {
     const data = await auth.Signup({
-      name : form.name,
-      username : form.username,
-      password : form.passwordConfirm,
-    })
+      name: form.name,
+      username: form.username,
+      password: form.passwordConfirm,
+    });
 
-    if(data){
-      toast.success('حساب کاربری با موفقیت ساخته شد.')
+    if (data) {
+      toast.success('حساب کاربری با موفقیت ساخته شد.');
       console.log(data);
-      router.push({name : 'login'})
+      router.push({ name: 'login' });
     }
-    return data 
+    return data;
+  } catch (err) {
+    toast.error('there is an error', err);
   }
-
-  catch(err){
-    toast.error('there is an error' , err)
-  }
-}
+};
 </script>
 
 <style lang="scss" scoped>

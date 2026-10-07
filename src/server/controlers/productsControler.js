@@ -15,26 +15,27 @@ export class Products {
           id: this.user.id,
         },
       });
-      if(!userExist.workplaceId) return this.res.status(500).json({
-        status : 'success',
-        message : "you don't have any workplace"
-      })
+      if (!userExist.workplaceId)
+        return this.res.status(500).json({
+          status: 'success',
+          message: "you don't have any workplace",
+        });
       const products = await prisma.workplace.findUnique({
-        where : {
-          id : userExist.workplaceId,
+        where: {
+          id: userExist.workplaceId,
         },
-        include :{
-          products : true,
+        include: {
+          products: true,
         },
-      })
+      });
 
       if (!products)
         return this.res(409).json({
           status: 'failed',
           message: 'went wrong',
         });
-        console.log('in shouldnt be');
-        
+      console.log('in shouldnt be');
+
       this.res.status(201).json({
         status: 'success',
         data: products.products,
@@ -44,7 +45,7 @@ export class Products {
     }
   }
 
-  async getSpecificProducts(id){
+  async getSpecificProducts(id) {
     try {
       const userExist = await prisma.user.findUnique({
         where: {
@@ -52,23 +53,23 @@ export class Products {
         },
       });
       const workplace = await prisma.workplace.findUnique({
-        where : {
-          id : userExist.workplaceId,
+        where: {
+          id: userExist.workplaceId,
         },
-      })
-    if(userExist.id !== workplace.ownerId )
-      return this.res(409).json({
+      });
+      if (userExist.id !== workplace.ownerId)
+        return this.res(409).json({
           status: 'failed',
           message: 'you are not premitted',
         });
-      
+
       const product = await prisma.product.findUnique({
-        where : {
-          id : id,
+        where: {
+          id: id,
         },
-      })
+      });
       console.log(product);
-      
+
       this.res.status(201).json({
         status: 'success',
         data: product,
@@ -106,14 +107,13 @@ export class Products {
           description: this.body.name,
           colors: this.body.colors,
           amount: this.body.amount,
-          salary : this.body.salary,
-          lines : this.body.lines,
-          right_tailor : this.body.right_tailor,
-          mid_tailor : this.body.mid_tailor,
-          top_tailor : this.body.top_tailor,
+          salary: this.body.salary,
+          lines: this.body.lines,
+          right_tailor: this.body.right_tailor,
+          mid_tailor: this.body.mid_tailor,
+          top_tailor: this.body.top_tailor,
           workplaceId: userValid.workplaceId,
         },
-
       });
       this.res.status(201).json({
         status: 'success',

@@ -39,9 +39,14 @@ class Auth {
             id: userExist.id,
             username: userExist.username,
             name: userExist.name,
+            field : userExist.field,
+            role: userExist.role,
+            workplaceId : userExist.workplaceId,
           },
           process.env.ACCESS_TOKEN_SECRET
         );
+        console.log(userExist.field , userExist.role , userExist.workplaceId);
+        
 
         this.res.cookie('accessToken', accessToken, {
           httpOnly: true,
@@ -56,6 +61,9 @@ class Auth {
             id: userExist.id,
             name: userExist.name,
             username: userExist.username,
+            field : userExist.field,
+            role: userExist.role,
+            workplaceId : userExist.workplaceId,
             token: accessToken,
           },
         });

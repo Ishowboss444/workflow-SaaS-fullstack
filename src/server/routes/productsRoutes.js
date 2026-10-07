@@ -9,18 +9,18 @@ router.post(
   authonticated,
   authorization('MANAGER'),
   async (req, res) => {
-    const newProduct = new Products(req,res)
-    newProduct.addProduct()
+    const newProduct = new Products(req, res);
+    newProduct.addProduct();
   }
 );
 router.get('/get', authonticated, (req, res) => {
-    const products = new Products(req,res)
-    products.getProducts()
+  const products = new Products(req, res);
+  products.getProducts();
 });
-router.get('/:id/get', authonticated , authorization('MANAGER'), (req, res) => {
-    const id = Number(req.params.id)
-    const products = new Products(req,res)
-    products.getSpecificProducts(id)
+router.get('/:id/get', authonticated, authorization('MANAGER'), (req, res) => {
+  const id = Number(req.params.id);
+  const products = new Products(req, res);
+  products.getSpecificProducts(id);
 });
 
 export default router;

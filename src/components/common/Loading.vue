@@ -4,11 +4,11 @@
 </script>
 
 <template>
-    <div class="response-loader">
-        <span class="response-loader__dot" />
-        <span class="response-loader__dot" />
-        <span class="response-loader__dot" />
-    </div>
+  <div class="response-loader">
+    <span class="response-loader__dot" />
+    <span class="response-loader__dot" />
+    <span class="response-loader__dot" />
+  </div>
 </template>
 
 <style scoped lang="scss">

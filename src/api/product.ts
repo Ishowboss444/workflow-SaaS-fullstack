@@ -4,11 +4,11 @@ export interface ProductAdd {
   description: string;
   colors: object[];
   amount: number;
-  salary : {manager : number , worker : number  },
-  lines : number ,
-  right_tailor : number,
-  mid_tailor : number,
-  top_tailor : number,
+  salary: { manager: number; worker: number };
+  lines: number;
+  right_tailor: number;
+  mid_tailor: number;
+  top_tailor: number;
 }
 export async function addProduct(info: ProductAdd) {
   console.log(token);
@@ -25,11 +25,11 @@ export async function addProduct(info: ProductAdd) {
         description: info.description,
         colors: info.colors,
         amount: info.amount,
-        salary : info.salary,
-        lines : info.lines,
-        right_tailor : info.right_tailor,
-        mid_tailor : info.mid_tailor,
-        top_tailor : info.top_tailor,
+        salary: info.salary,
+        lines: info.lines,
+        right_tailor: info.right_tailor,
+        mid_tailor: info.mid_tailor,
+        top_tailor: info.top_tailor,
       }),
     });
     if (!response.ok) {
@@ -44,8 +44,7 @@ export async function addProduct(info: ProductAdd) {
   }
 }
 
-export async function getProducts(id : number | null = null) {
-
+export async function getProducts(id: number | null = null) {
   const url =
     id !== null
       ? `http://localhost:3000/product/${id}/get`

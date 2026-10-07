@@ -1,25 +1,20 @@
 ```vue
 <script setup>
-import FullfilledLoading from '@/components/common/FullfilledLoading.vue'
-import { useInvitationsStore } from '@/stores/useInvitationsStore'
-import {
-  Mail,
-  Check,
-  X,
-  ChevronLeft,
-} from 'lucide-vue-next'
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { toast } from 'vue-sonner'
+import FullfilledLoading from '@/components/common/FullfilledLoading.vue';
+import { useInvitationsStore } from '@/stores/useInvitationsStore';
+import { Mail, Check, X, ChevronLeft } from 'lucide-vue-next';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
 
-const router = useRouter()
-const invite = useInvitationsStore()
-const myInvites = ref([])
+const router = useRouter();
+const invite = useInvitationsStore();
+const myInvites = ref([]);
 
-onMounted(async()=>{
-  const data = await invite.myInvitations()
+onMounted(async () => {
+  const data = await invite.myInvitations();
   console.log(data);
-})
+});
 const invitations = ref([
   {
     id: 1,
@@ -45,38 +40,35 @@ const invitations = ref([
     },
     sentAt: '۲ روز پیش',
     status: 'accepted',
-  }
-])
+  },
+]);
 
-const activeFilter = ref('all')
+const activeFilter = ref('all');
 
 const filteredInvitations = computed(() => {
   if (activeFilter.value === 'all') {
-    return invitations.value
+    return invitations.value;
   }
 
   return invitations.value.filter(
     (invite) => invite.status === activeFilter.value
-  )
-})
+  );
+});
 
 const pendingCount = computed(
-  () =>
-    invitations.value.filter(
-      (invite) => invite.status === 'pending'
-    ).length
-)
+  () => invitations.value.filter((invite) => invite.status === 'pending').length
+);
 
 function acceptInvitation(invitation) {
-  invitation.status = 'accepted'
+  invitation.status = 'accepted';
 
-  toast.success('دعوت‌نامه پذیرفته شد')
+  toast.success('دعوت‌نامه پذیرفته شد');
 }
 
 function declineInvitation(invitation) {
-  invitation.status = 'declined'
+  invitation.status = 'declined';
 
-  toast.success('دعوت‌نامه رد شد')
+  toast.success('دعوت‌نامه رد شد');
 }
 </script>
 
@@ -85,10 +77,10 @@ function declineInvitation(invitation) {
     <!-- HEADER -->
     <header class="invitations-header">
       <div>
-          <div class="header-label">
-            <button class="icon-btn" @click="router.push({name : 'job-list'})">
-                <X/>
-            </button>
+        <div class="header-label">
+          <button class="icon-btn" @click="router.push({ name: 'job-list' })">
+            <X />
+          </button>
 
           <Mail :size="15" />
           دعوت‌نامه‌ها
@@ -96,15 +88,10 @@ function declineInvitation(invitation) {
 
         <h1>دعوت‌های شما</h1>
 
-        <p>
-          دعوت‌نامه‌های همکاری و سفارش‌های جدید را اینجا ببینید.
-        </p>
+        <p>دعوت‌نامه‌های همکاری و سفارش‌های جدید را اینجا ببینید.</p>
       </div>
 
-      <div
-        v-if="pendingCount"
-        class="pending-count"
-      >
+      <div v-if="pendingCount" class="pending-count">
         {{ pendingCount }}
         <span>جدید</span>
       </div>
@@ -165,9 +152,7 @@ function declineInvitation(invitation) {
                 {{ invitation.sender.name }}
               </strong>
 
-              <span>
-                manager
-              </span>
+              <span> manager </span>
             </div>
           </div>
 
@@ -181,7 +166,6 @@ function declineInvitation(invitation) {
           <h2>
             شما به کارگاه <span>{{ invitation.sender.name }}</span> دعوت شدید
           </h2>
-
         </div>
 
         <!-- FOOTER -->
@@ -207,19 +191,10 @@ function declineInvitation(invitation) {
           </template>
 
           <template v-else>
-            <div
-              class="status"
-              :class="invitation.status"
-            >
-              <Check
-                v-if="invitation.status === 'accepted'"
-                :size="15"
-              />
+            <div class="status" :class="invitation.status">
+              <Check v-if="invitation.status === 'accepted'" :size="15" />
 
-              <X
-                v-else
-                :size="15"
-              />
+              <X v-else :size="15" />
 
               {{
                 invitation.status === 'accepted'
@@ -228,10 +203,7 @@ function declineInvitation(invitation) {
               }}
             </div>
 
-            <button
-              type="button"
-              class="details-btn"
-            >
+            <button type="button" class="details-btn">
               جزئیات
               <ChevronLeft :size="15" />
             </button>
@@ -240,23 +212,18 @@ function declineInvitation(invitation) {
       </article>
 
       <!-- EMPTY -->
-      <div
-        v-if="filteredInvitations.length === 0"
-        class="empty-state"
-      >
+      <div v-if="filteredInvitations.length === 0" class="empty-state">
         <div class="empty-icon">
           <Mail :size="23" />
         </div>
 
         <h3>دعوت‌نامه‌ای وجود ندارد</h3>
 
-        <p>
-          در حال حاضر دعوت‌نامه‌ای در این بخش نیست.
-        </p>
+        <p>در حال حاضر دعوت‌نامه‌ای در این بخش نیست.</p>
       </div>
     </main>
   </div>
-  <FullfilledLoading v-else/>
+  <FullfilledLoading v-else />
 </template>
 
 <style scoped lang="scss">
@@ -430,8 +397,7 @@ $color-border-soft: #f1f5f9 !default;
 
   background: $color-bg-card;
 
-  box-shadow:
-    0 3px 14px rgba(0, 0, 0, 0.025);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.025);
 
   transition:
     transform 0.15s,
@@ -441,8 +407,7 @@ $color-border-soft: #f1f5f9 !default;
 .invitation-card:hover {
   transform: translateY(-1px);
 
-  box-shadow:
-    0 8px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
 }
 
 /* =========================

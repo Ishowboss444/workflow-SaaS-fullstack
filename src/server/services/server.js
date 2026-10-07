@@ -23,7 +23,7 @@ app.use('/auth', authRoutes);
 app.use('/workplace', workplaceRoutes);
 app.use('/invites', jobResearchRoutes);
 app.use('/product', productsRoutes);
-app.use('/users' , usersRoutes)
+app.use('/users', usersRoutes);
 // Middleware to parse JSON requests
 // Start the server
 const server = app.listen(3000, () => {

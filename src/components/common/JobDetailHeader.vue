@@ -5,10 +5,10 @@ import StatusBadge from './StatusBadge.vue';
 import TabBar from './TabBar.vue';
 import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 const props = defineProps({
   activeTab: { type: String, required: true },
-  data : { type : Object , required : true}
+  data: { type: Object, required: true },
 });
 
 const tabs = [
@@ -34,18 +34,14 @@ const tabs = [
 <template>
   <header class="job-header">
     <div class="job-header__top">
-      <button 
-      class="icon-btn" 
-      aria-label="بازگشت"
-      @click="router.back()"
-      >
-        <ArrowRight :size="20"/>
+      <button class="icon-btn" aria-label="بازگشت" @click="router.back()">
+        <ArrowRight :size="20" />
       </button>
       <div class="job-header__title-wrap">
         <span class="job-header__order">#{{ data.id }}</span>
-        <StatusBadge 
+        <StatusBadge
           :status="data.amount === data.done ? 'done' : 'active'"
-          :label="data.amount === data.done ? 'تمام' : 'فعال'" 
+          :label="data.amount === data.done ? 'تمام' : 'فعال'"
         />
       </div>
       <button class="icon-btn" aria-label="گزینه‌ها">
@@ -65,10 +61,12 @@ const tabs = [
     <div class="job-header__progress">
       <div class="job-header__progress-top">
         <span>پیشرفت کلی</span>
-        <strong>{{(data.done / data.amount) * 100 }}%</strong>
+        <strong>{{ (data.done / data.amount) * 100 }}%</strong>
       </div>
       <ProgressBar :percent="(data.done / data.amount) * 100" :height="8" />
-      <span class="job-header__progress-count">{{ data.done }} / {{ data.amount }}</span>
+      <span class="job-header__progress-count"
+        >{{ data.done }} / {{ data.amount }}</span
+      >
     </div>
   </header>
 

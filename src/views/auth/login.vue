@@ -1,6 +1,6 @@
 <template>
   <div class="login-page" dir="rtl">
-    <main class="login-card" :class="{'isDisabled' : auth.loading}">
+    <main class="login-card" :class="{ isDisabled: auth.loading }">
       <!-- Header -->
       <header class="login-header">
         <div class="logo">
@@ -24,7 +24,6 @@
           <label for="username">نام کاربری</label>
 
           <div class="username-input">
-
             <input
               id="username"
               v-model="form.username"
@@ -62,11 +61,7 @@
         </div>
 
         <!-- Submit -->
-        <button
-          class="submit-button"
-          type="submit"
-          :disabled="!canSubmit"
-        >
+        <button class="submit-button" type="submit" :disabled="!canSubmit">
           ورود به حساب
         </button>
       </form>
@@ -75,55 +70,67 @@
       <div class="signup-link">
         <span>حساب کاربری نداری؟</span>
 
-        <RouterLink :to="{name:'signup'}">
-          ثبت نام کن
-        </RouterLink>
+        <RouterLink :to="{ name: 'signup' }"> ثبت نام کن </RouterLink>
       </div>
     </main>
-    <Loading v-if="auth.loading"/>
+    <Loading v-if="auth.loading" />
   </div>
 </template>
 
 <script setup>
-import Loading from '@/components/common/Loading.vue'
-import { useAuthStore } from '@/stores/useAuthStore'
-import { computed, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import { toast } from 'vue-sonner'
+import Loading from '@/components/common/Loading.vue';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useGlobalStore } from '@/stores/useGlobal';
+import { computed, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
 
-const router = useRouter()
-const auth = useAuthStore()
+const router = useRouter();
+const auth = useAuthStore();
+const global = useGlobalStore()
 
 const form = reactive({
   username: '',
   password: '',
-})
+});
 
 const canSubmit = computed(() => {
   return (
     form.username.trim().length >= 3 &&
     form.username.trim().startsWith('@') &&
     form.password.length > 0
-  )
-})
+  );
+});
 
 const handleSubmit = async () => {
-  if (!canSubmit.value) return
+  if (!canSubmit.value) return;
 
   const data = await auth.Login({
-    username : form.username , 
-    password  :form.password , 
-  })
-  
-  if(!data) return
+    username: form.username,
+    password: form.password,
+  });
 
-  toast.success('با موفقیت وارد شد')
-  router.push({name : 'job-list'})
-}
+  if (!data) return;
+  console.log(data.data);
+  
+  if(data.data.username) global.usernameChange(data.data.username)
+  if(data.data.workplaceId) global.workplaceChange(Number(data.data.workplaceId))
+  
+  if(data.data.role) global.roleChange(data.data.role)
+  if(data?.data?.field && data?.data?.role){
+    global.roleChange(data.data.role)
+    global.fieldChange(data.data.field)
+    toast.success('خوش برگشتی 👋')
+    return router.push({name : 'workerDashboard'})
+  } 
+
+  toast.success('با موفقیت وارد شد');
+  // router.push({ name: 'starter' });
+};
 
 const handleForgotPassword = () => {
-  toast.info('بازیابی رمز عبور به‌زودی فعال می‌شود.')
-}
+  toast.info('بازیابی رمز عبور به‌زودی فعال می‌شود.');
+};
 </script>
 
 <style lang="scss" scoped>
@@ -136,7 +143,7 @@ const handleForgotPassword = () => {
   display: flex;
   justify-content: center;
 }
-.isDisabled{
+.isDisabled {
   pointer-events: none;
   opacity: 0.5;
 }

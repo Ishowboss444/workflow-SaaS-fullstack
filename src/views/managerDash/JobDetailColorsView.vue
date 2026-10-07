@@ -4,28 +4,26 @@ import JobDetailHeader from '../components/common/JobDetailHeader.vue';
 import ProgressBar from '../components/common/ProgressBar.vue';
 import AppButton from '../components/common/AppButton.vue';
 import { useProductStore } from '@/stores/useProductStore.js';
-import { onMounted , ref} from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Loading from '@/components/common/Loading.vue';
 
-const route = useRoute()
-const product = useProductStore()
-const data = ref([])
-onMounted(async()=>{
-  const id = route.params.id
-  const response = await product._getProduct(id)
-  data.value = response.data
+const route = useRoute();
+const product = useProductStore();
+const data = ref([]);
+onMounted(async () => {
+  const id = route.params.id;
+  const response = await product._getProduct(id);
+  data.value = response.data;
   console.log(data.value.colors);
-  
-})
-
+});
 </script>
 
 <template>
   <div class="page" v-if="!product.loading">
-    <JobDetailHeader active-tab="colors" :data="data"/>
+    <JobDetailHeader active-tab="colors" :data="data" />
 
-    <div >
+    <div>
       <div class="tab-body-inner">
         <div v-for="c in data.colors" :key="c.name" class="color-card">
           <div class="color-card__top">
@@ -40,7 +38,7 @@ onMounted(async()=>{
           </div>
           <ProgressBar :percent="c.done" />
         </div>
-  
+
         <AppButton variant="outline">
           <span class="edit-btn"><Pencil :size="16" /> ویرایش</span>
         </AppButton>
@@ -48,7 +46,7 @@ onMounted(async()=>{
     </div>
   </div>
 
-  <Loading v-else/>
+  <Loading v-else />
 </template>
 
 <style scoped lang="scss">

@@ -8,22 +8,20 @@ export const useUsersStore = defineStore('users', () => {
   const loading = ref(false);
   const error = ref(false);
 
-  async function searchForUser(username : string){
-    loading.value = true
-    if(!username.trim().startsWith('@')) {
-      loading.value = false
-      return toast.error('نام کاربری اشتباه است')
+  async function searchForUser(username: string) {
+    loading.value = true;
+    if (!username.trim().startsWith('@')) {
+      loading.value = false;
+      return toast.error('نام کاربری اشتباه است');
     }
 
-    try{
-      const data = await findUser(username)
-      return data
-    }
-    catch(err){
+    try {
+      const data = await findUser(username);
+      return data;
+    } catch (err) {
       console.log(err);
-    }
-    finally{
-      loading.value = false
+    } finally {
+      loading.value = false;
     }
   }
 
@@ -31,6 +29,6 @@ export const useUsersStore = defineStore('users', () => {
     users,
     loading,
     error,
-    searchForUser
-  }
+    searchForUser,
+  };
 });

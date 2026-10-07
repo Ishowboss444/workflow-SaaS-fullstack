@@ -1,39 +1,39 @@
 <script setup>
-import Loading from '@/components/common/Loading.vue'
-import { useInvitationsStore } from '@/stores/useInvitationsStore'
-import { useUsersStore } from '@/stores/useUsersStore'
-import { from } from 'bcrypto/lib/native/bn'
+import Loading from '@/components/common/Loading.vue';
+import { useInvitationsStore } from '@/stores/useInvitationsStore';
+import { useUsersStore } from '@/stores/useUsersStore';
+import { from } from 'bcrypto/lib/native/bn';
 import {
   Search,
   UserPlus,
   Check,
   BriefcaseBusiness,
   Users,
-} from 'lucide-vue-next'
-import { computed, ref } from 'vue'
-import { toast } from 'vue-sonner'
+} from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
 
-const search = ref('')
-const people = ref([])
-const user = useUsersStore()
-const invite = useInvitationsStore()
+const search = ref('');
+const people = ref([]);
+const user = useUsersStore();
+const invite = useInvitationsStore();
 async function sendInvitation(person) {
-  if (person.workplaceId) return toast.warning('این یوزر درحال حاضر در یک کارگاه هست')
+  if (person.workplaceId)
+    return toast.warning('این یوزر درحال حاضر در یک کارگاه هست');
 
   console.log(person.id);
-  const data = await invite.sendInvitations(Number(person.id))
+  const data = await invite.sendInvitations(Number(person.id));
   console.log(data);
-  if(!data) return console.error(data)
-  
-  toast.success(`دعوت‌نامه برای ${person.name} ارسال شد`)
+  if (!data) return console.error(data);
+
+  toast.success(`دعوت‌نامه برای ${person.name} ارسال شد`);
 }
 
+async function searchUser(username) {
+  if (!username.trim()) return toast.error('لطفا با دقت جستوجو کنید');
 
-async function searchUser(username){
-  if(!username.trim()) return toast.error('لطفا با دقت جستوجو کنید')
-
-  const data = await user.searchForUser(username)
-  people.value.push(data.data)
+  const data = await user.searchForUser(username);
+  people.value.push(data.data);
   console.log(data);
   console.log(people.value);
 }
@@ -50,9 +50,7 @@ async function searchUser(username){
       <div class="header-content">
         <h1>دعوت از افراد</h1>
 
-        <p>
-          افراد موردنظر را پیدا کنید و برای همکاری دعوت بفرستید.
-        </p>
+        <p>افراد موردنظر را پیدا کنید و برای همکاری دعوت بفرستید.</p>
       </div>
     </header>
 
@@ -69,22 +67,14 @@ async function searchUser(username){
 
     <!-- RESULTS HEADER -->
     <div class="results-header" v-if="!user.loading">
-      <span>
-        افراد
-      </span>
+      <span> افراد </span>
 
-      <small>
-        {{ people.length }} نفر
-      </small>
+      <small> {{ people.length }} نفر </small>
     </div>
 
     <!-- PEOPLE -->
     <main class="people-list" v-if="!user.loading">
-      <article
-        v-for="person in people"
-        :key="person.id"
-        class="person-card"
-      >
+      <article v-for="person in people" :key="person.id" class="person-card">
         <div class="person-main">
           <!-- AVATAR -->
           <div class="avatar">
@@ -108,10 +98,9 @@ async function searchUser(username){
               <BriefcaseBusiness :size="13" />
 
               <span>
-                {{ person.role || 'انتخاب نشده'}}
+                {{ person.role || 'انتخاب نشده' }}
               </span>
             </div>
-
           </div>
         </div>
 
@@ -123,15 +112,9 @@ async function searchUser(username){
           :disabled="person.invited"
           @click="sendInvitation(person)"
         >
-          <Check
-            v-if="person.invited"
-            :size="16"
-          />
+          <Check v-if="person.invited" :size="16" />
 
-          <UserPlus
-            v-else
-            :size="16"
-          />
+          <UserPlus v-else :size="16" />
 
           <span>
             {{ person.invited ? 'ارسال شد' : 'دعوت' }}
@@ -140,24 +123,17 @@ async function searchUser(username){
       </article>
 
       <!-- EMPTY -->
-      <div
-        v-if="people.length === 0"
-        class="empty-state"
-      >
+      <div v-if="people.length === 0" class="empty-state">
         <div class="empty-icon">
           <Users :size="22" />
         </div>
 
-        <h3>
-          کسی پیدا نشد
-        </h3>
+        <h3>کسی پیدا نشد</h3>
 
-        <p>
-          نام یا نقش شخص موردنظر را تغییر دهید.
-        </p>
+        <p>نام یا نقش شخص موردنظر را تغییر دهید.</p>
       </div>
     </main>
-    <Loading v-else/>
+    <Loading v-else />
   </div>
 </template>
 
@@ -257,8 +233,7 @@ async function searchUser(username){
 .search-box:focus-within {
   border-color: $color-primary;
 
-  box-shadow:
-    0 0 0 3px rgba(99, 102, 241, 0.08);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
 }
 
 .search-box input {
@@ -347,8 +322,7 @@ async function searchUser(username){
 
   border-color: $color-border;
 
-  box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.035);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.035);
 }
 
 /* =========================
@@ -577,4 +551,3 @@ async function searchUser(username){
   }
 }
 </style>
-

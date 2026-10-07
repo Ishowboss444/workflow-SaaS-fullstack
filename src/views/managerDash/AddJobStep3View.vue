@@ -9,44 +9,43 @@ import { toast } from 'vue-sonner';
 import { useRouter } from 'vue-router';
 import Loading from '@/components/common/Loading.vue';
 
-const product = useProductStore()
-const router = useRouter()
+const product = useProductStore();
+const router = useRouter();
 const salary = ref({
-  worker : 0,
-  manager : 0,
-})
-const calculation = computed(()=>{
-
-  const amount = product.newProduct.amount
+  worker: 0,
+  manager: 0,
+});
+const calculation = computed(() => {
+  const amount = product.newProduct.amount;
 
   const result = {
-    all : amount * salary.value.manager,
-    worker : amount * salary.value.worker,
-    pure : (amount  * salary.value.manager) - (amount * salary.value.worker)
-  }
+    all: amount * salary.value.manager,
+    worker: amount * salary.value.worker,
+    pure: amount * salary.value.manager - amount * salary.value.worker,
+  };
 
-  return result
-})
-function setSalary (){
-  product.newProduct.salary = salary.value
+  return result;
+});
+function setSalary() {
+  product.newProduct.salary = salary.value;
   console.log(product.newProduct.salary);
 }
 
-async function createProduction(){
-  setSalary()
-  const p = product.newProduct
-  const plus = p.mid_tailor + p.top_tailor + p.right_tailor 
-  if(p.amount === 0 ){
-    alert('you need fill it again ')
-    return router.push({name : 'add-job-1'})
+async function createProduction() {
+  setSalary();
+  const p = product.newProduct;
+  const plus = p.mid_tailor + p.top_tailor + p.right_tailor;
+  if (p.amount === 0) {
+    alert('you need fill it again ');
+    return router.push({ name: 'add-job-1' });
   }
-  if(plus !== p.lines){
-    return toast.error('جمع خط ها با کل خط ها مطابقت ندارد ')
+  if (plus !== p.lines) {
+    return toast.error('جمع خط ها با کل خط ها مطابقت ندارد ');
   }
-  
-  const data = await product._addProduct(p)
-  if(data){
-    toast.success('successfully added')
+
+  const data = await product._addProduct(p);
+  if (data) {
+    toast.success('successfully added');
   }
   console.log(data);
 }
@@ -98,8 +97,15 @@ async function createProduction(){
       <div class="summary-card">
         <h3 class="summary-card__title">خلاصه مالی (پیش‌بینی)</h3>
         <SummaryRow label="درآمد کل" :value="`${calculation.all} تومان`" />
-        <SummaryRow label="هزینه کارگر" :value="`${calculation.worker} تومان`"/>
-        <SummaryRow label="سود خالص" :value="`${calculation.pure} تومان`" emphasis />
+        <SummaryRow
+          label="هزینه کارگر"
+          :value="`${calculation.worker} تومان`"
+        />
+        <SummaryRow
+          label="سود خالص"
+          :value="`${calculation.pure} تومان`"
+          emphasis
+        />
       </div>
     </div>
 
@@ -112,7 +118,7 @@ async function createProduction(){
       </div>
     </div>
   </div>
-  <Loading v-else/>
+  <Loading v-else />
 </template>
 
 <style scoped lang="scss">

@@ -5,10 +5,10 @@ defineProps({
   label: { type: String, required: true },
   modelValue: { type: String, default: '' },
   icon: { type: [Object, Function], default: null },
-  type: { type: String, default: "text" },
-  placeholder : { type: String, default: "" },
+  type: { type: String, default: 'text' },
+  placeholder: { type: String, default: '' },
 });
-const model = defineModel()
+const model = defineModel();
 </script>
 
 <template>
@@ -16,7 +16,13 @@ const model = defineModel()
     <span class="select-field__label">{{ label }}</span>
     <div class="select-field__control">
       <ChevronDown :size="16" class="select-field__chevron" />
-      <input :type="type" class="select-field__value" :value="modelValue" :placeholder="placeholder" v-model="model">
+      <input
+        :type="type"
+        class="select-field__value"
+        :value="modelValue"
+        :placeholder="placeholder"
+        v-model="model"
+      />
       <!-- <span class="select-field__value">{{ modelValue }}</span> -->
       <component :is="icon" v-if="icon" :size="18" class="select-field__icon" />
     </div>
@@ -50,7 +56,7 @@ const model = defineModel()
   &__value {
     flex: 1;
     font-size: $font-size-md;
-    border:none;
+    border: none;
     outline: none;
   }
 

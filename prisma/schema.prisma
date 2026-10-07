@@ -84,6 +84,7 @@ enum Field {
   rightTailor
   topTailor
   midTailor
+  general
 }
 
 enum Role {

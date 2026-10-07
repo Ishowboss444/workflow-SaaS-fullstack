@@ -7,20 +7,20 @@ export const useProductStore = defineStore('products', () => {
   const loading = ref(false);
   const error = ref<any>(null);
   const newProduct = ref<ProductAdd>({
-    name : '',
-    description : '',
-    amount : 0 ,
-    colors : [],
-    lines : 0,
-    salary : {
-      manager : 0,
-      worker : 0,
+    name: '',
+    description: '',
+    amount: 0,
+    colors: [],
+    lines: 0,
+    salary: {
+      manager: 0,
+      worker: 0,
     },
-    right_tailor : 0,
-    mid_tailor : 0,
-    top_tailor : 0,
-  })
-  
+    right_tailor: 0,
+    mid_tailor: 0,
+    top_tailor: 0,
+  });
+
   async function _addProduct(info: ProductAdd) {
     loading.value = true;
     try {
@@ -29,11 +29,11 @@ export const useProductStore = defineStore('products', () => {
         description: info.description,
         colors: info.colors,
         amount: info.amount,
-        salary : info.salary,
-        lines : info.lines,
-        right_tailor : info.right_tailor,
-        mid_tailor : info.mid_tailor,
-        top_tailor : info.top_tailor,
+        salary: info.salary,
+        lines: info.lines,
+        right_tailor: info.right_tailor,
+        mid_tailor: info.mid_tailor,
+        top_tailor: info.top_tailor,
       });
       console.log(data);
       return data;
@@ -46,11 +46,11 @@ export const useProductStore = defineStore('products', () => {
     }
   }
 
-  async function _getProduct(id : number) {
+  async function _getProduct(id: number) {
     loading.value = true;
     try {
       const data = await getProducts(id);
-      products.value = data.data
+      products.value = data.data;
       return data;
     } catch (err) {
       console.log(`here is the error : ${err}`);
@@ -67,6 +67,6 @@ export const useProductStore = defineStore('products', () => {
     loading,
     error,
     products,
-    newProduct
+    newProduct,
   };
 });

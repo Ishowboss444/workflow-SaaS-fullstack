@@ -1,10 +1,7 @@
 ```vue
 <template>
   <Transition name="loading">
-    <div
-      class="fulfilled-loading"
-      dir="rtl"
-    >
+    <div class="fulfilled-loading" dir="rtl">
       <div class="loading-content">
         <div class="loading-logo">
           <span></span>
@@ -18,14 +15,12 @@
   </Transition>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 @use '../../assets/scss/variables' as *;
 
 .fulfilled-loading {
-
   width: 100%;
   height: 100dvh;
 
