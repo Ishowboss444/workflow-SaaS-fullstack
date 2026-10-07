@@ -8,7 +8,7 @@ const props = defineProps({
 const router = useRouter()
 const active = ref('home')
 const tabsManger = [
-  { key: 'profit', label: 'سود', icon: Wallet },
+  { key: 'members', label: 'اعضا', icon: Wallet },
   { key: 'jobs', label: 'کارها', icon: Briefcase },
   { key: 'workers', label: 'کارگرها', icon: Users },
   { key: 'home', label: 'خانه', icon: Home },
@@ -44,7 +44,21 @@ function routing(key){
   } 
 
   if(props.type === "MANAGER"){
-    
+    if(key === 'members'){
+      router.push({name : 'hiration'})
+    } 
+    else if (key === 'jobs'){
+      router.push({name : 'job-list'})
+    } 
+    else if (key === 'workers'){
+      router.push({name : 'Members'})
+    } 
+    else if (key === 'home'){
+      router.push({name : 'ManagerHome'})
+    }
+    else{
+      console.log('checkk!');
+    }
     return
   }
   //Manager mode routing

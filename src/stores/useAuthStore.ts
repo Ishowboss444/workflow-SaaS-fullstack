@@ -7,7 +7,7 @@ import { toast } from 'vue-sonner';
 export const useAuthStore = defineStore('auth', () => {
   const loading = ref(false);
   const error = ref<any>(null);
-
+  
   const Signup = async (info: SignupInfo) => {
     loading.value = true;
     error.value = null;

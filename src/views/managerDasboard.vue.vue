@@ -1,6 +1,8 @@
 <template>
-  <h1>manager template</h1>
   <RouterView></RouterView>
+  <BottomNav type="MANAGER"/>
 </template>
 <script setup>
+import BottomNav from '@/components/common/BottomNav.vue';
+
 </script>

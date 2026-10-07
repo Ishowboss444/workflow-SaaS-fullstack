@@ -6,7 +6,10 @@ const routes = createRouter({
     {
       path: '/',
       name: 'Home',
-      redirect : {name : 'starter'}
+      redirect : {name : 'starter'},
+      meta : {
+        requiresAuth : true,
+      }
     },
     {
       path: '/login',
@@ -21,16 +24,22 @@ const routes = createRouter({
     {
       path: '/starter',
       name: 'starter',
-      component: () => import('../views/starter/workplace-choice.vue'),
+      component: () => import('../views/starter/starterLayout.vue'),
+      redirect : {name : 'choiceFiled'},
       children : [
         {
+          path : 'choice',
+          name : 'choiceFiled',
+          component : ()=> import('@/views/starter/workplace-choice.vue'),
+        },
+        {
           path : 'workerTemplate',
-          name : 'starterTemplate',
+          name : 'workerTemplate',
           component : ()=> import('@/views/starter/StaterWorkerTemplate.vue'),
         },
         {
           path : 'managerTemplate',
-          name : 'hiration',
+          name : 'managerTemplate',
           component : ()=> import('@/views/starter/StarterManagerTemplate.vue'),
         },
       ],
@@ -47,72 +56,93 @@ const routes = createRouter({
         requiresManager : true,
       },
       component: () => import('../views/managerDasboard.vue.vue'),
+      redirect : {name : 'ManagerHome'},
       children : [
-        
         {
           path : 'hiration',
           name : 'hiration',
-          component : ()=> import('@/views/managerDash/hiration.vue'),
+          component : ()=> import('@/views/managerDash/Hiration.vue'),
           meta: {
             requiresAuth: true,
+            requiresManager : true,
+          },
+        },
+        {
+          path : 'Home',
+          name : 'ManagerHome',
+          component : ()=> import('@/views/managerDash/Home.vue'),
+          meta: {
+            requiresAuth: true,
+            requiresManager : true,
+          },
+        },
+        {
+          path : 'Members',
+          name : 'Members',
+          component : ()=> import('@/views/managerDash/Members.vue'),
+          meta: {
+            requiresAuth: true,
+            requiresManager : true,
           },
         },
 
+
         {
-          path: '/jobs',
+          path: 'jobs',
           name: 'job-list',
-          component: () => import('../views/managerDash/JobListView.vue'),
+          component: () => import('../views/managerDash/jobs/JobListView.vue'),
           meta: {
             requiresAuth: true,
+            requiresManager : true,
           },
         },
         {
-          path: '/jobs/add/1',
+          path: 'jobs/add/1',
           name: 'add-job-1',
-          component: () => import('../views/managerDash/AddJobStep1View.vue'),
+          component: () => import('../views/managerDash/jobs/AddJobStep1View.vue'),
         },
         {
-          path: '/jobs/add/2',
+          path: 'jobs/add/2',
           name: 'add-job-2',
-          component: () => import('../views/managerDash/AddJobStep2View.vue'),
+          component: () => import('../views/managerDash/jobs/AddJobStep2View.vue'),
         },
         {
-          path: '/jobs/add/3',
+          path: 'jobs/add/3',
           name: 'add-job-3',
-          component: () => import('../views/managerDash/AddJobStep3View.vue'),
+          component: () => import('../views/managerDash/jobs/AddJobStep3View.vue'),
         },
         {
-          path: '/jobs/add/4',
+          path: 'jobs/add/4',
           name: 'add-job-4',
-          component: () => import('../views/managerDash/AddJobStep4View.vue'),
+          component: () => import('../views/managerDash/jobs/AddJobStep4View.vue'),
         },
       
         // job detail, tabbed
         {
-          path: '/jobs/:id/colors',
+          path: 'jobs/:id/colors',
           name: 'job-detail-colors',
-          component: () => import('../views/managerDash/JobDetailColorsView.vue'),
+          component: () => import('../views/managerDash/jobs/JobDetailColorsView.vue'),
         },
         {
-          path: '/jobs/:id/workers',
+          path: 'jobs/:id/workers',
           name: 'job-detail-workers',
-          component: () => import('../views/managerDash/JobDetailWorkersView.vue'),
+          component: () => import('../views/managerDash/jobs/JobDetailWorkersView.vue'),
         },
         {
-          path: '/jobs/:id/finance',
+          path: 'jobs/:id/finance',
           name: 'job-detail-finance',
-          component: () => import('../views/managerDash/JobDetailFinanceView.vue'),
+          component: () => import('../views/managerDash/jobs/JobDetailFinanceView.vue'),
         },
       
         {
-          path: '/distribute',
+          path: 'distribute',
           name: 'work-distribution',
-          component: () => import('../views/managerDash/WorkDistributionView.vue'),
+          component: () => import('../views/managerDash/jobs/WorkDistributionView.vue'),
         },
         {
-          path: '/success',
+          path: 'success',
           name: 'success',
-          component: () => import('../views/managerDash/SuccessView.vue'),
+          component: () => import('../views/managerDash/jobs/SuccessView.vue'),
         },
 
       ]
@@ -175,7 +205,7 @@ const routes = createRouter({
     {
       path: '/test',
       name: 'test',
-      component: () => import('@/views/managerDash/hiration.vue'),
+      component: () => import('@/views/managerDash/Hiration.vue'),
       meta: {
         requiresAuth: true,
       },
@@ -199,7 +229,7 @@ routes.beforeEach((to) => {
   const role = data === 'WORKER'
 
   if (to.meta.requiresWorker && !role) {
-    return '/login';
+    return {name : 'starter'};
   }
 });
 routes.beforeEach((to) => {
@@ -208,7 +238,7 @@ routes.beforeEach((to) => {
   const role = data === 'MANAGER'
 
   if (to.meta.requiresManager && !role && !workplace) {
-    return '/login';
+    return {name : 'starter'};
   }
 });
 routes.beforeEach((to) => {

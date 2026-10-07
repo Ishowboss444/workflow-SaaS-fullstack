@@ -1,9 +1,11 @@
 ```vue
 <template>
   <main class="create-workplace-page" dir="rtl">
-    <div class="create-workplace-container">
+    <div class="create-workplace-container" v-if="!loading">
       <button type="button" class="back-button" @click="router.back()">
-        <span>→</span>
+        <span>
+          <ChevronRight/>
+        </span>
         برگشت
       </button>
 
@@ -47,14 +49,19 @@
 
       <p class="hint">بعداً می‌تونی اعضای تیم و محصولاتت رو اضافه کنی.</p>
     </div>
+    <Loading v-else/>
   </main>
 </template>
 
 <script setup>
+import Loading from '@/components/common/Loading.vue';
+import { useGlobalStore } from '@/stores/useGlobal';
+import { ChevronRight } from 'lucide-vue-next';
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const global = useGlobalStore()
 
 const loading = ref(false);
 const error = ref('');
@@ -65,7 +72,7 @@ const form = reactive({
 
 const createWorkplace = async () => {
   error.value = '';
-
+  const token = localStorage.getItem('accessToken')
   const name = form.name.trim();
 
   if (!name) {
@@ -76,10 +83,11 @@ const createWorkplace = async () => {
   loading.value = true;
 
   try {
-    const response = await fetch('/api/workplaces', {
+    const response = await fetch('http://localhost:3000/workplace/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization : `Bearer ${token}`
       },
       body: JSON.stringify({
         name,
@@ -87,12 +95,16 @@ const createWorkplace = async () => {
     });
 
     const data = await response.json();
-
+    console.log(data);
+    
     if (!response.ok) {
       throw new Error(data.message || 'ساخت کارگاه انجام نشد.');
     }
 
-    router.push('/');
+    global.workplaceChange(Number(data?.data?.id))
+
+    global.roleChange("MANAGER")
+    router.push({name : 'starter'});
   } catch (err) {
     error.value = err.message || 'خطایی رخ داد.';
   } finally {
@@ -133,6 +145,8 @@ const createWorkplace = async () => {
 
   span {
     font-size: 18px;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -280,13 +294,3 @@ const createWorkplace = async () => {
   color: $color-text-muted;
 }
 </style>
-``` Add the route: ```js { path: '/workplace/create', name: 'create-workplace',
-component: () => import('@/views/workplace/CreateWorkplaceView.vue'), } ``` ###
-Backend behavior For your Prisma schema, `POST /api/workplaces` should
-essentially do this: ```js const workplace = await prisma.workplace.create({
-data: { name, ownerId: req.user.id, }, }) await prisma.user.update({ where: {
-id: req.user.id, }, data: { workplaceId: workplace.id, role: 'MANAGER', }, })
-``` I would actually put both operations inside a **Prisma transaction**,
-because creating the workplace and assigning it to the user are one logical
-operation. One architectural detail: **don't send `ownerId` from Vue**. Get it
-from your authenticated user/session on the server (`req.user.id`).

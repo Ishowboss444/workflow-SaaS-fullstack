@@ -50,11 +50,11 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const goToCreateWorkplace = () => {
-  router.push({ name: 'managerDashboard' });
+  router.push({ name: 'managerTemplate' });
 };
 
 const goToWorkerProfile = () => {
-  router.push({ name: 'workerDashboard' });
+  router.push({ name: 'workerTemplate' });
 };
 </script>
 

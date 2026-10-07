@@ -2,7 +2,6 @@
 import Loading from '@/components/common/Loading.vue';
 import { useInvitationsStore } from '@/stores/useInvitationsStore';
 import { useUsersStore } from '@/stores/useUsersStore';
-import { from } from 'bcrypto/lib/native/bn';
 import {
   Search,
   UserPlus,

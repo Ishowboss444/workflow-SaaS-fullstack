@@ -1,3 +1,3 @@
 <template>
-  <h1>from worker</h1>
+  <h1>به زودی  ... <\></h1>
 </template>
