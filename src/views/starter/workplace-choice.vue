@@ -59,7 +59,7 @@ const goToWorkerProfile = () => {
 </script>
 
 <style lang="scss" scoped>
-@use '../assets/scss/variables' as *;
+@use '../../assets/scss/variables' as *;
 
 .choice-page {
   min-height: 100dvh;

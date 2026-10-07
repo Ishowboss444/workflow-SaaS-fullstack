@@ -121,11 +121,11 @@ const handleSubmit = async () => {
     global.roleChange(data.data.role)
     global.fieldChange(data.data.field)
     toast.success('خوش برگشتی 👋')
-    return router.push({name : 'workerDashboard'})
+    return router.replace({name : 'workerDashboard'})
   } 
 
   toast.success('با موفقیت وارد شد');
-  // router.push({ name: 'starter' });
+  router.replace({ name: 'starter' });
 };
 
 const handleForgotPassword = () => {

@@ -6,7 +6,7 @@ const routes = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: () => import('../views/managerDash/Home.vue'),
+      redirect : {name : 'starter'}
     },
     {
       path: '/login',
@@ -21,7 +21,19 @@ const routes = createRouter({
     {
       path: '/starter',
       name: 'starter',
-      component: () => import('../views/workplace-choice.vue'),
+      component: () => import('../views/starter/workplace-choice.vue'),
+      children : [
+        {
+          path : 'workerTemplate',
+          name : 'starterTemplate',
+          component : ()=> import('@/views/starter/StaterWorkerTemplate.vue'),
+        },
+        {
+          path : 'managerTemplate',
+          name : 'hiration',
+          component : ()=> import('@/views/starter/StarterManagerTemplate.vue'),
+        },
+      ],
       meta: {
         requiresAuth: true,
         requiresProfileEdit : true,
@@ -34,17 +46,13 @@ const routes = createRouter({
         requiresAuth: true,
         requiresManager : true,
       },
-      component: () => import('../views/CreateWorkplace.vue'),
+      component: () => import('../views/managerDasboard.vue.vue'),
       children : [
+        
         {
           path : 'hiration',
           name : 'hiration',
-          component : ()=> import('@/views/managerDash/StarterManagerTemplate.vue'),
-        },
-        {
-          path : 'hiration',
-          name : 'hiration',
-          component : ()=> import('@/views/auth/hiration.vue'),
+          component : ()=> import('@/views/managerDash/hiration.vue'),
           meta: {
             requiresAuth: true,
           },
@@ -118,26 +126,44 @@ const routes = createRouter({
     {
       path: '/workerDashboard',
       name: 'workerDashboard',
-      component: () => import('../views/WorkerProfile.vue'),
+      component: () => import('../views/workerDashboard.vue'),
+      redirect : {name: 'WorkerHome'},
+      meta : {
+        requiresAuth: true,
+        requiresWorker : true,
+      },
       children : [
         {
-          path : 'starterTemplate',
-          name : 'starterTemplate',
-          component : ()=> import('@/views/workerDash/StaterWorkerTemplate.vue'),
-        },
-        {
-          path : 'myInvitations',
-          name : 'myInvitations',
-          component : ()=> import('@/views/auth/invitation.vue'),
+          path : 'Invitations',
+          name : 'Invitations',
+          component : ()=> import('@/views/workerDash/invitation.vue'),
           meta: {
             requiresAuth: true,
             requiresWorker : true,
           },
         },
         {
-          path : 'heroWorker',
-          name : 'heroWorker',
-          component : ()=> import('@/views/workerDash/workerHero.vue'),
+          path : 'workplace',
+          name : 'WorkerWorkplace',
+          component : ()=> import('@/views/workerDash/workplace.vue'),
+          meta: {
+            requiresAuth: true,
+            requiresWorker : true,
+          },
+        },
+        {
+          path : 'Home',
+          name : 'WorkerHome',
+          component : ()=> import('@/views/workerDash/Home.vue'),
+          meta: {
+            requiresAuth: true,
+            requiresWorker : true,
+          },
+        },
+        {
+          path : 'assignments',
+          name : 'assignments',
+          component : ()=> import('@/views/workerDash/myAssignments.vue'),
           meta: {
             requiresAuth: true,
             requiresWorker : true,
@@ -149,7 +175,7 @@ const routes = createRouter({
     {
       path: '/test',
       name: 'test',
-      component: () => import('@/views/auth/hiration.vue'),
+      component: () => import('@/views/managerDash/hiration.vue'),
       meta: {
         requiresAuth: true,
       },
