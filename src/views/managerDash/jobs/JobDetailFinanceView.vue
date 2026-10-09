@@ -14,7 +14,6 @@ onMounted(async () => {
   const id = route.params.id;
   const response = await product._getProduct(id);
   data.value = response.data;
-  console.log(data.value.colors);
 });
 </script>
 
@@ -25,17 +24,17 @@ onMounted(async () => {
     <div class="tab-body">
       <div class="finance-card">
         <h3 class="finance-card__title">خلاصه مالی</h3>
-        <SummaryRow label="درآمد کل" value="1,000,000,000 تومان" />
-        <SummaryRow label="هزینه کارگرها" value="500,000,000 تومان" />
-        <SummaryRow label="هزینه‌های دیگر" value="120,000,000 تومان" />
-        <SummaryRow label="سود خالص" value="380,000,000 تومان" emphasis />
+        <SummaryRow label="درآمد کل" :value="`${String(data.amount * data.salary.manager).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" />
+        <SummaryRow label="هزینه کارگرها" :value="`${String(data.amount * data.salary.worker).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" />
+        <SummaryRow label="هزینه‌های دیگر" :value="`${String(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" />
+        <SummaryRow label="سود خالص" :value="`${String((data.amount * data.salary.manager)-(data.amount * data.salary.worker) ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" emphasis />
       </div>
 
       <div class="finance-card">
         <h3 class="finance-card__title">جزئیات هزینه‌ها</h3>
-        <SummaryRow label="نخ و لوازم مصرفی" value="50,000,000 تومان" />
-        <SummaryRow label="کرایه کارگاه" value="30,000,000 تومان" />
-        <SummaryRow label="سایر هزینه‌ها" value="40,000,000 تومان" />
+        <SummaryRow label="نخ و لوازم مصرفی" value="0 تومان" />
+        <SummaryRow label="کرایه کارگاه" value="0 تومان" />
+        <SummaryRow label="سایر هزینه‌ها" value="0 تومان" />
       </div>
     </div>
   </div>
@@ -44,8 +43,8 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-@use '../assets/scss/variables' as *;
-@use '../assets/scss/mixins' as *;
+@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/mixins' as *;
 
 .tab-body {
   @include page-padding;
