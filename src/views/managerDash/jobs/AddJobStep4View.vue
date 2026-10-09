@@ -1,8 +1,8 @@
 <script setup>
 import { Plus } from 'lucide-vue-next';
-import StepperHeader from '../components/common/StepperHeader.vue';
-import WorkerAssignRow from '../components/common/WorkerAssignRow.vue';
-import AppButton from '../components/common/AppButton.vue';
+import StepperHeader from '@/components/common/StepperHeader.vue';
+import WorkerAssignRow from '@/components/common/WorkerAssignRow.vue';
+import AppButton from '@/components/common/AppButton.vue';
 import ProgressBar from '@/components/common/ProgressBar.vue';
 
 const workers = [
@@ -58,8 +58,8 @@ const workers = [
 </template>
 
 <style scoped lang="scss">
-@use '../assets/scss/variables' as *;
-@use '../assets/scss/mixins' as *;
+@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/mixins' as *;
 
 .form-body {
   @include page-padding;

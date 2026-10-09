@@ -1,7 +1,7 @@
 <script setup>
 import { Plus, CircleCheck, X, Trash2 } from 'lucide-vue-next';
-import StepperHeader from '../components/common/StepperHeader.vue';
-import AppButton from '../components/common/AppButton.vue';
+import StepperHeader from '@/components/common/StepperHeader.vue';
+import AppButton from '@/components/common/AppButton.vue';
 import { useProductStore } from '@/stores/useProductStore.js';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';

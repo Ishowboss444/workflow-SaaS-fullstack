@@ -1,7 +1,7 @@
 <script setup>
-import JobDetailHeader from '../components/common/JobDetailHeader.vue';
-import WorkerProgressRow from '../components/common/WorkerProgressRow.vue';
-import AppButton from '../components/common/AppButton.vue';
+import JobDetailHeader from '@/components/common/JobDetailHeader.vue';
+import WorkerProgressRow from '@/components/common/WorkerProgressRow.vue';
+import AppButton from '@/components/common/AppButton.vue';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '@/stores/useProductStore.js';
 import { ref, onMounted } from 'vue';
@@ -47,8 +47,8 @@ const workers = [
 </template>
 
 <style scoped lang="scss">
-@use '../assets/scss/variables' as *;
-@use '../assets/scss/mixins' as *;
+@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/mixins' as *;
 
 .tab-body {
   @include page-padding;

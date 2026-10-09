@@ -1,8 +1,8 @@
 <script setup>
-import StepperHeader from '../components/common/StepperHeader.vue';
-import FormField from '../components/common/FormField.vue';
-import SummaryRow from '../components/common/SummaryRow.vue';
-import AppButton from '../components/common/AppButton.vue';
+import StepperHeader from '@/components/common/StepperHeader.vue';
+import FormField from '@/components/common/FormField.vue';
+import SummaryRow from '@/components/common/SummaryRow.vue';
+import AppButton from '@/components/common/AppButton.vue';
 import { useProductStore } from '@/stores/useProductStore.js';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -122,8 +122,8 @@ async function createProduction() {
 </template>
 
 <style scoped lang="scss">
-@use '../assets/scss/variables' as *;
-@use '../assets/scss/mixins' as *;
+@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/mixins' as *;
 
 .form-body {
   @include page-padding;

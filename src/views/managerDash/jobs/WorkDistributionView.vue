@@ -1,8 +1,8 @@
 <script setup>
 import { Search } from 'lucide-vue-next';
-import PageHeader from '../components/common/PageHeader.vue';
-import WorkerAssignRow from '../components/common/WorkerAssignRow.vue';
-import AppButton from '../components/common/AppButton.vue';
+import PageHeader from '@/components/common/PageHeader.vue';
+import WorkerAssignRow from '@/components/common/WorkerAssignRow.vue';
+import AppButton from '@/components/common/AppButton.vue';
 
 const workers = [
   {

@@ -1,8 +1,8 @@
 <script setup>
 import { Pencil } from 'lucide-vue-next';
-import JobDetailHeader from '../components/common/JobDetailHeader.vue';
-import ProgressBar from '../components/common/ProgressBar.vue';
-import AppButton from '../components/common/AppButton.vue';
+import JobDetailHeader from '@/components/common/JobDetailHeader.vue';
+import ProgressBar from '@/components/common/ProgressBar.vue';
+import AppButton from '@/components/common/AppButton.vue';
 import { useProductStore } from '@/stores/useProductStore.js';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -50,8 +50,8 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-@use '../assets/scss/variables' as *;
-@use '../assets/scss/mixins' as *;
+@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/mixins' as *;
 
 .tab-body-inner {
   @include page-padding;

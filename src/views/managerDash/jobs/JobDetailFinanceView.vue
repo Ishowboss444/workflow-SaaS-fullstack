@@ -1,6 +1,6 @@
 <script setup>
-import JobDetailHeader from '../components/common/JobDetailHeader.vue';
-import SummaryRow from '../components/common/SummaryRow.vue';
+import JobDetailHeader from '@/components/common/JobDetailHeader.vue';
+import SummaryRow from '@/components/common/SummaryRow.vue';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '@/stores/useProductStore.js';
 import { ref, onMounted } from 'vue';

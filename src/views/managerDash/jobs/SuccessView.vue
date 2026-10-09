@@ -1,6 +1,6 @@
 <script setup>
 import { CircleCheck } from 'lucide-vue-next';
-import AppButton from '../components/common/AppButton.vue';
+import AppButton from '@/components/common/AppButton.vue';
 </script>
 
 <template>
