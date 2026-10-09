@@ -34,12 +34,12 @@ export class Products {
           status: 'failed',
           message: 'went wrong',
         });
-      console.log('in shouldnt be');
-
-      this.res.status(201).json({
-        status: 'success',
-        data: products.products,
-      });
+        
+        this.res.status(201).json({
+          status: 'success',
+          data: products.products,
+        });
+        console.log('done');
     } catch (err) {
       console.log(err);
     }

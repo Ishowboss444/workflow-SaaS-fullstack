@@ -154,6 +154,7 @@ async function createProduction() {
   margin-top: $space-4;
   display: flex;
   gap: $space-3;
+  padding-bottom: 70px;
 }
 
 .footer-btn {

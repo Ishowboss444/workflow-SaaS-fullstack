@@ -25,7 +25,7 @@ const filters = [
 </script>
 
 <template>
-  <div class="page" v-if="products.loading">
+  <div class="page" v-if="!products.loading">
     <header class="job-list-header">
       <button
         class="icon-btn"
@@ -92,7 +92,7 @@ const filters = [
   </div>
 
 
-  <h1 v-else> loading...</h1>
+  <FullfilledLoading v-else/>
   <BottomNav active="jobs" />
 </template>
 

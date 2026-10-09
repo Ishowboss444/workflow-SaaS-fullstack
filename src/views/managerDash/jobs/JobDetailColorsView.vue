@@ -7,6 +7,7 @@ import { useProductStore } from '@/stores/useProductStore.js';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Loading from '@/components/common/Loading.vue';
+import { toast } from 'vue-sonner';
 
 const route = useRoute();
 const product = useProductStore();
@@ -15,7 +16,7 @@ onMounted(async () => {
   const id = route.params.id;
   const response = await product._getProduct(id);
   data.value = response.data;
-  console.log(data.value.colors);
+  console.log(data.value);
 });
 </script>
 
@@ -34,13 +35,13 @@ onMounted(async () => {
                 >{{ c.qty.toLocaleString() }} قطعه</span
               >
             </div>
-            <span class="color-card__percent">{{ c.done }}%</span>
+            <span class="color-card__percent">{{ data.done }}%</span>
           </div>
-          <ProgressBar :percent="c.done" />
+          <ProgressBar :percent="data.done" />
         </div>
 
-        <AppButton variant="outline">
-          <span class="edit-btn"><Pencil :size="16" /> ویرایش</span>
+        <AppButton variant="outline" @click="toast.warning('به زودی')">
+          <span class="edit-btn" ><Pencil :size="16" /> ویرایش</span>
         </AppButton>
       </div>
     </div>
