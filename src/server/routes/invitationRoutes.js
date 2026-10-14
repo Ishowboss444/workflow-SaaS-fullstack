@@ -14,7 +14,7 @@ router.patch('/:inviteId/accept', authonticated, (req, res) => {
 });
 router.patch('/:inviteId/reject', authonticated, (req, res) => {
   const invite = new Invitation(req, res);
-  invite.accept();
+  invite.reject();
 });
 router.post(
   '/send/:to',

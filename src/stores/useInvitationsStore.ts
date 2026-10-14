@@ -1,4 +1,4 @@
-import { getInvites, sendInvites } from '@/api/invitation';
+import { getInvites, sendInvites, acceptInvite, rejectInvite } from '@/api/invitation';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
@@ -33,10 +33,20 @@ export const useInvitationsStore = defineStore('invitations', () => {
     }
   }
 
+  async function acceptInvitation(id: number) {
+    return await acceptInvite(Number(id));
+  }
+
+  async function rejectInvitation(id: number) {
+    return await rejectInvite(Number(id));
+  }
+
   return {
     users,
     loading,
     error,
+    acceptInvitation,
+    rejectInvitation,
     myInvitations,
     sendInvitations,
   };

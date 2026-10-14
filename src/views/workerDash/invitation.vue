@@ -50,16 +50,38 @@ const pendingCount = computed(
   () => invitations.value.filter((invite) => invite.status === 'pending').length
 );
 
-function acceptInvitation(invitation) {
-  invitation.status = 'accepted';
+const working = ref(false);
 
-  toast.success('دعوت‌نامه پذیرفته شد');
+async function acceptInvitation(invitation) {
+  if (working.value) return;
+  working.value = true;
+
+  try {
+    await invite.acceptInvitation(invitation.id);
+    invitation.status = 'accepted';
+    toast.success('دعوت‌نامه پذیرفته شد');
+  } catch (err) {
+    console.error(err);
+    toast.error('پذیرفتن دعوت‌نامه انجام نشد');
+  } finally {
+    working.value = false;
+  }
 }
 
-function declineInvitation(invitation) {
-  invitation.status = 'declined';
+async function declineInvitation(invitation) {
+  if (working.value) return;
+  working.value = true;
 
-  toast.success('دعوت‌نامه رد شد');
+  try {
+    await invite.rejectInvitation(invitation.id);
+    invitation.status = 'declined';
+    toast.success('دعوت‌نامه رد شد');
+  } catch (err) {
+    console.error(err);
+    toast.error('رد کردن دعوت‌نامه انجام نشد');
+  } finally {
+    working.value = false;
+  }
 }
 </script>
 
@@ -165,6 +187,7 @@ function declineInvitation(invitation) {
             <button
               type="button"
               class="decline-btn"
+              :disabled="working"
               @click="declineInvitation(invitation)"
             >
               <X :size="16" />
@@ -174,6 +197,7 @@ function declineInvitation(invitation) {
             <button
               type="button"
               class="accept-btn"
+              :disabled="working"
               @click="acceptInvitation(invitation)"
             >
               <Check :size="17" />

@@ -92,6 +92,51 @@ const model = defineModel({ type: [String, Number], default: '' });
 const name = defineModel('name', { type: String, default: '' });
 ```
 
+## Look at every `return` before you commit to a fix
+
+The reject route was broken for a long time:
+
+```js
+router.patch('/:inviteId/reject', authonticated, (req, res) => {
+  const invite = new Invitation(req, res);
+  invite.accept();   // <-- copy/paste from the accept route above
+});
+```
+
+The route name says `reject`, but the code says `accept`. Nothing crashed, no
+error appeared, and the tests (there are none) stayed quiet. Only a human reading
+it could see it.
+
+**Rule for this project:** when a route has a name, check that the body matches
+the name. If two routes look the same, one of them is probably wrong.
+
+## Optimistic vs honest UI
+
+The invite buttons used to change the page **before** asking the server:
+
+```js
+// BAD - the page lies if the server said no
+function acceptInvitation(invitation) {
+  invitation.status = 'accepted';   // no API call at all
+  toast.success('...');
+}
+```
+
+Now it asks first:
+
+```js
+// GOOD - page changes only if the server agreed
+try {
+  await invite.acceptInvitation(invitation.id);
+  invitation.status = 'accepted';
+  toast.success('...');
+} catch (err) {
+  toast.error('...');
+}
+```
+
+The `working` ref stops the user clicking twice (double click = two requests).
+
 ## Lint counts can lie
 
 Read the rules before you trust the number. 132 problems sounded terrible, but 111

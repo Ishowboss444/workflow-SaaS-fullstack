@@ -2,7 +2,6 @@
 
 ## To do
 
-- `PATCH /invites/:inviteId/reject` calls `accept()` — rejecting joins the workplace.
 - `addProduct` auth check has `this.user.id !== this.user.id` — check never runs.
 - `/users` POST returns the whole user row, including `passwordHash`.
 - JWT has no `expiresIn`; `REFRESH_TOKEN_SECRET` is unused.
@@ -15,8 +14,8 @@
 - CORS is wide open (`app.use(cors()`).
 - Controllers are called without `await` in routes.
 - `Assignment` model has no routes, no controller, no UI.
-- `invitation.vue` accept/reject buttons only change local state — they do not
-  call the API. The page updates but nothing is saved in the database.
+- After a worker accepts an invite, the page still shows "pending" until a
+  reload. Could push the user to the worker dashboard right away.
 
 ## Lint problems (npx eslint src)
 
@@ -45,6 +44,14 @@
   - removed 7 unused imports / variables
   - added missing types to `defineModel` in 3 components
   - `invitation.vue` now shows real API data instead of 3 fake names
+
+- `fix: invite accept/reject now really saves` (security):
+  - `PATCH /invites/:inviteId/reject` called `accept()` — rejecting actually
+    JOINED the workplace. Now it calls `reject()`.
+  - added `acceptInvite` / `rejectInvite` in `api/invitation.ts`
+  - added `acceptInvitation` / `rejectInvitation` in `useInvitationsStore`
+  - `invitation.vue` buttons now call the API, show an error toast on failure,
+    and are disabled while working
 
 ## Found while working
 

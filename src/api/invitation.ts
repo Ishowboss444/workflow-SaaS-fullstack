@@ -25,3 +25,33 @@ export async function sendInvites(id: number) {
   const data = await response.json();
   return data;
 }
+
+export async function acceptInvite(id: number) {
+  const response = await fetch(`http://localhost:3000/invites/${id}/accept`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Accept failed: ${response.status}`);
+  }
+
+  return await response.json();
+}
+
+export async function rejectInvite(id: number) {
+  const response = await fetch(`http://localhost:3000/invites/${id}/reject`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Reject failed: ${response.status}`);
+  }
+
+  return await response.json();
+}
