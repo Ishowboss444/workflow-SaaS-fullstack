@@ -27,8 +27,8 @@ import AppButton from '@/components/common/AppButton.vue';
 </template>
 
 <style scoped lang="scss">
-@use '../assets/scss/variables' as *;
-@use '../assets/scss/mixins' as *;
+@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/mixins' as *;
 
 .success-page {
   @include page-padding;
