@@ -1,6 +1,4 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { X } from 'lucide-vue-next';
 import { Toaster } from 'vue-sonner';
 </script>
 

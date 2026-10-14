@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { prisma } from '../config/db.js ';
+
 function authonticated(req, res, next) {
   let token = req.cookies.accessToken;
   console.log(token);

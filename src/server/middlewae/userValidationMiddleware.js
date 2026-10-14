@@ -13,10 +13,10 @@ async function validation(req, res, next) {
     }
     next();
   } catch (err) {
-    res.status(500).json({
+    console.error(err);
+    return res.status(500).json({
       message: 'something went wrong',
     });
-    next();
   }
 }
 export default validation;

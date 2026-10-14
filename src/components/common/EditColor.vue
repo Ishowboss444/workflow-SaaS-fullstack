@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { X } from 'lucide-vue-next';
 
-// defineProps({
-//     name : {type : String , require : true},
-//     color : {type : String , require : true},
-//     amount : {type : Number , require : true},
-// })
-const name = defineModel('name', { default: 'unknows' });
-const color = defineModel('color', { default: '#ffffff' });
-const amount = defineModel('amount', { default: 1 });
+const name = defineModel('name', { type: String, default: 'unknows' });
+const color = defineModel('color', { type: String, default: '#ffffff' });
+const amount = defineModel('amount', { type: Number, default: 1 });
 </script>
 
 <template>

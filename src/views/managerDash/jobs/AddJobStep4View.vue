@@ -3,7 +3,6 @@ import { Plus } from 'lucide-vue-next';
 import StepperHeader from '@/components/common/StepperHeader.vue';
 import WorkerAssignRow from '@/components/common/WorkerAssignRow.vue';
 import AppButton from '@/components/common/AppButton.vue';
-import ProgressBar from '@/components/common/ProgressBar.vue';
 
 const workers = [
   { name: 'مریم', color: '#f7d3e3', qty: 2000, price: 50000 },

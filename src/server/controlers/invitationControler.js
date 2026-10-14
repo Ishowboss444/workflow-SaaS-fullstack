@@ -47,7 +47,8 @@ class Invitation {
         },
       });
     } catch (err) {
-      return this.res(500).json({
+      console.error(err);
+      return this.res.status(500).json({
         status: 'failed',
         message: 'unknown issue',
       });
@@ -84,6 +85,7 @@ class Invitation {
         myInvites,
       });
     } catch (err) {
+      console.error(err);
       return this.res.status(500).json({
         status: 'failed',
         message: 'something went wrong',
@@ -160,6 +162,7 @@ class Invitation {
         rejection,
       });
     } catch (err) {
+      console.error(err);
       return this.res.status(409).json({
         status: 'failed',
         message: 'something went wrong',
@@ -217,6 +220,7 @@ class Invitation {
         rejection,
       });
     } catch (err) {
+      console.error(err);
       return this.res.status(409).json({
         status: 'failed',
         message: 'something went wrong',

@@ -9,7 +9,6 @@ import authRoutes from '../routes/authRoutes.js';
 import workplaceRoutes from '../routes/workplaceRoutes.js';
 import jobResearchRoutes from '../routes/invitationRoutes.js';
 import productsRoutes from '../routes/productsRoutes.js';
-import authonticated from '../middlewae/authMiddleware.js';
 import usersRoutes from '../routes/usersRoutes.js';
 config();
 connectDB();

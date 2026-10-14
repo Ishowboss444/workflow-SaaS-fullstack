@@ -3,7 +3,7 @@ import { Check, ChevronLeft, X } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const props = defineProps({
+defineProps({
   currentStep: { type: Number, required: true }, // 1-based
   title: { type: String, default: 'افزودن کار جدید' },
 });

@@ -6,7 +6,7 @@ defineProps({
   suffix: { type: String, default: '' }, // e.g. "تومان"
   type: { type: String, default: 'text' },
 });
-const model = defineModel();
+const model = defineModel({ type: [String, Number], default: '' });
 </script>
 
 <template>

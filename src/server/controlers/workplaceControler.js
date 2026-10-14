@@ -124,6 +124,7 @@ class Workplace {
         data: workplace,
       });
     } catch (err) {
+      console.error(err);
       return this.res.status(500).json({
         status: 'failed',
         message: 'something went wrong',

@@ -6,42 +6,33 @@ import { Mail, Check, X, ChevronLeft } from 'lucide-vue-next';
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
+import { timeAgo } from '@/tools/timeago';
 
 const router = useRouter();
 const invite = useInvitationsStore();
-const myInvites = ref([]);
+const invitations = ref([]);
+
+// The API sends PENDING / ACCEPTED / REJECTED.
+// The template uses 'pending' / 'accepted' / 'declined'.
+const statusMap = {
+  PENDING: 'pending',
+  ACCEPTED: 'accepted',
+  REJECTED: 'declined',
+};
 
 onMounted(async () => {
   const data = await invite.myInvitations();
-  console.log(data);
-});
-const invitations = ref([
-  {
-    id: 1,
-    sender: {
-      name: 'علی رضایی',
-    },
 
-    sentAt: 'امروز، ۱۰:۲۴',
-    status: 'pending',
-  },
-  {
-    id: 2,
-    sender: {
-      name: 'سارا محمدی',
-    },
-    sentAt: 'دیروز، ۱۶:۴۰',
-    status: 'pending',
-  },
-  {
-    id: 3,
-    sender: {
-      name: 'محمد احمدی',
-    },
-    sentAt: '۲ روز پیش',
-    status: 'accepted',
-  },
-]);
+  if (!data || !data.myInvites) return;
+
+  invitations.value = data.myInvites.map((item) => ({
+    id: item.id,
+    sender: { name: item.sender ? item.sender.name : '' },
+    sentAt: item.createdAt ? timeAgo(item.createdAt) : '',
+    status: statusMap[item.status] || 'pending',
+  }));
+});
+
 
 const activeFilter = ref('all');
 

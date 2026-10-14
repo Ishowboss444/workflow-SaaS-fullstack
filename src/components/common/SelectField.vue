@@ -8,7 +8,7 @@ defineProps({
   type: { type: String, default: 'text' },
   placeholder: { type: String, default: '' },
 });
-const model = defineModel();
+const model = defineModel({ type: String, default: '' });
 </script>
 
 <template>

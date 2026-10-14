@@ -9,7 +9,7 @@ import {
   BriefcaseBusiness,
   Users,
 } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 const search = ref('');

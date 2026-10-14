@@ -1,7 +1,7 @@
 ```vue
 <template>
   <Transition name="loading">
-    <div class="fulfilled-loading" dir="rtl">
+    <div v-show="show" class="fulfilled-loading" dir="rtl">
       <div class="loading-content">
         <div class="loading-logo">
           <span></span>
@@ -15,7 +15,11 @@
   </Transition>
 </template>
 
-<script setup></script>
+<script setup>
+defineProps({
+  show: { type: Boolean, default: true },
+});
+</script>
 
 <style lang="scss" scoped>
 @use '../../assets/scss/variables' as *;
