@@ -1,5 +1,4 @@
 <script setup>
-import Loading from '@/components/common/Loading.vue';
 import { useInvitationsStore } from '@/stores/useInvitationsStore';
 import { useUsersStore } from '@/stores/useUsersStore';
 import {
@@ -8,6 +7,7 @@ import {
   Check,
   BriefcaseBusiness,
   Users,
+  LoaderCircle,
 } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -16,25 +16,38 @@ const search = ref('');
 const people = ref([]);
 const user = useUsersStore();
 const invite = useInvitationsStore();
+
 async function sendInvitation(person) {
   if (person.workplaceId)
     return toast.warning('این یوزر درحال حاضر در یک کارگاه هست');
 
-  console.log(person.id);
-  const data = await invite.sendInvitations(Number(person.id));
-  console.log(data);
-  if (!data) return console.error(data);
+  try {
+    await invite.sendInvitations(Number(person.id));
+  } catch {
+    return;
+  }
 
+  person.invited = true;
   toast.success(`دعوت‌نامه برای ${person.name} ارسال شد`);
 }
 
 async function searchUser(username) {
-  if (!username.trim()) return toast.error('لطفا با دقت جستوجو کنید');
+  const cleanName = username.trim();
 
-  const data = await user.searchForUser(username);
-  people.value.push(data.data);
-  console.log(data);
-  console.log(people.value);
+  if (!cleanName) return toast.error('لطفا با دقت جستوجو کنید');
+  if (user.loading) return;
+
+  const data = await user.searchForUser(cleanName);
+
+  if (!data || !data.data) return;
+
+  const found = data.data;
+
+  if (people.value.some((person) => person.id === found.id)) {
+    return toast.warning(`${found.name} از قبل در لیست است`);
+  }
+
+  people.value = [...people.value, { ...found, invited: false }];
 }
 </script>
 
@@ -62,17 +75,28 @@ async function searchUser(username) {
         type="text"
         placeholder="جستجوی نام کاربری @ ..."
       />
+
+      <button
+        type="submit"
+        class="search-btn"
+        :disabled="user.loading"
+        aria-label="جستجو"
+      >
+        <LoaderCircle v-if="user.loading" class="spin" :size="16" />
+
+        <Search v-else :size="16" />
+      </button>
     </form>
 
     <!-- RESULTS HEADER -->
-    <div v-if="!user.loading" class="results-header">
+    <div class="results-header">
       <span> افراد </span>
 
       <small> {{ people.length }} نفر </small>
     </div>
 
     <!-- PEOPLE -->
-    <main v-if="!user.loading" class="people-list">
+    <main class="people-list">
       <article v-for="person in people" :key="person.id" class="person-card">
         <div class="person-main">
           <!-- AVATAR -->
@@ -132,7 +156,6 @@ async function searchUser(username) {
         <p>نام یا نقش شخص موردنظر را تغییر دهید.</p>
       </div>
     </main>
-    <Loading v-else />
   </div>
 </template>
 
@@ -251,6 +274,45 @@ async function searchUser(username) {
 
 .search-box input::placeholder {
   color: $color-text-secondary;
+}
+
+.search-btn {
+  min-width: 32px;
+  height: 32px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 10px;
+
+  background: $color-bg-soft;
+  color: $color-primary;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s,
+    opacity 0.15s;
+}
+
+.search-btn:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* =========================

@@ -1,6 +1,6 @@
-const token = localStorage.getItem('accessToken');
-
 export async function getInvites() {
+  const token = localStorage.getItem('accessToken');
+
   const response = await fetch('http://localhost:3000/invites/get', {
     method: 'GET',
     headers: {
@@ -9,11 +9,18 @@ export async function getInvites() {
   });
 
   const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'loading invitations failed');
+  }
+
   return data;
 }
 
 export async function sendInvites(id: number) {
-  if (!id) return console.log(id);
+  if (!id) throw new Error('no user id was given');
+
+  const token = localStorage.getItem('accessToken');
 
   const response = await fetch(`http://localhost:3000/invites/send/${id}`, {
     method: 'POST',
@@ -23,10 +30,17 @@ export async function sendInvites(id: number) {
   });
 
   const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'sending invitation failed');
+  }
+
   return data;
 }
 
 export async function acceptInvite(id: number) {
+  const token = localStorage.getItem('accessToken');
+
   const response = await fetch(`http://localhost:3000/invites/${id}/accept`, {
     method: 'PATCH',
     headers: {
@@ -42,6 +56,8 @@ export async function acceptInvite(id: number) {
 }
 
 export async function rejectInvite(id: number) {
+  const token = localStorage.getItem('accessToken');
+
   const response = await fetch(`http://localhost:3000/invites/${id}/reject`, {
     method: 'PATCH',
     headers: {

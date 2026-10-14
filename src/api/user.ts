@@ -1,6 +1,6 @@
-const token = localStorage.getItem('accessToken');
-
 export async function findUser(username: string) {
+  const token = localStorage.getItem('accessToken');
+
   const response = await fetch('http://localhost:3000/users', {
     method: 'POST',
     headers: {
@@ -11,7 +11,12 @@ export async function findUser(username: string) {
       username: username,
     }),
   });
+
   const data = await response.json();
-  console.log(data);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'search failed');
+  }
+
   return data;
 }

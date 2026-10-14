@@ -110,6 +110,84 @@ it could see it.
 **Rule for this project:** when a route has a name, check that the body matches
 the name. If two routes look the same, one of them is probably wrong.
 
+## Hiding the list is what made search feel slow
+
+The server was fine. The database is in the cloud, so each query really does
+take a moment. But the page made it *look* much worse:
+
+```html
+<!-- BEFORE - the whole list vanishes while searching -->
+<main v-if="!user.loading" class="people-list">
+<Loading v-else />
+```
+
+Every search set `loading = true`, so the old results disappeared and the user
+watched a spinner. The new person then appeared at the **bottom** of a list that
+had just been empty. It looked like the app was frozen.
+
+The fix is to keep the old results and show the loading state **small and
+local**, right where the user is looking:
+
+```html
+<!-- AFTER - the list stays, the button spins -->
+<main class="people-list">
+<button :disabled="user.loading">
+  <LoaderCircle v-if="user.loading" class="spin" />
+</button>
+```
+
+**Rule for this project:** a loading spinner should sit next to the thing that is
+loading. A full-screen spinner hides your work.
+
+## `push` only ever grows a list
+
+```js
+// BAD - searching @ali twice shows Ali twice
+people.value.push(data.data);
+```
+
+```js
+// GOOD - check first, then add
+if (people.value.some((person) => person.id === found.id)) return;
+people.value = [...people.value, found];
+```
+
+## Never trust `response.json()` — check `response.ok` first
+
+This bug crashed the page:
+
+```js
+// server said 402 "there is no user with this username"
+const data = await response.json();   // data.data is undefined
+people.value.push(data.data);         // undefined goes into the list
+// template then runs: person.name[0]  ->  TypeError, white screen
+```
+
+`fetch` does **not** throw on a 400 or 500. It only rejects on a network
+failure. So a broken server answer looks like a normal answer until you check:
+
+```js
+const data = await response.json();
+if (!response.ok) throw new Error(data.message);
+```
+
+## Read `localStorage` inside the function, never at the top of the file
+
+```js
+// BAD - runs ONCE when the file loads (user is still logged out) -> always null
+const token = localStorage.getItem('accessToken');
+```
+
+```js
+// GOOD - runs on every call, after login
+export async function findUser(username) {
+  const token = localStorage.getItem('accessToken');
+}
+```
+
+**Rule for this project:** anything that comes from the user or from storage goes
+*inside* the function. Only constants and imports go at the top.
+
 ## Optimistic vs honest UI
 
 The invite buttons used to change the page **before** asking the server:

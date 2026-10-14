@@ -2,6 +2,16 @@
 
 ## To do
 
+- `invitationControler.js` `sender()`: `Number(c.workplaceId) === Number(isOwner.workplaceId)`
+  — if the manager has no `workplaceId`, `Number(null) === Number(null)` is `0 === 0`
+  (true), so every invite wrongly says "you have invited this person".
+- `invitationControler.js` `sender()`: `contact.receivedInvites` throws if the user
+  does not exist, so the answer is a 500 "unknown issue" instead of "no such user".
+- `accept()` does 5 sequential DB calls — the slowest endpoint. Independent queries
+  could run together with `Promise.all`.
+- `sender()` does 4 sequential DB calls (2 findUnique + authorization + create).
+- `authMiddleware.js` and `authControler.js` still have `console.log` debug lines.
+- `usersRoutes.js:11` has a `console.log(username)`.
 - `addProduct` auth check has `this.user.id !== this.user.id` — check never runs.
 - `/users` POST returns the whole user row, including `passwordHash`.
 - JWT has no `expiresIn`; `REFRESH_TOKEN_SECRET` is unused.
@@ -14,8 +24,8 @@
 - CORS is wide open (`app.use(cors()`).
 - Controllers are called without `await` in routes.
 - `Assignment` model has no routes, no controller, no UI.
-- After a worker accepts an invite, the page still shows "pending" until a
-  reload. Could push the user to the worker dashboard right away.
+- After a worker accepts an invite, there is no redirect to the worker dashboard.
+- `db.js` logs every query in development (`log: ['query', ...]`). Console spam.
 
 ## Lint problems (npx eslint src)
 
@@ -32,6 +42,21 @@
 - (nothing)
 
 ## Done
+
+- `feat: user search feels fast now` (Job A):
+  - `Hiration.vue` no longer hides the whole list while searching — the old
+    results stay on screen and a small spinner shows inside the search button.
+    This is what made it feel slow.
+  - `Hiration.vue` no longer adds the same person twice — it checks the id first.
+  - `Hiration.vue` shows "ارسال شد" on the card after a real invite is sent
+    (`person.invited = true`).
+  - `api/user.ts` + `api/invitation.ts` check `response.ok` and throw. Before,
+    a server error gave `data.data === undefined`, which was pushed into the
+    list and crashed the page on `person.name[0]`.
+  - The token is now read inside each function, not at module load. Before it
+    was read once at page load (while logged out) so it was always `null`.
+  - `useUsersStore` / `useInvitationsStore` show a toast on error instead of
+    `console.log`.
 
 - `fix: broken SCSS import path in SuccessView and WorkDistributionView` — build passes again.
 - Installed `@eslint/js`, `eslint-plugin-vue`, `vue-eslint-parser`,
