@@ -67,7 +67,7 @@ function routing(key){
 </script>
 
 <template>
-  <nav class="bottom-nav" v-if="type === 'MANAGER'">
+  <nav v-if="type === 'MANAGER'" class="bottom-nav">
     <button
       v-for="tab in tabsManger"
       :key="tab.key"
@@ -80,7 +80,7 @@ function routing(key){
     </button>
   </nav>
 
-  <nav class="bottom-nav" v-if="type === 'WORKER'">
+  <nav v-if="type === 'WORKER'" class="bottom-nav">
     <button
       v-for="tab in tabsWorker"
       :key="tab.key"

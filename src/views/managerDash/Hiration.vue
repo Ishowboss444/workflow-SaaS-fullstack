@@ -54,7 +54,7 @@ async function searchUser(username) {
     </header>
 
     <!-- SEARCH -->
-    <form @submit.prevent="searchUser(search)" class="search-box">
+    <form class="search-box" @submit.prevent="searchUser(search)">
       <Search :size="18" />
 
       <input
@@ -65,14 +65,14 @@ async function searchUser(username) {
     </form>
 
     <!-- RESULTS HEADER -->
-    <div class="results-header" v-if="!user.loading">
+    <div v-if="!user.loading" class="results-header">
       <span> افراد </span>
 
       <small> {{ people.length }} نفر </small>
     </div>
 
     <!-- PEOPLE -->
-    <main class="people-list" v-if="!user.loading">
+    <main v-if="!user.loading" class="people-list">
       <article v-for="person in people" :key="person.id" class="person-card">
         <div class="person-main">
           <!-- AVATAR -->
@@ -97,7 +97,7 @@ async function searchUser(username) {
               <BriefcaseBusiness :size="13" />
 
               <span>
-                {{ person.role || 'انتخاب نشده' }}
+                {{ person.role }}
               </span>
             </div>
           </div>

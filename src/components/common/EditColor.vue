@@ -22,15 +22,15 @@ const amount = defineModel('amount', { default: 1 });
     <div>
       <label>
         <p>اسم</p>
-        <input type="text" v-model="name" />
+        <input v-model="name" type="text" />
       </label>
       <label>
         <p>رنگ</p>
-        <input type="color" v-model="color" />
+        <input v-model="color" type="color" />
       </label>
       <label>
         <p>تعداد</p>
-        <input type="number" v-model.number="amount" />
+        <input v-model.number="amount" type="number" />
       </label>
     </div>
   </div>

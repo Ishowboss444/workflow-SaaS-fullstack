@@ -1,7 +1,7 @@
 ```vue
 <template>
   <main class="create-workplace-page" dir="rtl">
-    <div class="create-workplace-container" v-if="!loading">
+    <div v-if="!loading" class="create-workplace-container">
       <button type="button" class="back-button" @click="router.back()">
         <span>
           <ChevronRight/>

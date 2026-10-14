@@ -34,23 +34,23 @@ function nextRoute() {
       />
 
       <SelectField
+        v-model="product.newProduct.name"
         type="text"
         label="نوع کار"
         placeholder="تی‌شرت"
         :icon="Shirt"
-        v-model="product.newProduct.name"
       />
 
       <FormField
+        v-model="product.newProduct.description"
         label="توضیحات (اختیاری)"
         placeholder="مثلاً مدل، پارچه، رنگ و ..."
-        v-model="product.newProduct.description"
       />
 
       <FormField
+        v-model="product.newProduct.amount"
         type="number"
         label="تعداد کل"
-        v-model="product.newProduct.amount"
         placeholder="مثلاً 10000"
       />
 

@@ -52,46 +52,46 @@ async function createProduction() {
 </script>
 
 <template>
-  <div class="page page--no-nav" v-if="!product.loading">
+  <div v-if="!product.loading" class="page page--no-nav">
     <StepperHeader :current-step="3" />
     <div class="form-body form-body-lines">
       <h2 class="section-title">خط گذاری</h2>
 
       <FormField
+        v-model="product.newProduct.right_tailor"
         type="number"
         label="تعداد خط راسته دوز"
         suffix="خط"
-        v-model="product.newProduct.right_tailor"
       />
       <FormField
+        v-model="product.newProduct.mid_tailor"
         type="number"
         label="تعداد خط میان دوز"
         suffix="خط"
-        v-model="product.newProduct.mid_tailor"
       />
       <FormField
+        v-model="product.newProduct.top_tailor"
         type="number"
         label="تعداد خط سر دوز"
         suffix="خط"
-        v-model="product.newProduct.top_tailor"
       />
     </div>
     <div class="form-body">
       <h2 class="section-title">قیمت‌گذاری</h2>
 
       <FormField
+        v-model="salary.manager"
         type="number"
         label="قیمت فروش هر قطعه (از مشتری)"
         model-value="100,000"
         suffix="تومان"
-        v-model="salary.manager"
       />
       <FormField
+        v-model="salary.worker"
         type="number"
         label="دستمزد کارگر (هر قطعه)"
         model-value="50,000"
         suffix="تومان"
-        v-model="salary.worker"
       />
 
       <div class="summary-card">

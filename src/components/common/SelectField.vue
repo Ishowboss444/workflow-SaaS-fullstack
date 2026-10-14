@@ -17,11 +17,11 @@ const model = defineModel();
     <div class="select-field__control">
       <ChevronDown :size="16" class="select-field__chevron" />
       <input
+        v-model="model"
         :type="type"
         class="select-field__value"
         :value="modelValue"
         :placeholder="placeholder"
-        v-model="model"
       />
       <!-- <span class="select-field__value">{{ modelValue }}</span> -->
       <component :is="icon" v-if="icon" :size="18" class="select-field__icon" />

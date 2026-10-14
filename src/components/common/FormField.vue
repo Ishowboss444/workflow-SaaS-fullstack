@@ -14,10 +14,10 @@ const model = defineModel();
     <span class="form-field__label">{{ label }}</span>
     <div class="form-field__control">
       <input
+        v-model="model"
         :type="type"
         :value="modelValue"
         :placeholder="placeholder"
-        v-model="model"
       />
       <span v-if="suffix" class="form-field__suffix">{{ suffix }}</span>
     </div>

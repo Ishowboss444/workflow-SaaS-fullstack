@@ -25,7 +25,7 @@ const steps = [
         aria-label="بستن"
         @click="router.back()"
       >
-        <X :size="20" v-if="currentStep === 1" />
+        <X v-if="currentStep === 1" :size="20" />
         <ChevronLeft v-else />
       </button>
     </div>

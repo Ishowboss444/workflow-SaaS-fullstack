@@ -73,7 +73,7 @@ function declineInvitation(invitation) {
 </script>
 
 <template>
-  <div class="page invitations-page" v-if="!invite.loading">
+  <div v-if="!invite.loading" class="page invitations-page">
     <!-- HEADER -->
     <header class="invitations-header">
       <div>

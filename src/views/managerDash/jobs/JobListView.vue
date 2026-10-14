@@ -25,7 +25,7 @@ const filters = [
 </script>
 
 <template>
-  <div class="page" v-if="!products.loading">
+  <div v-if="!products.loading" class="page">
     <header class="job-list-header">
       <button
         class="icon-btn"

@@ -21,7 +21,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="page" v-if="!product.loading">
+  <div v-if="!product.loading" class="page">
     <JobDetailHeader active-tab="colors" :data="data" />
 
     <div>
