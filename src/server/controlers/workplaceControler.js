@@ -131,5 +131,64 @@ class Workplace {
       });
     }
   }
+
+  async getMemberAssignments(workplaceId, memberId) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: this.id,
+        },
+      });
+      if (user.workplaceId !== workplaceId)
+        return this.res.status(401).json({
+          status: 'failed',
+          message: 'you are not in this workplace',
+        });
+
+      const member = await prisma.user.findUnique({
+        where: {
+          id: memberId,
+        },
+      });
+      if (!member || member.workplaceId !== workplaceId)
+        return this.res.status(404).json({
+          status: 'failed',
+          message: 'member not found in this workplace',
+        });
+
+      const assignments = await prisma.assignment.findMany({
+        where: {
+          workerId: memberId,
+        },
+        include: {
+          product: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      return this.res.status(200).json({
+        status: 'success',
+        data: {
+          member: {
+            id: member.id,
+            name: member.name,
+            username: member.username,
+            field: member.field,
+            role: member.role,
+            createdAt: member.createdAt,
+          },
+          assignments: assignments,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      return this.res.status(500).json({
+        status: 'failed',
+        message: 'something went wrong',
+      });
+    }
+  }
 }
 export default Workplace;

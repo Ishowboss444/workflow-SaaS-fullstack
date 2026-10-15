@@ -25,4 +25,11 @@ router.get('/:id/members', authonticated, (req, res) => {
   workplace.getMembers(id);
 });
 
+router.get('/:id/members/:memberId/assignments', authonticated, (req, res) => {
+  const id = req.params.id;
+  const memberId = req.params.memberId;
+  const workplace = new Workplace(req, res);
+  workplace.getMemberAssignments(id, memberId);
+});
+
 export default router;

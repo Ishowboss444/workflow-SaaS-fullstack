@@ -85,6 +85,15 @@ const routes = createRouter({
             requiresManager : true,
           },
         },
+        {
+          path : 'Members/:memberId',
+          name : 'MemberDetail',
+          component : ()=> import('@/views/managerDash/MemberDetail.vue'),
+          meta: {
+            requiresAuth: true,
+            requiresManager : true,
+          },
+        },
 
 
         {

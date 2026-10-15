@@ -2,6 +2,7 @@
 
 ## To do
 
+### Backend
 - `invitationControler.js` `sender()`: `Number(c.workplaceId) === Number(isOwner.workplaceId)`
   — if the manager has no `workplaceId`, `Number(null) === Number(null)` is `0 === 0`
   (true), so every invite wrongly says "you have invited this person".
@@ -26,6 +27,12 @@
 - `Assignment` model has no routes, no controller, no UI.
 - After a worker accepts an invite, there is no redirect to the worker dashboard.
 - `db.js` logs every query in development (`log: ['query', ...]`). Console spam.
+- No endpoint to get a member's assignments (broadcasts) — needed for Member detail page.
+
+### Frontend
+- `Members.vue` is a placeholder — needs full build.
+- `MemberDetail.vue` does not exist — needs full build.
+- No route for `/managerDashboard/Members/:memberId`.
 
 ## Lint problems (npx eslint src)
 
@@ -46,43 +53,81 @@
 - `feat: user search feels fast now` (Job A):
   - `Hiration.vue` no longer hides the whole list while searching — the old
     results stay on screen and a small spinner shows inside the search button.
-    This is what made it feel slow.
   - `Hiration.vue` no longer adds the same person twice — it checks the id first.
   - `Hiration.vue` shows "ارسال شد" on the card after a real invite is sent
     (`person.invited = true`).
-  - `api/user.ts` + `api/invitation.ts` check `response.ok` and throw. Before,
-    a server error gave `data.data === undefined`, which was pushed into the
-    list and crashed the page on `person.name[0]`.
-  - The token is now read inside each function, not at module load. Before it
-    was read once at page load (while logged out) so it was always `null`.
+  - `api/user.ts` + `api/invitation.ts` check `response.ok` and throw.
+  - The token is now read inside each function, not at module load.
   - `useUsersStore` / `useInvitationsStore` show a toast on error instead of
     `console.log`.
 
 - `fix: broken SCSS import path in SuccessView and WorkDistributionView` — build passes again.
 - Installed `@eslint/js`, `eslint-plugin-vue`, `vue-eslint-parser`,
   `eslint-config-prettier` — `npx eslint src` runs now.
-- `fix: all real ESLint problems` (0 left, ignoring 3 config-only rules):
-  - broken tag `<\>` in `workerDash/workplace.vue`
-  - 6 server `catch` blocks now log the error and always answer
-  - `userValidationMiddleware` no longer calls `next()` after a 500
-  - `FullfilledLoading` now has `v-show` so the transition can close
-  - removed 7 unused imports / variables
-  - added missing types to `defineModel` in 3 components
-  - `invitation.vue` now shows real API data instead of 3 fake names
-
-- `fix: invite accept/reject now really saves` (security):
-  - `PATCH /invites/:inviteId/reject` called `accept()` — rejecting actually
-    JOINED the workplace. Now it calls `reject()`.
-  - added `acceptInvite` / `rejectInvite` in `api/invitation.ts`
-  - added `acceptInvitation` / `rejectInvitation` in `useInvitationsStore`
-  - `invitation.vue` buttons now call the API, show an error toast on failure,
-    and are disabled while working
+- `fix: all real ESLint problems` (0 left, ignoring 3 config-only rules).
+- `fix: invite accept/reject now really saves` (security).
 
 ## Found while working
 
 - 5 packages have blocked install scripts (npm blocked them for safety):
   `@parcel/watcher`, `@prisma/engines`, `bcrypto`, `esbuild`, `prisma`.
-  The build works, but `prisma generate` may need them approved later.
 - `npm audit` reports vulnerabilities (not checked in detail).
 - `timeAgo` in `src/tools/timeago.ts` returns English text ("2 hours ago"),
   but the UI is Persian. Now used by `invitation.vue`.
+
+---
+
+## Business Logic (Kargah Man)
+
+### Overview
+Kargah Man is a workplace management SaaS for tailoring workshops. It replaces
+paper notebooks with a digital system for tracking products, quantities, and
+work assignments.
+
+### User Roles
+- **MANAGER** — owns one workplace. Creates products, invites workers,
+  distributes work (broadcasts), tracks progress.
+- **WORKER** — belongs to one workplace. Receives work assignments, sees
+  own tasks, notifies manager when done.
+
+### Key Rules
+1. A workplace has exactly **one** manager (the owner).
+2. A user can belong to **only one** workplace at a time.
+3. A manager **cannot** join another workplace as a worker.
+4. A worker **cannot** accept an invitation to a second workplace.
+5. Invitations do **not** create membership — only acceptance does.
+6. Rejected/expired invitations must **not** create membership.
+7. Membership rules are enforced by the **backend**, not the frontend.
+
+### Products and Broadcasting
+- A manager creates a product with a total quantity (e.g., 1,000 units).
+- The manager **broadcasts** (assigns) portions of that quantity to workers.
+- Each assignment links: product + worker + quantity.
+- Total assigned quantity cannot exceed the product's total quantity.
+- Each assignment is traceable to the correct product and worker.
+
+### Database Models
+| Model | Purpose |
+|-------|---------|
+| `User` | All users (managers + workers). Has `role`, `field`, `workplaceId`. |
+| `Workplace` | A workplace. Has one `owner` (manager) and many `members` (workers). |
+| `Product` | A product with quantity, colors, salary, tailor amounts. |
+| `Assignment` | A "broadcast" — links a product to a worker with a quantity. |
+| `Invite` | Workplace invitation. Status: PENDING, ACCEPTED, REJECTED. |
+
+### Field Types (Worker Specialization)
+| DB Value | Persian |
+|----------|---------|
+| `rightTailor` | خیاط راست |
+| `topTailor` | خیاط بالا |
+| `midTailor` | خیاط وسط |
+| `general` | عمومی |
+
+### Pages
+| Route | Page | Role |
+|-------|------|------|
+| `/managerDashboard/Members` | Members list | Manager |
+| `/managerDashboard/Members/:memberId` | Member detail + broadcasts | Manager |
+| `/managerDashboard/Hiration` | Invite workers | Manager |
+| `/managerDashboard/jobs` | Job list | Manager |
+| `/workerDashboard/assignments` | My assignments | Worker |
