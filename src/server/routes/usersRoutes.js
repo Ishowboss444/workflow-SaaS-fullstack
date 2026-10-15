@@ -8,8 +8,6 @@ const router = express.Router();
 router.post('/', authonticated, async (req, res) => {
   const { username } = req.body;
 
-  console.log(username);
-
   const user = await prisma.user.findUnique({
     where: {
       username: username,
@@ -26,9 +24,10 @@ router.post('/', authonticated, async (req, res) => {
       message: 'this username belongs to YOU!',
     });
 
+  const { passwordHash, ...safeUser } = user;
   return res.status(200).json({
     status: 'success',
-    data: user,
+    data: safeUser,
   });
 });
 router.patch('/workerProfile', authonticated, async (req, res) => {
