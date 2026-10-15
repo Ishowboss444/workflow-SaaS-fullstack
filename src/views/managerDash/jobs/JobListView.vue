@@ -5,7 +5,7 @@ import StatusBadge from '@/components/common/StatusBadge.vue';
 import ProgressBar from '@/components/common/ProgressBar.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useProductStore } from '@/stores/useProductStore.js';
+import { useProductStore } from '@/stores/useProductStore';
 import FullfilledLoading from '@/components/common/FullfilledLoading.vue';
 
 const products = useProductStore();
@@ -13,8 +13,7 @@ const activeFilter = ref('active'); // all | active | done
 const router = useRouter();
 
 onMounted(async () => {
-  const data = await products._getProduct();
-  console.log(data);
+  await products._getProduct();
 });
 
 const filters = [
@@ -30,7 +29,7 @@ const filters = [
       <button
         class="icon-btn"
         aria-label="اعلان‌ها"
-        @click="router.push({ name: 'myInvitations' })"
+        @click="router.push({ name: 'job-list' })"
       >
         <Bell :size="20" />
       </button>
