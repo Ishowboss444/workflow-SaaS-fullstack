@@ -4,25 +4,25 @@ import Invitation from '../controlers/invitationControler.js';
 import authorization from '../middlewae/authorizationMiddleware.js';
 const router = express.Router();
 
-router.get('/get', authonticated, (req, res) => {
+router.get('/get', authonticated, async (req, res) => {
   const invite = new Invitation(req, res);
-  invite.get();
+  await invite.get();
 });
-router.patch('/:inviteId/accept', authonticated, (req, res) => {
+router.patch('/:inviteId/accept', authonticated, async (req, res) => {
   const invite = new Invitation(req, res);
-  invite.accept();
+  await invite.accept();
 });
-router.patch('/:inviteId/reject', authonticated, (req, res) => {
+router.patch('/:inviteId/reject', authonticated, async (req, res) => {
   const invite = new Invitation(req, res);
-  invite.reject();
+  await invite.reject();
 });
 router.post(
   '/send/:to',
   authonticated,
   authorization('MANAGER'),
-  (req, res) => {
+  async (req, res) => {
     const invite = new Invitation(req, res);
-    invite.sender();
+    await invite.sender();
   }
 );
 export default router;

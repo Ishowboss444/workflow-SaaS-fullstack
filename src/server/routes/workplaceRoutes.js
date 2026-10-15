@@ -5,31 +5,31 @@ import authorization from '../middlewae/authorizationMiddleware.js';
 
 const router = express.Router();
 
-router.post('/add', authonticated, (req, res) => {
+router.post('/add', authonticated, async (req, res) => {
   const workplace = new Workplace(req, res);
-  workplace.add();
+  await workplace.add();
 });
 router.delete(
   '/delete/:workplaceId',
   authonticated,
   authorization('MANAGER'),
-  (req, res) => {
+  async (req, res) => {
     const workplace = new Workplace(req, res);
-    workplace.delete();
+    await workplace.delete();
   }
 );
 
-router.get('/:id/members', authonticated, (req, res) => {
-  const id = req.params.id;
+router.get('/:id/members', authonticated, async (req, res) => {
+  const id = Number(req.params.id);
   const workplace = new Workplace(req, res);
-  workplace.getMembers(id);
+  await workplace.getMembers(id);
 });
 
-router.get('/:id/members/:memberId/assignments', authonticated, (req, res) => {
-  const id = req.params.id;
-  const memberId = req.params.memberId;
+router.get('/:id/members/:memberId/assignments', authonticated, async (req, res) => {
+  const id = Number(req.params.id);
+  const memberId = Number(req.params.memberId);
   const workplace = new Workplace(req, res);
-  workplace.getMemberAssignments(id, memberId);
+  await workplace.getMemberAssignments(id, memberId);
 });
 
 export default router;

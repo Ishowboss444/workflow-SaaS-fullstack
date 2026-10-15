@@ -10,17 +10,17 @@ router.post(
   authorization('MANAGER'),
   async (req, res) => {
     const newProduct = new Products(req, res);
-    newProduct.addProduct();
+    await newProduct.addProduct();
   }
 );
-router.get('/get', authonticated, (req, res) => {
+router.get('/get', authonticated, async (req, res) => {
   const products = new Products(req, res);
-  products.getProducts();
+  await products.getProducts();
 });
-router.get('/:id/get', authonticated, authorization('MANAGER'), (req, res) => {
+router.get('/:id/get', authonticated, authorization('MANAGER'), async (req, res) => {
   const id = Number(req.params.id);
   const products = new Products(req, res);
-  products.getSpecificProducts(id);
+  await products.getSpecificProducts(id);
 });
 
 export default router;
