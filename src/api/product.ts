@@ -1,4 +1,3 @@
-const token = localStorage.getItem('accessToken');
 export interface ProductAdd {
   name: string;
   description: string;
@@ -11,7 +10,7 @@ export interface ProductAdd {
   top_tailor: number;
 }
 export async function addProduct(info: ProductAdd) {
-  console.log(token);
+  const token = localStorage.getItem('accessToken');
 
   try {
     const response = await fetch('http://localhost:3000/product/add', {
@@ -33,18 +32,18 @@ export async function addProduct(info: ProductAdd) {
       }),
     });
     if (!response.ok) {
-      console.log(response);
       throw Error;
     }
 
     const data = await response.json();
     return data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
 export async function getProducts(id: number | null = null) {
+  const token = localStorage.getItem('accessToken');
   const url =
     id !== null
       ? `http://localhost:3000/product/${id}/get`
@@ -60,7 +59,6 @@ export async function getProducts(id: number | null = null) {
     });
 
     if (!response.ok) {
-      console.log(response);
       throw new Error(`Request failed: ${response.status}`);
     }
 
