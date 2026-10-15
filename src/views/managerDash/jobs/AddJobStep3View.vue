@@ -3,7 +3,7 @@ import StepperHeader from '@/components/common/StepperHeader.vue';
 import FormField from '@/components/common/FormField.vue';
 import SummaryRow from '@/components/common/SummaryRow.vue';
 import AppButton from '@/components/common/AppButton.vue';
-import { useProductStore } from '@/stores/useProductStore.js';
+import { useProductStore } from '@/stores/useProductStore';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import { useRouter } from 'vue-router';
@@ -28,7 +28,6 @@ const calculation = computed(() => {
 });
 function setSalary() {
   product.newProduct.salary = salary.value;
-  console.log(product.newProduct.salary);
 }
 
 async function createProduction() {
@@ -47,7 +46,6 @@ async function createProduction() {
   if (data) {
     toast.success('successfully added');
   }
-  console.log(data);
 }
 </script>
 
@@ -83,14 +81,12 @@ async function createProduction() {
         v-model="salary.manager"
         type="number"
         label="قیمت فروش هر قطعه (از مشتری)"
-        model-value="100,000"
         suffix="تومان"
       />
       <FormField
         v-model="salary.worker"
         type="number"
         label="دستمزد کارگر (هر قطعه)"
-        model-value="50,000"
         suffix="تومان"
       />
 

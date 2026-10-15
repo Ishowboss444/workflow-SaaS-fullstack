@@ -1,7 +1,6 @@
 <script setup>
 defineProps({
   label: { type: String, required: true },
-  modelValue: { type: [String, Number], default: '' },
   placeholder: { type: String, default: '' },
   suffix: { type: String, default: '' }, // e.g. "تومان"
   type: { type: String, default: 'text' },
@@ -16,7 +15,6 @@ const model = defineModel({ type: [String, Number], default: '' });
       <input
         v-model="model"
         :type="type"
-        :value="modelValue"
         :placeholder="placeholder"
       />
       <span v-if="suffix" class="form-field__suffix">{{ suffix }}</span>
