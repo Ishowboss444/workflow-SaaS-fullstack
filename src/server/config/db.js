@@ -7,10 +7,7 @@ const adaptor = new PrismaPg({
 });
 const prisma = new PrismaClient({
   adapter: adaptor,
-  log:
-    process.env.NODE_ENV === 'development'
-      ? ['query', 'info', 'warn', 'error']
-      : ['error'],
+  log: ['error'],
 });
 const connectDB = async () => {
   try {
