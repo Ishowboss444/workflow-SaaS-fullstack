@@ -246,7 +246,7 @@ routes.beforeEach((to) => {
   const workplace = localStorage.getItem('workplace')
   const role = data === 'MANAGER'
 
-  if (to.meta.requiresManager && !role && !workplace) {
+  if (to.meta.requiresManager && !role) {
     return {name : 'starter'};
   }
 });
