@@ -22,14 +22,14 @@ const fieldOptions = [
   { value: 'rightTailor', label: 'خیاط راست' },
   { value: 'topTailor', label: 'خیاط بالا' },
   { value: 'midTailor', label: 'خیاط وسط' },
-  { value: 'general', label: 'عمومی' },
+  { value: 'general', label: 'شاگرد' },
 ];
 
 const fieldLabels = {
   rightTailor: 'خیاط راست',
   topTailor: 'خیاط بالا',
   midTailor: 'خیاط وسط',
-  general: 'عمومی',
+  general: 'شاگرد',
 };
 
 const filteredMembers = computed(() => {
@@ -64,6 +64,8 @@ function goToMember(member) {
 
 onMounted(async () => {
   try {
+    console.log(global.workplaceId);
+    
     const data = await getWorkplaceMembers(global.workplaceId);
     workplaceName.value = data.data.name;
     members.value = (data.data.members || []).filter((m) => m.role === 'WORKER');
@@ -157,7 +159,7 @@ onMounted(async () => {
               </div>
             </div>
           </div>
-          <div class="role-badge">کارگر</div>
+          <div class="role-badge">کارمند</div>
         </article>
 
         <!-- EMPTY -->
