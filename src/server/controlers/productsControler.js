@@ -30,18 +30,21 @@ export class Products {
       });
 
       if (!products)
-        return this.res(409).json({
+        return this.res.status(409).json({
           status: 'failed',
           message: 'went wrong',
         });
-        
-        this.res.status(201).json({
-          status: 'success',
-          data: products.products,
-        });
-        console.log('done');
+
+      return this.res.status(201).json({
+        status: 'success',
+        data: products.products,
+      });
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      return this.res.status(500).json({
+        status: 'failed',
+        message: 'something went wrong',
+      });
     }
   }
 
@@ -58,7 +61,7 @@ export class Products {
         },
       });
       if (userExist.id !== workplace.ownerId)
-        return this.res(409).json({
+        return this.res.status(409).json({
           status: 'failed',
           message: 'you are not premitted',
         });
@@ -68,9 +71,8 @@ export class Products {
           id: id,
         },
       });
-      console.log(product);
 
-      this.res.status(201).json({
+      return this.res.status(201).json({
         status: 'success',
         data: product,
       });
@@ -80,7 +82,6 @@ export class Products {
   }
 
   async addProduct() {
-    console.log(this.user);
     try {
       const userValid = await prisma.user.findUnique({
         where: {
@@ -91,12 +92,8 @@ export class Products {
         },
       });
 
-      if (
-        userValid.workplaceId !== userValid.workplace.id &&
-        userValid.id !== this.user.id &&
-        userValid.id !== userValid.workplace.ownerId
-      )
-        return this.res.status(409).json({
+      if (userValid.id !== userValid.workplace.ownerId)
+        return this.res.status(403).json({
           status: 'failed',
           message: "you're not the owner of this workplace",
         });
@@ -104,7 +101,7 @@ export class Products {
       const newProduct = await prisma.product.create({
         data: {
           name: this.body.name,
-          description: this.body.name,
+          description: this.body.description ?? '',
           colors: this.body.colors,
           amount: this.body.amount,
           salary: this.body.salary,
@@ -115,7 +112,7 @@ export class Products {
           workplaceId: userValid.workplaceId,
         },
       });
-      this.res.status(201).json({
+      return this.res.status(201).json({
         status: 'success',
         data: {
           name: newProduct.name,
@@ -126,7 +123,11 @@ export class Products {
         },
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      return this.res.status(500).json({
+        status: 'failed',
+        message: 'something went wrong',
+      });
     }
   }
 }
