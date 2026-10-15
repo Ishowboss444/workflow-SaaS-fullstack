@@ -23,10 +23,16 @@ class Invitation {
           receivedInvites: true,
         },
       });
-      const isSpamed = contact.receivedInvites.find((c) => {
-        return Number(c.workplaceId) === Number(isOwner.workplaceId);
-      });
-      console.log('is this ?', isSpamed);
+      if (!contact)
+        return this.res.status(404).json({
+          status: 'failed',
+          message: 'user not found',
+        });
+      const isSpamed =
+        isOwner.workplaceId &&
+        contact.receivedInvites.find(
+          (c) => Number(c.workplaceId) === Number(isOwner.workplaceId)
+        );
       if (isSpamed)
         return this.res.status(401).json({
           status: 'failed',
@@ -66,8 +72,6 @@ class Invitation {
           status: 'failed',
           message: "you're already in a workplace",
         });
-      console.log(isEmployed.id, isEmployed.name);
-
       const myInvites = await prisma.invite.findMany({
         where: {
           receiverId: isEmployed.id,
@@ -78,8 +82,6 @@ class Invitation {
           sender: true,
         },
       });
-      console.log(myInvites.length);
-
       return this.res.status(200).json({
         status: 'success',
         myInvites,
