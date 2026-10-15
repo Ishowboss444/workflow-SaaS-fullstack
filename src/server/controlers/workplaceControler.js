@@ -31,7 +31,6 @@ class Workplace {
           products: true,
         },
       });
-      console.log(newWorkplace);
       const updateUser = await prisma.user.update({
         where: {
           id: this.id,
@@ -55,10 +54,15 @@ class Workplace {
         },
       });
     } catch (err) {
-      console.log(`here is an error :${err}`);
+      console.error(err);
+      return this.res.status(500).json({
+        status: 'failed',
+        message: 'something went wrong',
+      });
     }
   }
   async delete() {
+    try {
     const workplaceId = Number(this.req.params.workplaceId);
     const workplace = await prisma.workplace.findUnique({
       where: {
@@ -91,11 +95,18 @@ class Workplace {
         message: 'your forbidden to do this',
       });
     }
-    this.res.status(200).json({
+    return this.res.status(200).json({
       message: 'you have done great',
       workplace,
       deletor: this.id,
     });
+    } catch (err) {
+      console.error(err);
+      return this.res.status(500).json({
+        status: 'failed',
+        message: 'something went wrong',
+      });
+    }
   }
   async getMembers(id) {
     try {
