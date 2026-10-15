@@ -19,8 +19,6 @@ class Auth {
       });
 
       if (!userExist) {
-        console.log('there is no account exist');
-
         return this.res
           .status(401)
           .json({ message: 'there is no account exist' });
@@ -43,10 +41,9 @@ class Auth {
             role: userExist.role,
             workplaceId : userExist.workplaceId,
           },
-          process.env.ACCESS_TOKEN_SECRET
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: '24h' }
         );
-        console.log(userExist.field , userExist.role , userExist.workplaceId);
-        
 
         this.res.cookie('accessToken', accessToken, {
           httpOnly: true,
@@ -81,13 +78,9 @@ class Auth {
       });
       //if username is exist don't go further
       if (isExist) {
-        return this.res.status(400).json({
-          status: 'this username is already exist',
-          data: {
-            id: isExist.id,
-            name: isExist.name,
-            createdAt: isExist.createdAt,
-          },
+        return this.res.status(409).json({
+          status: 'failed',
+          message: 'this username is already exist',
         });
       }
       //password hassing
@@ -111,12 +104,19 @@ class Auth {
         },
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return this.res.status(500).json({
         status: 'failed',
         message: 'something went wrong',
       });
     }
+  }
+  async logout() {
+    this.res.clearCookie('accessToken');
+    return this.res.status(200).json({
+      status: 'success',
+      message: 'logged out',
+    });
   }
 }
 
