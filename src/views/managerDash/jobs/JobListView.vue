@@ -71,7 +71,10 @@ const filters = [
         <div class="job-card__body">
           <div class="job-card__top">
             <span class="job-card__order">#{{ job.id }}</span>
-            <StatusBadge :status="'progress'" :label="'progress'" />
+            <StatusBadge
+              :status="job.status === 'NOT_BROADCASTED' ? 'new' : job.status === 'BROADCASTED' ? 'active' : job.status === 'IN_PROGRESS' ? 'progress' : 'done'"
+              :label="job.status === 'NOT_BROADCASTED' ? 'پخش نشده' : job.status === 'BROADCASTED' ? 'پخش شده' : job.status === 'IN_PROGRESS' ? 'در حال انجام' : 'تمام شده'"
+            />
           </div>
           <h3 class="job-card__title">{{ job.name }}</h3>
           <p class="job-card__meta">

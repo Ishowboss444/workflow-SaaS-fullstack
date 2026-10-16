@@ -35,7 +35,7 @@ async function createProduction() {
   const p = product.newProduct;
   const plus = p.mid_tailor + p.top_tailor + p.right_tailor;
   if (p.amount === 0) {
-    alert('you need fill it again ');
+    toast.error('you need fill it again');
     return router.push({ name: 'add-job-1' });
   }
   if (plus !== p.lines) {
@@ -44,8 +44,8 @@ async function createProduction() {
 
   const data = await product._addProduct(p);
   if (data) {
-    router.push({name: 'add-job-4'})
     toast.success('successfully added');
+    router.push({ name: 'job-list' });
   }
 }
 </script>

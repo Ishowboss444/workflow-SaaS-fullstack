@@ -48,6 +48,7 @@ model Product {
   top_tailor   Int
   lines        Int
   done         Int          @default(0)
+  status       ProductStatus @default(NOT_BROADCASTED)
   assignments  Assignment[]
   workplace    Workplace    @relation(fields: [workplaceId], references: [id], onDelete: Cascade)
 }
@@ -90,4 +91,11 @@ enum Field {
 enum Role {
   MANAGER
   WORKER
+}
+
+enum ProductStatus {
+  NOT_BROADCASTED
+  BROADCASTED
+  IN_PROGRESS
+  DONE
 }

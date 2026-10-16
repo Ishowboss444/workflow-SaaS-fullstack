@@ -69,6 +69,11 @@ class Assignment {
         },
       });
 
+      await prisma.product.update({
+        where: { id: product.id },
+        data: { status: 'BROADCASTED' },
+      });
+
       return this.res.status(201).json({
         status: 'success',
         data: assignment,

@@ -120,12 +120,6 @@ const routes = createRouter({
           name: 'add-job-3',
           component: () => import('../views/managerDash/jobs/AddJobStep3View.vue'),
         },
-        {
-          path: 'jobs/add/4',
-          name: 'add-job-4',
-          component: () => import('../views/managerDash/jobs/AddJobStep4View.vue'),
-        },
-      
         // job detail, tabbed
         {
           path: 'jobs/:id/colors',

@@ -12,7 +12,6 @@ const steps = [
   { n: 1, label: 'مشخصات کار' },
   { n: 2, label: 'رنگ‌ها' },
   { n: 3, label: 'قیمت' },
-  { n: 4, label: 'تقسیم کار' },
 ];
 </script>
 
