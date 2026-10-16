@@ -10,14 +10,14 @@ import AppButton from '@/components/common/AppButton.vue';
     </div>
 
     <h1 class="success-page__title">کار با موفقیت ثبت شد!</h1>
-    <p class="success-page__desc">سفارش #1000 با موفقیت اضافه شد.</p>
+    <p class="success-page__desc">سفارش شما با موفقیت اضافه شد.</p>
 
     <div class="success-page__actions">
       <router-link
-        :to="{ name: 'job-detail-colors', params: { id: 1000 } }"
+        :to="{ name: 'job-list' }"
         class="footer-link"
       >
-        <AppButton>مشاهده سفارش</AppButton>
+        <AppButton>مشاهده سفارش‌ها</AppButton>
       </router-link>
       <router-link :to="{ name: 'add-job-1' }" class="footer-link">
         <AppButton variant="outline">افزودن کار جدید</AppButton>

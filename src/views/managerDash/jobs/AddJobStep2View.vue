@@ -139,20 +139,12 @@ function removeColor(color) {
 }
 
 function nextStep() {
-  console.log('next');
-
   if (totalAmount.value !== productAmount.value) {
     if (remainingAmount.value > 0) {
-      toast.error('dfdf');
-      console.error(
-        `${remainingAmount.value.toLocaleString()} عدد هنوز باقی مانده است`
-      );
       toast.error(
         `${remainingAmount.value.toLocaleString()} عدد هنوز باقی مانده است`
       );
     } else {
-      console.error('تعداد رنگ‌ها بیشتر از تعداد سفارش است');
-
       toast.error('تعداد رنگ‌ها بیشتر از تعداد سفارش است');
     }
 

@@ -6,6 +6,7 @@ import ProgressBar from '@/components/common/ProgressBar.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProductStore } from '@/stores/useProductStore';
+import { computed } from 'vue';
 import FullfilledLoading from '@/components/common/FullfilledLoading.vue';
 
 const products = useProductStore();
@@ -21,6 +22,17 @@ const filters = [
   { key: 'active', label: 'فعال' },
   { key: 'done', label: 'تکمیل شده' },
 ];
+
+const filteredProducts = computed(() => {
+  if (activeFilter.value === 'all') return products.products;
+  if (activeFilter.value === 'active')
+    return products.products.filter(
+      (p) => p.status === 'BROADCASTED' || p.status === 'IN_PROGRESS'
+    );
+  if (activeFilter.value === 'done')
+    return products.products.filter((p) => p.status === 'DONE');
+  return products.products;
+});
 </script>
 
 <template>
@@ -62,7 +74,7 @@ const filters = [
     <!-- job lists loop -->
     <div class="job-list">
       <router-link
-        v-for="job in products.products"
+        v-for="job in filteredProducts"
         :key="job.id"
         :to="{ name: 'job-detail-colors', params: { id: job.id } }"
         class="job-card"

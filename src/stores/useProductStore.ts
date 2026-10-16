@@ -35,10 +35,8 @@ export const useProductStore = defineStore('products', () => {
         mid_tailor: info.mid_tailor,
         top_tailor: info.top_tailor,
       });
-      console.log(data);
       return data;
     } catch (err) {
-      console.log(`here is the error : ${err}`);
       error.value = err instanceof Error ? err.message : 'signup failed';
       throw err;
     } finally {
@@ -53,7 +51,6 @@ export const useProductStore = defineStore('products', () => {
       products.value = data.data;
       return data;
     } catch (err) {
-      console.log(`here is the error : ${err}`);
       error.value = err instanceof Error ? err.message : 'signup failed';
       throw err;
     } finally {

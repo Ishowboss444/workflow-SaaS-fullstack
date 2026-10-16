@@ -1,4 +1,3 @@
-```vue
 <template>
   <Transition name="loading">
     <div v-show="show" class="fulfilled-loading" dir="rtl">
@@ -130,4 +129,3 @@ defineProps({
   }
 }
 </style>
-```
