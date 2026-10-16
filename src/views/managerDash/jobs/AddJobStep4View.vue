@@ -80,7 +80,7 @@ async function submitAssignments() {
           quantity: Number(w.qty),
         })
       );
-
+      
     await Promise.all(promises);
     toast.success('work distributed successfully');
     router.push({ name: 'success' });

@@ -44,6 +44,7 @@ async function createProduction() {
 
   const data = await product._addProduct(p);
   if (data) {
+    router.push({name: 'add-job-4'})
     toast.success('successfully added');
   }
 }

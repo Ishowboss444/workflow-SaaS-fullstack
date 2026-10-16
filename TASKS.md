@@ -6,28 +6,25 @@
 - `accept()` does 4 sequential DB calls — independent queries could run together with `Promise.all`.
 - `sender()` does 4 sequential DB calls (2 findUnique + authorization + create).
 - No input validation on any backend route (no Zod / Joi).
-- `Assignment` model: no create/update/delete routes or controller. No creation UI.
+- `Assignment` model: create endpoint done. No update/delete yet.
 - After a worker accepts an invite, there is no redirect to the worker dashboard.
-- `authControler.js` line 72: `console.error(err)` in login catch — acceptable but note.
-- `workplaceControler.js` `delete()`: no return on non-owner branch (returns 409 but no explicit return before fall-through).
+- `workplaceControler.js` `delete()`: no return on non-owner branch.
 - No centralized error handler middleware (only process.on handlers).
 - `REFRESH_TOKEN_SECRET` is unused.
 - Logout endpoint added but frontend does not call it yet.
 
 ### Frontend
-- `product.ts` reads token at module load (stale token bug) + has `console.log(token)`.
-- `JobListView.vue` routes to `myInvitations`, which does not exist (dead button).
 - `JobListView.vue` filter chips are rendered but never applied to list.
 - All 5 API files + 2 starter views hardcode `http://localhost:3000`.
 - `myAssignments.vue` — placeholder (5 lines).
 - `workplace.vue` (worker) — placeholder.
 - `Home.vue` (manager) — placeholder.
-- `WorkDistributionView.vue` + `AddJobStep4View.vue` — hardcoded workers array, no API call.
-- Multiple files have `console.log` debug lines (JobListView, JobDetail*, etc.).
+- `AddJobStep4View.vue` — hardcoded workers array, no API call yet.
+- `WorkDistributionView.vue` — hardcoded workers array, no API call yet.
+- Multiple files have `console.log` debug lines.
 - `FullfilledLoading.vue` has literal markdown code fence inside it.
 - No `.env` / `import.meta.env` / Vite proxy in frontend.
 - `useGlobal.ts` file vs `useGlobalStore` export naming mismatch.
-- `JobListView.vue` imports `@/stores/useProductStore.js` (`.js` extension on `.ts` file).
 
 ### Lint problems (npx eslint src)
 - `no-undef` — ESLint does not know browser/Node names. Need `languageOptions.globals` in `eslint.config.js`.
