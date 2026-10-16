@@ -2,10 +2,11 @@
 defineProps({
   name: { type: String, required: true },
   avatarColor: { type: String, default: '#f7d3e3' },
-  qty: { type: [Number, String], default: '' },
-  price: { type: [Number, String], default: '' },
   remainingLabel: { type: String, default: '' }, // e.g. "باقی‌مانده: 0"
 });
+
+const qty = defineModel('qty', { type: [Number, String], default: 0 });
+const price = defineModel('price', { type: [Number, String], default: 0 });
 </script>
 
 <template>
@@ -23,12 +24,12 @@ defineProps({
 
     <div class="assign-row__field">
       <label>تعداد</label>
-      <input type="text" :value="qty" placeholder="۰" inputmode="numeric" />
+      <input v-model="qty" type="text" placeholder="۰" inputmode="numeric" />
     </div>
 
     <div class="assign-row__field">
       <label>قیمت هر قطعه</label>
-      <input type="text" :value="price" placeholder="۰" inputmode="numeric" />
+      <input v-model="price" type="text" placeholder="۰" inputmode="numeric" />
     </div>
   </div>
 </template>

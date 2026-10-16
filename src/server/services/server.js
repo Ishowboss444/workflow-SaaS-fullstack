@@ -10,6 +10,7 @@ import workplaceRoutes from '../routes/workplaceRoutes.js';
 import jobResearchRoutes from '../routes/invitationRoutes.js';
 import productsRoutes from '../routes/productsRoutes.js';
 import usersRoutes from '../routes/usersRoutes.js';
+import assignmentRoutes from '../routes/assignmentRoutes.js';
 config();
 connectDB();
 
@@ -28,6 +29,7 @@ app.use('/workplace', workplaceRoutes);
 app.use('/invites', jobResearchRoutes);
 app.use('/product', productsRoutes);
 app.use('/users', usersRoutes);
+app.use('/assignment', assignmentRoutes);
 // Middleware to parse JSON requests
 // Start the server
 const server = app.listen(3000, () => {
