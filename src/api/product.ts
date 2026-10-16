@@ -42,12 +42,16 @@ export async function addProduct(info: ProductAdd) {
   }
 }
 
-export async function getProducts(id: number | null = null) {
+export async function getProducts(id: number | null = null, workplaceId?: number) {
   const token = localStorage.getItem('accessToken');
-  const url =
+  let url =
     id !== null
       ? `http://localhost:3000/product/${id}/get`
       : `http://localhost:3000/product/get`;
+
+  if (workplaceId !== undefined && id === null) {
+    url += `?workplaceId=${workplaceId}`;
+  }
 
   try {
     const response = await fetch(url, {

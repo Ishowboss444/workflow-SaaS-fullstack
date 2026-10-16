@@ -15,4 +15,13 @@ router.post(
   }
 );
 
+router.get(
+  '/my',
+  authonticated,
+  async (req, res) => {
+    const assignment = new Assignment(req, res);
+    await assignment.getMyAssignments();
+  }
+);
+
 export default router;

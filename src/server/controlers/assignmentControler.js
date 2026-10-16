@@ -86,6 +86,33 @@ class Assignment {
       });
     }
   }
+
+  async getMyAssignments() {
+    try {
+      const assignments = await prisma.assignment.findMany({
+        where: {
+          workerId: this.user.id,
+        },
+        include: {
+          product: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      return this.res.status(200).json({
+        status: 'success',
+        data: assignments,
+      });
+    } catch (err) {
+      console.error(err);
+      return this.res.status(500).json({
+        status: 'failed',
+        message: 'something went wrong',
+      });
+    }
+  }
 }
 
 export default Assignment;

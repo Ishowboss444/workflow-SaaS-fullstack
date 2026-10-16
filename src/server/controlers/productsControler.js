@@ -20,24 +20,23 @@ export class Products {
           status: 'success',
           message: "you don't have any workplace",
         });
-      const products = await prisma.workplace.findUnique({
+
+      const workplaceId = this.req.query.workplaceId
+        ? Number(this.req.query.workplaceId)
+        : userExist.workplaceId;
+
+      const products = await prisma.product.findMany({
         where: {
-          id: userExist.workplaceId,
+          workplaceId: workplaceId,
         },
-        include: {
-          products: true,
+        orderBy: {
+          createdAt: 'desc',
         },
       });
 
-      if (!products)
-        return this.res.status(409).json({
-          status: 'failed',
-          message: 'went wrong',
-        });
-
-      return this.res.status(201).json({
+      return this.res.status(200).json({
         status: 'success',
-        data: products.products,
+        data: products,
       });
     } catch (err) {
       console.error(err);
