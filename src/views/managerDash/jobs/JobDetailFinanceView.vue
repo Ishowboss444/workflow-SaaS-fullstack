@@ -14,6 +14,8 @@ onMounted(async () => {
   const id = route.params.id;
   const response = await product._getProduct(id);
   data.value = response.data;
+  console.log(data.value);
+  
 });
 </script>
 
@@ -24,10 +26,10 @@ onMounted(async () => {
     <div class="tab-body">
       <div class="finance-card">
         <h3 class="finance-card__title">خلاصه مالی</h3>
-        <SummaryRow label="درآمد کل" :value="`${String(data.amount * data.salary.manager).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" />
-        <SummaryRow label="هزینه کارگرها" :value="`${String(data.amount * data.salary.worker).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" />
+        <SummaryRow label="درآمد کل" :value="`${String(data?.amount * data?.salary?.manager).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" />
+        <SummaryRow label="هزینه کارگرها" :value="`${String(data?.amount * data?.salary?.worker).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" />
         <SummaryRow label="هزینه‌های دیگر" :value="`${String(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" />
-        <SummaryRow label="سود خالص" :value="`${String((data.amount * data.salary.manager)-(data.amount * data.salary.worker) ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" emphasis />
+        <SummaryRow label="سود خالص" :value="`${String((data.amount * data.salary?.manager)-(data.amount * data.salary?.worker) ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} تومان`" emphasis />
       </div>
 
       <div class="finance-card">

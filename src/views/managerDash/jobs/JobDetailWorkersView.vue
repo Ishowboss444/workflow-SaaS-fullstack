@@ -9,7 +9,7 @@ import Loading from '@/components/common/Loading.vue';
 import { useProductStore } from '@/stores/useProductStore';
 import { useGlobalStore } from '@/stores/useGlobal';
 import { getWorkplaceMembers } from '@/api/workplace';
-import { createAssignment } from '@/api/assignment';
+import { createAssignment } from '@/api/assignment.ts';
 
 const route = useRoute();
 const router = useRouter();
