@@ -1,31 +1,38 @@
-export interface AssignmentCreate {
-  productId: number;
-  workerId: number;
-  quantity: number;
-}
-
-export async function createAssignment(data: AssignmentCreate) {
+export async function getMyAssignments() {
   const token = localStorage.getItem('accessToken');
 
-  try {
-    const response = await fetch('http://localhost:3000/assignment/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+  const response = await fetch('http://localhost:3000/assignment/my', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Request failed');
-    }
+  const data = await response.json();
 
-    const result = await response.json();
-    return result;
-  } catch (err) {
-    console.error(err);
-    throw err;
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch assignments');
   }
+  return data;
+}
+
+export async function createAssignment(assignmentData : any) {
+  const token = localStorage.getItem('accessToken');
+
+  const response = await fetch('http://localhost:3000/assignment/create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(assignmentData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to create assignment');
+  }
+  return data;
 }
