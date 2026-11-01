@@ -1,10 +1,21 @@
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_API_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+const API_URL = import.meta.env.VITE_API_URL;
+
 export async function getWorkplaces() {}
 
 export async function getWorkplaceMembers(workplaceId: number) {
   const token = localStorage.getItem('accessToken');
 
   const response = await fetch(
-    `http://localhost:3000/workplace/${workplaceId}/members`,
+    `${API_URL}/workplace/${workplaceId}/members`,
     {
       method: 'GET',
       headers: {
@@ -30,7 +41,7 @@ export async function getMemberAssignments(
   const token = localStorage.getItem('accessToken');
 
   const response = await fetch(
-    `http://localhost:3000/workplace/${workplaceId}/members/${memberId}/assignments`,
+    `${API_URL}/workplace/${workplaceId}/members/${memberId}/assignments`,
     {
       method: 'GET',
       headers: {

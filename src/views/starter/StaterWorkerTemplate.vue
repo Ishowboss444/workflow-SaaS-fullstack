@@ -70,6 +70,8 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const router = useRouter();
 
 const loading = ref(false);
@@ -117,7 +119,7 @@ const saveProfile = async () => {
   loading.value = true;
 
   try {
-    const response = await fetch('http://localhost:3000/users/workerProfile', {
+    const response = await fetch(`${API_URL}/users/workerProfile`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

@@ -1,3 +1,14 @@
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_API_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+const API_URL = import.meta.env.VITE_API_URL;
+
 export interface ProductAdd {
   name: string;
   description: string;
@@ -13,7 +24,7 @@ export async function addProduct(info: ProductAdd) {
   const token = localStorage.getItem('accessToken');
 
   try {
-    const response = await fetch('http://localhost:3000/product/add', {
+    const response = await fetch(`${API_URL}/product/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,8 +57,8 @@ export async function getProducts(id: number | null = null, workplaceId?: number
   const token = localStorage.getItem('accessToken');
   let url =
     id !== null
-      ? `http://localhost:3000/product/${id}/get`
-      : `http://localhost:3000/product/get`;
+      ? `${API_URL}/product/${id}/get`
+      : `${API_URL}/product/get`;
 
   if (workplaceId !== undefined && id === null) {
     url += `?workplaceId=${workplaceId}`;

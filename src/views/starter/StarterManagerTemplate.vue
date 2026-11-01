@@ -60,6 +60,8 @@ import { ChevronRight } from 'lucide-vue-next';
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const router = useRouter();
 const global = useGlobalStore()
 
@@ -83,7 +85,7 @@ const createWorkplace = async () => {
   loading.value = true;
 
   try {
-    const response = await fetch('http://localhost:3000/workplace/add', {
+    const response = await fetch(`${API_URL}/workplace/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

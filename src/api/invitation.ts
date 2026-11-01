@@ -1,7 +1,18 @@
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_API_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+const API_URL = import.meta.env.VITE_API_URL;
+
 export async function getInvites() {
   const token = localStorage.getItem('accessToken');
 
-  const response = await fetch('http://localhost:3000/invites/get', {
+  const response = await fetch(`${API_URL}/invites/get`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -22,7 +33,7 @@ export async function sendInvites(id: number) {
 
   const token = localStorage.getItem('accessToken');
 
-  const response = await fetch(`http://localhost:3000/invites/send/${id}`, {
+  const response = await fetch(`${API_URL}/invites/send/${id}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -41,7 +52,7 @@ export async function sendInvites(id: number) {
 export async function acceptInvite(id: number) {
   const token = localStorage.getItem('accessToken');
 
-  const response = await fetch(`http://localhost:3000/invites/${id}/accept`, {
+  const response = await fetch(`${API_URL}/invites/${id}/accept`, {
     method: 'PATCH',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -58,7 +69,7 @@ export async function acceptInvite(id: number) {
 export async function rejectInvite(id: number) {
   const token = localStorage.getItem('accessToken');
 
-  const response = await fetch(`http://localhost:3000/invites/${id}/reject`, {
+  const response = await fetch(`${API_URL}/invites/${id}/reject`, {
     method: 'PATCH',
     headers: {
       Authorization: `Bearer ${token}`,

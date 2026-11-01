@@ -1,3 +1,14 @@
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_API_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+const API_URL = import.meta.env.VITE_API_URL;
+
 export interface SignupInfo {
   name: string;
   username: string;
@@ -8,7 +19,7 @@ export interface LoginInfo {
   password: string;
 }
 export async function signup(info: SignupInfo) {
-  const response = await fetch('http://localhost:3000/auth/signup', {
+  const response = await fetch(`${API_URL}/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -26,7 +37,7 @@ export async function signup(info: SignupInfo) {
 }
 
 export async function login(info: LoginInfo) {
-  const response = await fetch('http://localhost:3000/auth/login', {
+  const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
