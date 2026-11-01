@@ -1,12 +1,12 @@
 <script setup>
-import { Wallet, Briefcase, Users, Home , Mail , User} from 'lucide-vue-next';
+import { Wallet, Briefcase, Users, Home, Mail, User } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
-import {ref} from 'vue'
+import { ref } from 'vue';
 const props = defineProps({
-  type : {type : String , default : 'WORKER'}
+  type: { type: String, default: 'WORKER' },
 });
-const router = useRouter()
-const active = ref('home')
+const router = useRouter();
+const active = ref('home');
 const tabsManger = [
   { key: 'members', label: 'اعضا', icon: Wallet },
   { key: 'jobs', label: 'کارها', icon: Briefcase },
@@ -19,50 +19,41 @@ const tabsWorker = [
   { key: 'assignment', label: 'کارهای من', icon: User },
   { key: 'home', label: 'خانه', icon: Home },
 ];
-function routing(key){
-  active.value = key
+function routing(key) {
+  active.value = key;
   // Worker mode routing
-  if(props.type === "WORKER"){
+  if (props.type === 'WORKER') {
     console.log(key);
 
-    if(key === 'invites'){
-      router.push({name : 'Invitations'})
-    } 
-    else if (key === 'workplace'){
-      router.push({name : 'WorkerWorkplace'})
-    } 
-    else if (key === 'assignment'){
-      router.push({name : 'assignments'})
-    } 
-    else if (key === 'home'){
-      router.push({name : 'WorkerHome'})
-    }
-    else{
+    if (key === 'invites') {
+      router.push({ name: 'Invitations' });
+    } else if (key === 'workplace') {
+      router.push({ name: 'WorkerWorkplace' });
+    } else if (key === 'assignment') {
+      router.push({ name: 'assignments' });
+    } else if (key === 'home') {
+      router.push({ name: 'WorkerHome' });
+    } else {
       console.log('checkk!');
     }
-    return
-  } 
+    return;
+  }
 
-  if(props.type === "MANAGER"){
-    if(key === 'members'){
-      router.push({name : 'hiration'})
-    } 
-    else if (key === 'jobs'){
-      router.push({name : 'job-list'})
-    } 
-    else if (key === 'workers'){
-      router.push({name : 'Members'})
-    } 
-    else if (key === 'home'){
-      router.push({name : 'ManagerHome'})
-    }
-    else{
+  if (props.type === 'MANAGER') {
+    if (key === 'members') {
+      router.push({ name: 'hiration' });
+    } else if (key === 'jobs') {
+      router.push({ name: 'job-list' });
+    } else if (key === 'workers') {
+      router.push({ name: 'Members' });
+    } else if (key === 'home') {
+      router.push({ name: 'ManagerHome' });
+    } else {
       console.log('checkk!');
     }
-    return
+    return;
   }
   //Manager mode routing
-
 }
 </script>
 

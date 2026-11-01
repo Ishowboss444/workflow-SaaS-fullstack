@@ -1,5 +1,4 @@
 import { login, LoginInfo, signup, SignupInfo } from '@/api/auth';
-import { Str } from 'bcrypto/lib/encoding/asn1';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -7,7 +6,7 @@ import { toast } from 'vue-sonner';
 export const useAuthStore = defineStore('auth', () => {
   const loading = ref(false);
   const error = ref<any>(null);
-  
+
   const Signup = async (info: SignupInfo) => {
     loading.value = true;
     error.value = null;
@@ -30,7 +29,7 @@ export const useAuthStore = defineStore('auth', () => {
       const result = await login(info);
       localStorage.setItem('accessToken', result.data.token);
       console.log(result);
-      
+
       console.log(result.status);
 
       return result;

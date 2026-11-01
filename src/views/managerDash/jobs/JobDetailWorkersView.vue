@@ -30,7 +30,8 @@ onMounted(async () => {
     ]);
 
     productData.value = productResponse.data;
-    const members = membersResponse.data.members || membersResponse.data?.members || [];
+    const members =
+      membersResponse.data.members || membersResponse.data?.members || [];
     const productAmount = productResponse.data.amount;
 
     workers.value = members
@@ -55,15 +56,21 @@ function stringToColor(str) {
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const colors = ['#f7d3e3', '#ffe0c2', '#d8d3ff', '#c2f0e0', '#ffd6cc', '#e0e0ff'];
+  const colors = [
+    '#f7d3e3',
+    '#ffe0c2',
+    '#d8d3ff',
+    '#c2f0e0',
+    '#ffd6cc',
+    '#e0e0ff',
+  ];
   return colors[Math.abs(hash) % colors.length];
 }
 
 const totalAssigned = () =>
   workers.value.reduce((sum, w) => sum + (Number(w.qty) || 0), 0);
 
-const remaining = () =>
-  (productData.value?.amount || 0) - totalAssigned();
+const remaining = () => (productData.value?.amount || 0) - totalAssigned();
 
 async function submitAssignments() {
   if (totalAssigned() === 0) {

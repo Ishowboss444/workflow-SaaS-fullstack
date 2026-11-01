@@ -1,4 +1,9 @@
-import { getInvites, sendInvites, acceptInvite, rejectInvite } from '@/api/invitation';
+import {
+  getInvites,
+  sendInvites,
+  acceptInvite,
+  rejectInvite,
+} from '@/api/invitation';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -12,7 +17,7 @@ export const useInvitationsStore = defineStore('invitations', () => {
     loading.value = true;
     try {
       return await getInvites();
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message || 'گرفتن دعوت‌نامه‌ها انجام نشد');
       return null;
     } finally {
@@ -24,7 +29,7 @@ export const useInvitationsStore = defineStore('invitations', () => {
     loading.value = true;
     try {
       return await sendInvites(Number(id));
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message || 'ارسال دعوت‌نامه انجام نشد');
       throw err;
     } finally {

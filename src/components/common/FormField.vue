@@ -12,11 +12,7 @@ const model = defineModel({ type: [String, Number], default: '' });
   <label class="form-field">
     <span class="form-field__label">{{ label }}</span>
     <div class="form-field__control">
-      <input
-        v-model="model"
-        :type="type"
-        :placeholder="placeholder"
-      />
+      <input v-model="model" :type="type" :placeholder="placeholder" />
       <span v-if="suffix" class="form-field__suffix">{{ suffix }}</span>
     </div>
   </label>

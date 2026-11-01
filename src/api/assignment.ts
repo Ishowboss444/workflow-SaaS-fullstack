@@ -28,7 +28,7 @@ export async function getMyAssignments() {
   return data;
 }
 
-export async function createAssignment(assignmentData : any) {
+export async function createAssignment(assignmentData: any) {
   const token = localStorage.getItem('accessToken');
 
   const response = await fetch(`${API_URL}/assignment/create`, {

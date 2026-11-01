@@ -43,7 +43,8 @@ onMounted(async () => {
 
     products.value = productsResponse.data || [];
 
-    const members = membersResponse.data.members || membersResponse.data?.members || [];
+    const members =
+      membersResponse.data.members || membersResponse.data?.members || [];
     workers.value = members
       .filter((m) => m.role === 'WORKER')
       .map((m) => ({
@@ -66,7 +67,14 @@ function stringToColor(str) {
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const colors = ['#f7d3e3', '#ffe0c2', '#d8d3ff', '#c2f0e0', '#ffd6cc', '#e0e0ff'];
+  const colors = [
+    '#f7d3e3',
+    '#ffe0c2',
+    '#d8d3ff',
+    '#c2f0e0',
+    '#ffd6cc',
+    '#e0e0ff',
+  ];
   return colors[Math.abs(hash) % colors.length];
 }
 
@@ -86,8 +94,7 @@ function selectProduct(product) {
 const totalAssigned = () =>
   workers.value.reduce((sum, w) => sum + (Number(w.qty) || 0), 0);
 
-const remaining = () =>
-  (selectedProduct.value?.amount || 0) - totalAssigned();
+const remaining = () => (selectedProduct.value?.amount || 0) - totalAssigned();
 
 const exceedsLimit = () => remaining() < 0;
 
@@ -171,7 +178,11 @@ async function submitAssignments() {
         </div>
         <div class="product-card__row">
           <span>رشته کارگر:</span>
-          <strong>{{ fieldLabels[selectedProduct.field] || selectedProduct.field || 'عمومی' }}</strong>
+          <strong>{{
+            fieldLabels[selectedProduct.field] ||
+            selectedProduct.field ||
+            'عمومی'
+          }}</strong>
         </div>
         <div class="product-card__row">
           <span>وضعیت:</span>

@@ -159,7 +159,9 @@ onMounted(async () => {
         <div class="summary-card">
           <ClipboardList :size="18" />
           <div class="summary-info">
-            <span class="summary-value">{{ totalQuantity.toLocaleString('fa-IR') }}</span>
+            <span class="summary-value">{{
+              totalQuantity.toLocaleString('fa-IR')
+            }}</span>
             <span class="summary-label">مجموع مقدار</span>
           </div>
         </div>
@@ -185,7 +187,11 @@ onMounted(async () => {
         </div>
 
         <div v-else class="products-list">
-          <div v-for="product in products" :key="product.id" class="product-card">
+          <div
+            v-for="product in products"
+            :key="product.id"
+            class="product-card"
+          >
             <button
               type="button"
               class="product-header"
@@ -264,7 +270,9 @@ onMounted(async () => {
   font-size: 0.72rem;
   font-weight: 700;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
 
 .back-btn:hover {

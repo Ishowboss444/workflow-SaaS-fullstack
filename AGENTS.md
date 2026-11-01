@@ -51,25 +51,27 @@ Kargah Man is a workplace / job management app.
 - Shared: login / signup, products, users, workplaces, invitations.
 
 ### Stack
+
 - Frontend: Vue 3 (Composition API), Vue Router, stores in `src/stores`, SCSS
 - Backend: Express.js (folder `src/server`)
 - Database / auth: Supabase (connection in `src/server/config/db.js`)
 - Languages: TypeScript and JavaScript are mixed (see section 5)
 
 ### Folder map (src)
-| Folder | Purpose |
-|---|---|
-| `api/` | Frontend functions that call the backend (auth, invitation, product, user, workplace) |
-| `stores/` | State management (`useAuthStore`, `useInvitationsStore`, `useProductStore`, `useUsersStore`, `useGlobal`) |
-| `components/common/` | Small reusable UI parts (AppButton, FormField, TabBar, StatusBadge, ...) |
-| `views/auth/` | Login, signup |
-| `views/starter/` | First-time screens (workplace choice, manager / worker templates) |
-| `views/managerDash/` | Manager pages (Home, Hiration, Members, `jobs/*`) |
-| `views/workerDash/` | Worker pages (Home, invitation, myAssignments, workplace) |
-| `router/` | Routes |
-| `tools/` | Helpers (colorTranslator, localStorage, timeago) |
-| `assets/scss/` | Variables, mixins, main styles |
-| `server/` | Express: `routes` → `controlers` → (`services`), with `middlewae` for auth and validation |
+
+| Folder               | Purpose                                                                                                   |
+| -------------------- | --------------------------------------------------------------------------------------------------------- |
+| `api/`               | Frontend functions that call the backend (auth, invitation, product, user, workplace)                     |
+| `stores/`            | State management (`useAuthStore`, `useInvitationsStore`, `useProductStore`, `useUsersStore`, `useGlobal`) |
+| `components/common/` | Small reusable UI parts (AppButton, FormField, TabBar, StatusBadge, ...)                                  |
+| `views/auth/`        | Login, signup                                                                                             |
+| `views/starter/`     | First-time screens (workplace choice, manager / worker templates)                                         |
+| `views/managerDash/` | Manager pages (Home, Hiration, Members, `jobs/*`)                                                         |
+| `views/workerDash/`  | Worker pages (Home, invitation, myAssignments, workplace)                                                 |
+| `router/`            | Routes                                                                                                    |
+| `tools/`             | Helpers (colorTranslator, localStorage, timeago)                                                          |
+| `assets/scss/`       | Variables, mixins, main styles                                                                            |
+| `server/`            | Express: `routes` → `controlers` → (`services`), with `middlewae` for auth and validation                 |
 
 ---
 
@@ -92,12 +94,14 @@ Never write them in code, logs, commits, or chat.
 ## 5. Code rules
 
 ### General
+
 - Small functions. Clear names. One job per function.
 - Match the style of the file you are editing.
 - No new library if the project can do it already.
 - Do not leave `console.log` or dead code.
 
 ### Vue
+
 - Use `<script setup>` and the Composition API.
 - Reuse components from `components/common` before making new ones.
 - API calls go in `api/`, NOT inside components.
@@ -108,6 +112,7 @@ Never write them in code, logs, commits, or chat.
 - Keep the same layout for job steps and job detail tabs.
 
 ### Express (`src/server`)
+
 - Keep this flow: route → middleware → controller → service/db.
 - Routes only connect paths. Controllers handle request and response.
   Database logic should move to `services/` over time.
@@ -118,6 +123,7 @@ Never write them in code, logs, commits, or chat.
 - Use `try/catch` and handle errors in one consistent way.
 
 ### Supabase
+
 - RLS must stay ON for every table.
 - When you suggest an RLS policy, explain it in plain words.
 - Never use the service role key in frontend code.
@@ -153,6 +159,7 @@ After each job, teach him:
    without the answer. Give the answer only if he asks.
 
 Rules:
+
 - Explain like to a smart friend who is new: simple words, real examples from THIS project.
 - Do not remove important details to make it "easy". Make it clear, not shorter.
 - Add each lesson as 3–5 lines to `LEARNING.md` (create it if missing).
@@ -209,6 +216,7 @@ Keep these in the project root. Update them at the end of each job.
 ## 11. Definition of done
 
 A job is done only when:
+
 - [ ] It does what was announced — nothing more
 - [ ] It builds with no errors and no new warnings
 - [ ] You tested it, or clearly said what you could not test

@@ -3,6 +3,7 @@
 ## To do
 
 ### Backend
+
 - `accept()` does 4 sequential DB calls — independent queries could run together with `Promise.all`.
 - `sender()` does 4 sequential DB calls (2 findUnique + authorization + create).
 - No input validation on any backend route (no Zod / Joi).
@@ -14,6 +15,7 @@
 - Logout endpoint added but frontend does not call it yet.
 
 ### Frontend
+
 - `JobListView.vue` filter chips are rendered but never applied to list.
 - All 5 API files + 2 starter views hardcode `http://localhost:3000`.
 - `myAssignments.vue` — placeholder (5 lines).
@@ -27,6 +29,7 @@
 - `useGlobal.ts` file vs `useGlobalStore` export naming mismatch.
 
 ### Lint problems (npx eslint src)
+
 - `no-undef` — ESLint does not know browser/Node names. Need `languageOptions.globals` in `eslint.config.js`.
 - `vue/multi-word-component-names` (9) — `Home.vue`, `invitation.vue`, `workplace.vue`.
 - `vue/attributes-order` (26) — safe to auto-fix with `npx eslint src --fix`.
@@ -95,13 +98,16 @@
 ## Business Logic (Kargah Man)
 
 ### Overview
+
 Kargah Man is a workplace management SaaS for tailoring workshops.
 
 ### User Roles
+
 - **MANAGER** — owns one workplace. Creates products, invites workers, distributes work.
 - **WORKER** — belongs to one workplace. Receives work assignments, sees own tasks.
 
 ### Key Rules
+
 1. A workplace has exactly **one** manager (the owner).
 2. A user can belong to **only one workplace** at a time.
 3. A manager **cannot** join another workplace as a worker.
@@ -111,33 +117,37 @@ Kargah Man is a workplace management SaaS for tailoring workshops.
 7. Membership rules are enforced by the **backend**, not the frontend.
 
 ### Products and Broadcasting
+
 - A manager creates a product with a total quantity.
 - The manager **broadcasts** (assigns) portions of that quantity to workers.
 - Each assignment links: product + worker + quantity.
 - Total assigned quantity cannot exceed the product's total quantity.
 
 ### Database Models
-| Model | Purpose |
-|-------|---------|
-| `User` | All users (managers + workers). Has `role`, `field`, `workplaceId`. |
-| `Workplace` | A workplace. Has one `owner` (manager) and many `members` (workers). |
-| `Product` | A product with quantity, colors, salary, tailor amounts. |
-| `Assignment` | A "broadcast" — links a product to a worker with a quantity. |
-| `Invite` | Workplace invitation. Status: PENDING, ACCEPTED, REJECTED. |
+
+| Model        | Purpose                                                              |
+| ------------ | -------------------------------------------------------------------- |
+| `User`       | All users (managers + workers). Has `role`, `field`, `workplaceId`.  |
+| `Workplace`  | A workplace. Has one `owner` (manager) and many `members` (workers). |
+| `Product`    | A product with quantity, colors, salary, tailor amounts.             |
+| `Assignment` | A "broadcast" — links a product to a worker with a quantity.         |
+| `Invite`     | Workplace invitation. Status: PENDING, ACCEPTED, REJECTED.           |
 
 ### Field Types (Worker Specialization)
-| DB Value | Persian |
-|----------|---------|
+
+| DB Value      | Persian   |
+| ------------- | --------- |
 | `rightTailor` | خیاط راست |
-| `topTailor` | خیاط بالا |
-| `midTailor` | خیاط وسط |
-| `general` | عمومی |
+| `topTailor`   | خیاط بالا |
+| `midTailor`   | خیاط وسط  |
+| `general`     | عمومی     |
 
 ### Pages
-| Route | Page | Role |
-|-------|------|------|
-| `/managerDashboard/Members` | Members list | Manager |
+
+| Route                                 | Page                       | Role    |
+| ------------------------------------- | -------------------------- | ------- |
+| `/managerDashboard/Members`           | Members list               | Manager |
 | `/managerDashboard/Members/:memberId` | Member detail + broadcasts | Manager |
-| `/managerDashboard/Hiration` | Invite workers | Manager |
-| `/managerDashboard/jobs` | Job list | Manager |
-| `/workerDashboard/assignments` | My assignments | Worker |
+| `/managerDashboard/Hiration`          | Invite workers             | Manager |
+| `/managerDashboard/jobs`              | Job list                   | Manager |
+| `/workerDashboard/assignments`        | My assignments             | Worker  |

@@ -18,7 +18,7 @@ export const useUsersStore = defineStore('users', () => {
     try {
       const data = await findUser(username);
       return data;
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message || 'جستوجو انجام نشد');
       return null;
     } finally {

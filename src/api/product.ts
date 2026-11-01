@@ -53,12 +53,13 @@ export async function addProduct(info: ProductAdd) {
   }
 }
 
-export async function getProducts(id: number | null = null, workplaceId?: number) {
+export async function getProducts(
+  id: number | null = null,
+  workplaceId?: number
+) {
   const token = localStorage.getItem('accessToken');
   let url =
-    id !== null
-      ? `${API_URL}/product/${id}/get`
-      : `${API_URL}/product/get`;
+    id !== null ? `${API_URL}/product/${id}/get` : `${API_URL}/product/get`;
 
   if (workplaceId !== undefined && id === null) {
     url += `?workplaceId=${workplaceId}`;

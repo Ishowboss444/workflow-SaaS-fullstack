@@ -252,7 +252,9 @@ onUnmounted(() => {
   border: 1px solid $color-border-soft;
   border-radius: 17px;
   background: $color-bg-card;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .assignment-card:hover {

@@ -41,7 +41,7 @@ onMounted(async () => {
         </div>
 
         <AppButton variant="outline" @click="toast.warning('به زودی')">
-          <span class="edit-btn" ><Pencil :size="16" /> ویرایش</span>
+          <span class="edit-btn"><Pencil :size="16" /> ویرایش</span>
         </AppButton>
       </div>
     </div>

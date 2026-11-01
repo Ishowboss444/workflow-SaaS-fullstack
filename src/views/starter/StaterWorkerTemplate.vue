@@ -132,22 +132,13 @@ const saveProfile = async () => {
 
     const data = await response.json();
     console.log(data);
-    localStorage.setItem(
-      'field',
-      form.field
-    );
-    localStorage.setItem(
-      'role',
-      'WORKER'
-    );
-    localStorage.setItem(
-      'username',
-      data.username
-    );
+    localStorage.setItem('field', form.field);
+    localStorage.setItem('role', 'WORKER');
+    localStorage.setItem('username', data.username);
     if (!response.ok) {
       throw new Error(data.message || 'ذخیره پروفایل انجام نشد.');
     }
-    toast.success('پروفایل شما تکمیل شد')
+    toast.success('پروفایل شما تکمیل شد');
     router.push({ name: 'starter' });
   } catch (err) {
     error.value = err.message || 'خطایی رخ داد.';

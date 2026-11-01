@@ -42,7 +42,8 @@ const filteredMembers = computed(() => {
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.trim().toLowerCase();
     result = result.filter(
-      (m) => m.name.toLowerCase().includes(q) || m.username.toLowerCase().includes(q)
+      (m) =>
+        m.name.toLowerCase().includes(q) || m.username.toLowerCase().includes(q)
     );
   }
 
@@ -65,10 +66,12 @@ function goToMember(member) {
 onMounted(async () => {
   try {
     console.log(global.workplaceId);
-    
+
     const data = await getWorkplaceMembers(global.workplaceId);
     workplaceName.value = data.data.name;
-    members.value = (data.data.members || []).filter((m) => m.role === 'WORKER');
+    members.value = (data.data.members || []).filter(
+      (m) => m.role === 'WORKER'
+    );
   } catch (err) {
     error.value = err.message || 'خطا در دریافت اعضا';
   } finally {
@@ -111,8 +114,14 @@ onMounted(async () => {
         </div>
 
         <div class="dropdown-wrapper">
-          <button type="button" class="dropdown-btn" @click="showDropdown = !showDropdown">
-            <span>{{ fieldOptions.find((f) => f.value === selectedField)?.label }}</span>
+          <button
+            type="button"
+            class="dropdown-btn"
+            @click="showDropdown = !showDropdown"
+          >
+            <span>{{
+              fieldOptions.find((f) => f.value === selectedField)?.label
+            }}</span>
             <ChevronDown :size="14" :class="{ rotated: showDropdown }" />
           </button>
           <div v-if="showDropdown" class="dropdown-menu">
@@ -244,7 +253,9 @@ onMounted(async () => {
   border-radius: 13px;
   background: $color-bg-card;
   color: $color-text-secondary;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .search-box:focus-within {
@@ -380,7 +391,10 @@ onMounted(async () => {
   border-radius: 17px;
   background: $color-bg-card;
   cursor: pointer;
-  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
 .member-card:hover {

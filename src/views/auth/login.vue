@@ -87,7 +87,7 @@ import { toast } from 'vue-sonner';
 
 const router = useRouter();
 const auth = useAuthStore();
-const global = useGlobalStore()
+const global = useGlobalStore();
 
 const form = reactive({
   username: '',
@@ -112,17 +112,18 @@ const handleSubmit = async () => {
 
   if (!data) return;
   console.log(data.data);
-  
-  if(data.data.username) global.usernameChange(data.data.username)
-  if(data.data.workplaceId) global.workplaceChange(Number(data.data.workplaceId))
-  
-  if(data.data.role) global.roleChange(data.data.role)
-  if(data?.data?.field && data?.data?.role){
-    global.roleChange(data.data.role)
-    global.fieldChange(data.data.field)
-    toast.success('خوش برگشتی 👋')
-    return router.replace({name : 'workerDashboard'})
-  } 
+
+  if (data.data.username) global.usernameChange(data.data.username);
+  if (data.data.workplaceId)
+    global.workplaceChange(Number(data.data.workplaceId));
+
+  if (data.data.role) global.roleChange(data.data.role);
+  if (data?.data?.field && data?.data?.role) {
+    global.roleChange(data.data.role);
+    global.fieldChange(data.data.field);
+    toast.success('خوش برگشتی 👋');
+    return router.replace({ name: 'workerDashboard' });
+  }
 
   toast.success('با موفقیت وارد شد');
   router.replace({ name: 'starter' });

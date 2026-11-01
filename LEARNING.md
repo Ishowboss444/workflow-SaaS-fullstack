@@ -53,7 +53,7 @@ You set it in the config with `languageOptions.globals`.
 
 **Concept: promise rejection**
 
-An `async` function that throws becomes a *rejected promise*. Express 5 catches
+An `async` function that throws becomes a _rejected promise_. Express 5 catches
 it, but only if you `await` the call. If you swallow the error with `catch` and
 return nothing, **the request never ends**. The user sees a spinner forever.
 
@@ -73,7 +73,7 @@ return nothing, **the request never ends**. The user sees a spinner forever.
 Always pair `catch` with a response. Always `return` it.
 
 **Common mistake:** writing `next()` after sending a 500 error. `next()` means
-"keep going to the next handler" — so it sends the error page *and* runs the real
+"keep going to the next handler" — so it sends the error page _and_ runs the real
 route. Return instead.
 
 ## `<Transition>` needs `v-if` or `v-show`
@@ -99,7 +99,7 @@ The reject route was broken for a long time:
 ```js
 router.patch('/:inviteId/reject', authonticated, (req, res) => {
   const invite = new Invitation(req, res);
-  invite.accept();   // <-- copy/paste from the accept route above
+  invite.accept(); // <-- copy/paste from the accept route above
 });
 ```
 
@@ -113,12 +113,13 @@ the name. If two routes look the same, one of them is probably wrong.
 ## Hiding the list is what made search feel slow
 
 The server was fine. The database is in the cloud, so each query really does
-take a moment. But the page made it *look* much worse:
+take a moment. But the page made it _look_ much worse:
 
 ```html
 <!-- BEFORE - the whole list vanishes while searching -->
 <main v-if="!user.loading" class="people-list">
-<Loading v-else />
+  <Loading v-else />
+</main>
 ```
 
 Every search set `loading = true`, so the old results disappeared and the user
@@ -131,9 +132,10 @@ local**, right where the user is looking:
 ```html
 <!-- AFTER - the list stays, the button spins -->
 <main class="people-list">
-<button :disabled="user.loading">
-  <LoaderCircle v-if="user.loading" class="spin" />
-</button>
+  <button :disabled="user.loading">
+    <LoaderCircle v-if="user.loading" class="spin" />
+  </button>
+</main>
 ```
 
 **Rule for this project:** a loading spinner should sit next to the thing that is
@@ -158,8 +160,8 @@ This bug crashed the page:
 
 ```js
 // server said 402 "there is no user with this username"
-const data = await response.json();   // data.data is undefined
-people.value.push(data.data);         // undefined goes into the list
+const data = await response.json(); // data.data is undefined
+people.value.push(data.data); // undefined goes into the list
 // template then runs: person.name[0]  ->  TypeError, white screen
 ```
 
@@ -186,7 +188,7 @@ export async function findUser(username) {
 ```
 
 **Rule for this project:** anything that comes from the user or from storage goes
-*inside* the function. Only constants and imports go at the top.
+_inside_ the function. Only constants and imports go at the top.
 
 ## Optimistic vs honest UI
 
@@ -195,7 +197,7 @@ The invite buttons used to change the page **before** asking the server:
 ```js
 // BAD - the page lies if the server said no
 function acceptInvitation(invitation) {
-  invitation.status = 'accepted';   // no API call at all
+  invitation.status = 'accepted'; // no API call at all
   toast.success('...');
 }
 ```

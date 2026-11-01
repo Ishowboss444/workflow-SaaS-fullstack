@@ -4,7 +4,7 @@
     <div v-if="!loading" class="create-workplace-container">
       <button type="button" class="back-button" @click="router.back()">
         <span>
-          <ChevronRight/>
+          <ChevronRight />
         </span>
         برگشت
       </button>
@@ -49,7 +49,7 @@
 
       <p class="hint">بعداً می‌تونی اعضای تیم و محصولاتت رو اضافه کنی.</p>
     </div>
-    <Loading v-else/>
+    <Loading v-else />
   </main>
 </template>
 
@@ -63,7 +63,7 @@ import { useRouter } from 'vue-router';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const router = useRouter();
-const global = useGlobalStore()
+const global = useGlobalStore();
 
 const loading = ref(false);
 const error = ref('');
@@ -74,7 +74,7 @@ const form = reactive({
 
 const createWorkplace = async () => {
   error.value = '';
-  const token = localStorage.getItem('accessToken')
+  const token = localStorage.getItem('accessToken');
   const name = form.name.trim();
 
   if (!name) {
@@ -89,7 +89,7 @@ const createWorkplace = async () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         name,
@@ -98,15 +98,15 @@ const createWorkplace = async () => {
 
     const data = await response.json();
     console.log(data);
-    
+
     if (!response.ok) {
       throw new Error(data.message || 'ساخت کارگاه انجام نشد.');
     }
 
-    global.workplaceChange(Number(data?.data?.id))
+    global.workplaceChange(Number(data?.data?.id));
 
-    global.roleChange("MANAGER")
-    router.push({name : 'starter'});
+    global.roleChange('MANAGER');
+    router.push({ name: 'starter' });
   } catch (err) {
     error.value = err.message || 'خطایی رخ داد.';
   } finally {

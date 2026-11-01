@@ -33,7 +33,6 @@ onMounted(async () => {
   }));
 });
 
-
 const activeFilter = ref('all');
 
 const filteredInvitations = computed(() => {

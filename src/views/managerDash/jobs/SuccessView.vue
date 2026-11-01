@@ -13,10 +13,7 @@ import AppButton from '@/components/common/AppButton.vue';
     <p class="success-page__desc">سفارش شما با موفقیت اضافه شد.</p>
 
     <div class="success-page__actions">
-      <router-link
-        :to="{ name: 'job-list' }"
-        class="footer-link"
-      >
+      <router-link :to="{ name: 'job-list' }" class="footer-link">
         <AppButton>مشاهده سفارش‌ها</AppButton>
       </router-link>
       <router-link :to="{ name: 'add-job-1' }" class="footer-link">
